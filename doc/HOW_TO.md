@@ -1,11 +1,10 @@
-# Hello Gil & Matan.  
-Welcome to my tutoriol!! 
+# Welcome to RVC_ASAP tool-chain tutorial!! 
 ## (1) Download a text editor  
 - vscode: https://code.visualstudio.com/download  
-- add usfull extentions (vim, powershell, git, systemverilog)  
+- add usefully extensions (vim, powershell, git-bash, Systemverilog, venus Terminal)  
   
 ## (2) Set gitbash in the vscode  
-- set a "good" ~/.bashrc & ~/.aliases  
+- you may configure the ~/.bashrc & ~/.aliases with your preferences.
   
 ## (3) Download modelsim - a system verilog compiler & simulator (lite free version)  
 - https://fpgasoftware.intel.com/20.1.1/?edition=lite&platform=windows  
@@ -16,7 +15,7 @@ Welcome to my tutoriol!!
   
 ## (5) Gitbash shell - Set aliases for the copmile & link commands: (add to:  "~/.aliases")  
 alias gcc='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-gcc.exe'  
-alias objcoby='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-objcoby.exe'  
+alias objcopy='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-objcopy.exe'  
 alias objdump='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-objdump.exe'  
 
 ## (6) Test the RISCV toolchain:  
@@ -94,7 +93,7 @@ reset_handler:
   mv x29, x1
   mv x30, x1
   mv x31, x1
-  /* stack initilization */
+  /* stack initialization */
   li   x2, 0x8000
   jal x1, main  //jump to main
   ebreak        //end
@@ -179,5 +178,8 @@ make sure you have the files:
 
 
 ## (8) Now you have everything you need to start designing a RISCV core in systemverilog!!
+Good place to start:
+A single cycle RV32I core:
+![image](single_cycle_RVC.png)
 Good luck!  
 Please contact me with any issue. `amichai-bd`

@@ -2,8 +2,11 @@
 riscv-core-as-fast-as-passible
 
 In this project i will try to create a riscv core ASAP.
-1. Read spec.
-2. Design block diagram.
-3. Write SystemVerilog Core (RTL)
-4. Write a TB. (validation & Stimuly)
-5. Write c/asssembly  program to run on the core
+1. Follow the "HOW_TO" in the 
+2. Read spec.
+3. Design block diagram.
+4. Write SystemVerilog Core (RTL)
+5. Write a TB. (validation & Stimuli)
+6. Write c/assembly  program to run on the core.
+
+
