@@ -2,21 +2,25 @@
 // Title            : riscv as-fast-as-possible 
 // Project          : rvc_asap
 //-----------------------------------------------------------------------------
-// File             : rvc_asap 
+// File             : rvc_asap_macros.sv
 // Original Author  : Amichai Ben-David
 // Code Owner       : 
-// Adviser          : Amichai Ben-David
-// Created          : 10/2021
+// Created          : 11/2021
 //-----------------------------------------------------------------------------
 // Description :
+// usfule macros for thie RVC_ASAP project.
+// Flip-Flops, FindFIrst, Counters etc...
+//-----------------------------------------------------------------------------
+
 `ifndef RVC_ASAP_MACROS
 `define RVC_ASAP_MACROS
-`define  RVC_MSFF(q,i,clk)             \
-         always_ff @(posedge clk)      \
+
+`define  RVC_MSFF(q,i,clk)              \
+         always_ff @(posedge clk)       \
             q<=i;
 
-`define  RVC_EN_MSFF(q,i,clk,en)       \
-         always_ff @(posedge clk)      \
+`define  RVC_EN_MSFF(q,i,clk,en)        \
+         always_ff @(posedge clk)       \
             if(en) q<=i;
 
 `define  RVC_RST_MSFF(q,i,clk,rst)      \
@@ -29,4 +33,5 @@
          always_ff @(posedge clk)       \
             if (rst)    q <='0;         \
             else if(en) q <= i;
-`endif //RVC_ASAP_MACROS
+
+`endif // RVC_ASAP_MACROS

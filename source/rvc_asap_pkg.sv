@@ -2,14 +2,17 @@
 // Title            : riscv as-fast-as-possible 
 // Project          : rvc_asap
 //-----------------------------------------------------------------------------
-// File             : rvc_asap 
+// File             : rvc_asap_pkg.sv
 // Original Author  : Amichai Ben-David
 // Code Owner       : 
-// Adviser          : Amichai Ben-David
-// Created          : 10/2021
+// Created          : 11/2021
 //-----------------------------------------------------------------------------
 // Description :
+// enum & parameters for the RVC core
+//-----------------------------------------------------------------------------
+
 package rvc_asap_pkg;
+
 parameter I_MEM_MSB = 'h1000-1; 
 parameter D_MEM_MSB = 'h2000-1;
 typedef enum logic [2:0] {
@@ -32,12 +35,9 @@ typedef enum logic [3:0] {
     OR   = 4'b0110 ,
     AND  = 4'b0111
 } t_alu_op ;
-
 typedef enum logic [2:0] {
    BEQ  = 3'b000 ,
    BNE  = 3'b001 ,
-   RSV0 = 3'b010 ,
-   RSV1 = 3'b011 ,
    BLT  = 3'b100 ,
    BGE  = 3'b101 ,
    BLTU = 3'b110 ,
@@ -57,4 +57,5 @@ typedef enum logic [6:0] {
    FENCE  = 7'b0001111 ,
    SYSCAL = 7'b1110011
 } t_opcode ;
-endpackage //rvc_asap_pkg
+
+endpackage
