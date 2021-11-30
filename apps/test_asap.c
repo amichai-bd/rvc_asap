@@ -17,6 +17,7 @@ int main() {
 }
 
 int gcd(int a, int b){
+    return 0;
 }
 int fibonacci(unsigned n){
     if (n == 0)  return 1;
