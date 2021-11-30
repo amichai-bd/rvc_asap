@@ -1,7 +1,7 @@
 # rvc_asap
 riscv-core-as-fast-as-passible
 
-A single cycle riscv compatible with RV32I unprivileged spec.
+A single cycle riscv compatible with RV32I unprivileged spec.  
 https://riscv.org/technical/specifications/
 
 
