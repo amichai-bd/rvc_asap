@@ -1,0 +1,100 @@
+
+alive_asap.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_stext>:
+   0:	00000013          	nop
+   4:	00000013          	nop
+   8:	00000013          	nop
+   c:	00000013          	nop
+  10:	00000093          	li	ra,0
+  14:	00000113          	li	sp,0
+  18:	00000193          	li	gp,0
+  1c:	00000213          	li	tp,0
+  20:	00000293          	li	t0,0
+  24:	00000313          	li	t1,0
+  28:	00000393          	li	t2,0
+  2c:	00000413          	li	s0,0
+  30:	00000493          	li	s1,0
+  34:	00000513          	li	a0,0
+  38:	00000593          	li	a1,0
+  3c:	00000613          	li	a2,0
+  40:	00000693          	li	a3,0
+  44:	00000713          	li	a4,0
+  48:	00000793          	li	a5,0
+  4c:	00000813          	li	a6,0
+  50:	00000893          	li	a7,0
+  54:	00000913          	li	s2,0
+  58:	00000993          	li	s3,0
+  5c:	00000a13          	li	s4,0
+  60:	00000a93          	li	s5,0
+  64:	00000b13          	li	s6,0
+  68:	00000b93          	li	s7,0
+  6c:	00000c13          	li	s8,0
+  70:	00000c93          	li	s9,0
+  74:	00000d13          	li	s10,0
+  78:	00000d93          	li	s11,0
+  7c:	00000e13          	li	t3,0
+  80:	00000e93          	li	t4,0
+  84:	00000f13          	li	t5,0
+  88:	00000f93          	li	t6,0
+
+0000008c <main>:
+  8c:	00100093          	li	ra,1
+  90:	00200113          	li	sp,2
+  94:	00300193          	li	gp,3
+  98:	00400213          	li	tp,4
+  9c:	00500293          	li	t0,5
+  a0:	00600313          	li	t1,6
+  a4:	00700393          	li	t2,7
+  a8:	00800413          	li	s0,8
+  ac:	001124b3          	slt	s1,sp,ra
+  b0:	0020b533          	sltu	a0,ra,sp
+  b4:	001255b3          	srl	a1,tp,ra
+  b8:	0071f633          	and	a2,gp,t2
+  bc:	001116b3          	sll	a3,sp,ra
+  c0:	00408733          	add	a4,ra,tp
+  c4:	0051c7b3          	xor	a5,gp,t0
+  c8:	0060e833          	or	a6,ra,t1
+
+000000cc <store_to_memory>:
+  cc:	00001fb7          	lui	t6,0x1
+  d0:	001fa023          	sw	ra,0(t6) # 1000 <_bss_end>
+  d4:	002fa223          	sw	sp,4(t6)
+  d8:	003fa423          	sw	gp,8(t6)
+  dc:	004fa623          	sw	tp,12(t6)
+  e0:	005fa823          	sw	t0,16(t6)
+  e4:	006faa23          	sw	t1,20(t6)
+  e8:	007fac23          	sw	t2,24(t6)
+  ec:	008fae23          	sw	s0,28(t6)
+  f0:	029fa023          	sw	s1,32(t6)
+  f4:	02afa223          	sw	a0,36(t6)
+  f8:	02bfa423          	sw	a1,40(t6)
+  fc:	02cfa623          	sw	a2,44(t6)
+ 100:	02dfa823          	sw	a3,48(t6)
+ 104:	02efaa23          	sw	a4,52(t6)
+ 108:	02ffac23          	sw	a5,56(t6)
+ 10c:	030fae23          	sw	a6,60(t6)
+
+00000110 <load_from_memory>:
+ 110:	020fa883          	lw	a7,32(t6)
+ 114:	024fa903          	lw	s2,36(t6)
+ 118:	028fa983          	lw	s3,40(t6)
+ 11c:	02cfaa03          	lw	s4,44(t6)
+ 120:	030faa83          	lw	s5,48(t6)
+ 124:	034fab03          	lw	s6,52(t6)
+ 128:	038fab83          	lw	s7,56(t6)
+ 12c:	03cfac03          	lw	s8,60(t6)
+
+00000130 <eot>:
+ 130:	00000013          	nop
+ 134:	00000013          	nop
+ 138:	00000013          	nop
+ 13c:	00000013          	nop
+ 140:	00100073          	ebreak
+ 144:	00000013          	nop
+ 148:	00000013          	nop
+ 14c:	00000013          	nop
+ 150:	00000013          	nop
