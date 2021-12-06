@@ -1,0 +1,23 @@
+# Reading pref.tcl
+# OpenFile rvc_asap_tb.sv
+# Load canceled
+vsim -gui verilog.vl_resolve
+# vsim -gui verilog.vl_resolve 
+# Start time: 16:37:12 on Nov 16,2021
+# ** Fatal: (vsim-3370) Design unit 'vl_resolve' (VHDL PACKAGE) is not allowed at the top level.
+#    Time: 0 ps  Iteration: 0  Root: / File: NOFILE
+# FATAL ERROR while loading design
+# Error loading design
+# End time: 16:37:13 on Nov 16,2021, Elapsed time: 0:00:01
+# Errors: 1, Warnings: 0
+# Load canceled
+# Cannot determine language of C:/Users/gilya/OneDrive/Desktop/studies/4th/project/FinalProjectWS/rvc_asap/verif/test
+# Cannot determine language of C:/Users/gilya/OneDrive/Desktop/studies/4th/project/FinalProjectWS/rvc_asap/verif/test
+# Load canceled
+vlog -reportprogress 300 -work work C:/Users/gilya/OneDrive/Desktop/studies/4th/project/FinalProjectWS/rvc_asap/verif/test.sv
+# Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+# Start time: 16:38:45 on Nov 16,2021
+# vlog -reportprogress 300 -work work C:/Users/gilya/OneDrive/Desktop/studies/4th/project/FinalProjectWS/rvc_asap/verif/test.sv 
+# ** Error: (vlog-66) Execution of vlib.exe failed. Please check the error log for more details.
+# End time: 16:38:46 on Nov 16,2021, Elapsed time: 0:00:01
+# Errors: 1, Warnings: 0

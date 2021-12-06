@@ -12,6 +12,7 @@
 // This module will comtain the test bench of the rvc_asap core 
 // (1) generate the clock & rts. 
 // (2) load backdoor the I_MEM & D_MEM.
+// (3) End the test when the ebrake command is executed
 module rvc_asap_tb ();
     logic Clock;
     logic Rst;
@@ -30,6 +31,15 @@ initial begin: reset_gen
 #40 Rst = 1'b0;
 end: reset_gen
 
+logic  [31:0] Ebrake;
+
+//Ebrake detection
+always @(posedge Clock) begin : ebrake_status
+    if (Ebrake == 32'h00100073) begin // ebrake instruction opcode
+        end_tb("The test ended");
+    end //if
+end
+
 logic  [7:0] IMem [I_MEM_MSB:0];
 logic  [7:0] DMem [D_MEM_MSB:I_MEM_MSB+1];
 
@@ -40,10 +50,11 @@ initial begin: test_seq
     //======================================
     //load the program to the TB
     //======================================
-    $readmemh({"../apps/alive_asap_inst_mem_rv32i.sv"}, IMem);
+    $readmemh({"../apps/SV/alive_inst_mem_asap.sv"}, IMem);
     //$readmemh({"../apps/alive_asap_inst_mem_rv32i.sv"}, DMem);
     // Backdoor load the Instruction memory
     force rvc_asap_tb.rvc_asap.IMem = IMem; //XMR - cross module reference
+    assign Ebrake = rvc_asap_tb.rvc_asap.Instruction; //XMR - cross module reference
     // Backdoor load the Instruction memory
     //force rvc_asap_tb.rvc_asap.DMem = DMem;
     #10000 $finish;
@@ -53,4 +64,13 @@ end: test_seq
         .Clock  (Clock),
         .Rst    (Rst)
     );
+//================================================================================
+//===============================  End-Of-Test  ==================================
+//================================================================================
+
+task end_tb;
+    input string msg;
+    $display({"Test : ",msg});        
+    $finish;
+endtask
 endmodule // test_tb

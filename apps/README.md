@@ -3,6 +3,7 @@ create assembly file from c file
 link new ams file with gpc initializer and creates elf file  
 creates readable elf file  
 creates the instruction file   
+>  gcc -S -ffreestanding -march=rv32i <file>.c -o <file>rv32i.c.s
 >  gcc -O3 -march=rv32i -T./link.common.ld -nostartfiles -D__riscv__ crt0.S `<file>`.c.s -o `<file>`_rv32i.elf  
 >  objdump -gd `<file>`_rv32i.elf > `<file>`_rv32i_elf.txt  
 >  objcopy --srec-len 1 --output-target=verilog `<file>`_rv32i.elf `<file>`_inst_mem_rv32i.sv  

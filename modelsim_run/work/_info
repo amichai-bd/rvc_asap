@@ -1,0 +1,89 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/gilya/OneDrive/Desktop/studies/4th/project/FinalProjectWS/rvc_asap/modelsim_run
+vrvc_asap
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 DXx4 work 12 rvc_asap_pkg 0 22 8lefOla2[fbgS<G6M]nzC2
+Z3 !s110 1638626949
+!i10b 1
+!s100 4>oi]P9DNje71h]VzX7]X1
+Z4 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IA6[eIS16AbFgYD:>E`mD62
+Z5 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+w1637089010
+8../source/rvc_asap.sv
+F../source/rvc_asap.sv
+Z6 F../source//rvc_asap_macros.sv
+!i122 19
+L0 15 255
+Z7 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z8 !s108 1638626949.000000
+!s107 ../source//rvc_asap_macros.sv|../verif/rvc_asap_tb.sv|../source/rvc_asap.sv|../source/rvc_asap_pkg.sv|
+Z9 !s90 -f|rvc_asap_list.f|
+!i113 1
+Z10 !s92 +incdir+../verif/ +incdir+../source/
+Z11 tCvgOpt 0
+Xrvc_asap_pkg
+R1
+R3
+!i10b 1
+!s100 `iHjQBa;C>jR0kil1_62d0
+R4
+I8lefOla2[fbgS<G6M]nzC2
+V8lefOla2[fbgS<G6M]nzC2
+S1
+R0
+w1636475934
+8../source/rvc_asap_pkg.sv
+F../source/rvc_asap_pkg.sv
+!i122 19
+L0 14 0
+R7
+r1
+!s85 0
+31
+R8
+Z12 !s107 ../source//rvc_asap_macros.sv|../verif/rvc_asap_tb.sv|../source/rvc_asap.sv|../source/rvc_asap_pkg.sv|
+R9
+!i113 1
+R10
+R11
+vrvc_asap_tb
+R1
+R2
+R3
+!i10b 1
+!s100 B[]`D2[M>;;^2aMNz=a?L3
+R4
+ITMmShPJ1;W2;cL`2za`L;3
+R5
+S1
+R0
+w1638626940
+8../verif/rvc_asap_tb.sv
+F../verif/rvc_asap_tb.sv
+R6
+!i122 19
+L0 16 98
+R7
+r1
+!s85 0
+31
+R8
+R12
+R9
+!i113 1
+R10
+R11
