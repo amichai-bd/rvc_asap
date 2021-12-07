@@ -1,0 +1,5 @@
+# Ignore those extensions
+*.qdb
+*.qpg
+*.qtl
+_info

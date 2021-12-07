@@ -50,8 +50,8 @@ initial begin: test_seq
     //======================================
     //load the program to the TB
     //======================================
-    $readmemh({"../apps/SV/alive_inst_mem_asap.sv"}, IMem);
-    //$readmemh({"../apps/alive_asap_inst_mem_rv32i.sv"}, DMem);
+    $readmemh({"../apps/SV/file_name.sv"}, IMem);
+    //$readmemh({"../apps/file_name_inst_mem_rv32i.sv"}, DMem);
     // Backdoor load the Instruction memory
     force rvc_asap_tb.rvc_asap.IMem = IMem; //XMR - cross module reference
     assign Ebrake = rvc_asap_tb.rvc_asap.Instruction; //XMR - cross module reference
