@@ -3,3 +3,12 @@
 *.qpg
 *.qtl
 _info
+# modelsim generated files
+*.swp
+modelsim/work/*
+modelsim_run/*
+target/*
+transcript
+!modelsim_run/README*
+!modelsim_run/rvc_asap_list.f
+!target/README*
