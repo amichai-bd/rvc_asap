@@ -40,17 +40,15 @@ main(){
 	for f in "$APPS_SV"/*; do
 	file_name="$(basename -- $f)"
 	clean_file_name="${file_name%.*}"
-	sed -i "s/file_name/$clean_file_name/g" ./$VERIF/rvc_asap_tb.sv
 	echo "========================================================="
 	echo "========================================================="
 	echo "                Test: $clean_file_name                   "
 	echo "========================================================="
 	echo "========================================================="
 	cd modelsim_run 
-	vlog.exe -f rvc_asap_list.f
+	vlog.exe +define+HPATH=$clean_file_name -f rvc_asap_list.f
 	vsim.exe work.rvc_asap_tb -c -do 'run -all'
 	cd ..
-	sed -i "s/$clean_file_name/file_name/g" ./$VERIF/rvc_asap_tb.sv
 	echo "========================================================="
 	echo "========================================================="
 	echo "              End Test: $clean_file_name                 "
