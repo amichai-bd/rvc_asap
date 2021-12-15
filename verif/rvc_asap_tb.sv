@@ -13,6 +13,11 @@
 // (1) generate the clock & rts. 
 // (2) load backdoor the I_MEM & D_MEM.
 // (3) End the test when the ebrake command is executed
+
+`define TEST_DEFINE(x) `"x`"
+`define HPATH 
+string hpath = `TEST_DEFINE(`HPATH);
+
 module rvc_asap_tb ();
     logic Clock;
     logic Rst;
@@ -50,7 +55,7 @@ initial begin: test_seq
     //======================================
     //load the program to the TB
     //======================================
-    $readmemh({"../apps/SV/file_name.sv"}, IMem);
+    $readmemh({"../apps/SV/",hpath,".sv"}, IMem);
     //$readmemh({"../apps/file_name_inst_mem_rv32i.sv"}, DMem);
     // Backdoor load the Instruction memory
     force rvc_asap_tb.rvc_asap.IMem = IMem; //XMR - cross module reference
