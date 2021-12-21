@@ -6,9 +6,9 @@ void swap(int *xp, int *yp);
 void bubbleSort(int arr[], int n);
 
 int main() {
-    int arr[] = {6,1,0,3,5,9,50,2};
-    bubbleSort(arr,8);
-    for(int i=0;i<8;i++){
+    int arr[] = {60,70,80,90,100,200,300};
+    bubbleSort(arr,7);
+    for(int i=0;i<7;i++){
         MEM_SCRATCH_PAD[i] = arr[i];
     }
     MEM_SCRATCH_PAD[8] = fibonacci(9);

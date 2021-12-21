@@ -14,9 +14,9 @@
 - https://xpack.github.io/riscv-none-embed-gcc/install/  -> follow "Manual install" (Only extract in correct location)  
   
 ## (5) Gitbash shell - Set aliases for the copmile & link commands: (add to:  "~/.aliases")  
-alias gcc='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-gcc.exe'  
-alias objcopy='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-objcopy.exe'  
-alias objdump='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-objdump.exe'  
+alias rv_gcc='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-gcc.exe'  
+alias rv_objcopy='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-objcopy.exe'  
+alias rv_objdump='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-objdump.exe'  
 
 ## (6) Test the RISCV toolchain:  
 ### 1. Create a simple c program. - "alive.c"  
@@ -104,15 +104,15 @@ create assembly file from c file
 link new ams file with gpc initializer and creates elf file  
 creates readable elf file  
 creates the instruction file   
->  gcc -S -ffreestanding -march=rv32i `<file>`.c -o `<file>`_rv32i.c.s  
->  gcc -O3 -march=rv32i -T./link.common.ld -nostartfiles -D__riscv__ crt0.S `<file>`_rv32i.c.s -o `<file>`_rv32i.elf  
->  objdump -gd `<file>`_rv32i.elf > `<file>`_rv32i_elf.txt  
->  objcopy --srec-len 1 --output-target=verilog `<file>`_rv32i.elf `<file>`_inst_mem_rv32i.sv  
+>  rv_gcc -S -ffreestanding -march=rv32i `<file>`.c -o `<file>`_rv32i.c.s  
+>  rv_gcc -O3 -march=rv32i -T./link.common.ld -nostartfiles -D__riscv__ crt0.S `<file>`_rv32i.c.s -o `<file>`_rv32i.elf  
+>  rv_objdump -gd `<file>`_rv32i.elf > `<file>`_rv32i_elf.txt  
+>  rv_objcopy --srec-len 1 --output-target=verilog `<file>`_rv32i.elf `<file>`_inst_mem_rv32i.sv  
 #### Example:  
->  gcc -S -ffreestanding -march=rv32i `alive`.c -o alive_rv32i.c.s  
->  gcc -O3 -march=rv32i -T./link.common.ld -nostartfiles -D__riscv__ crt0.S `alive`_rv32i.c.s -o `alive`_rv32i.elf   
->  objdump -gd `alive`_rv32i.elf > `alive`_rv32i_elf.txt    
->  objcopy --srec-len 1 --output-target=verilog `alive`_rv32i.elf `alive`_inst_mem_rv32i.sv   
+>  rv_gcc -S -ffreestanding -march=rv32i `alive`.c -o alive_rv32i.c.s  
+>  rv_gcc -O3 -march=rv32i -T./link.common.ld -nostartfiles -D__riscv__ crt0.S `alive`_rv32i.c.s -o `alive`_rv32i.elf   
+>  rv_objdump -gd `alive`_rv32i.elf > `alive`_rv32i_elf.txt    
+>  rv_objcopy --srec-len 1 --output-target=verilog `alive`_rv32i.elf `alive`_inst_mem_rv32i.sv   
 ### 5. Run ls -l in shell to see all the generated toolchain files. 
 >   ls -l
 make sure you have the files:
