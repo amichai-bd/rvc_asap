@@ -13,7 +13,7 @@
 - https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/ -> File name: "xpack-riscv-none-embed-gcc-10.1.0-1.1-win32-x64.zip")  
 - https://xpack.github.io/riscv-none-embed-gcc/install/  -> follow "Manual install" (Only extract in correct location)  
   
-## (5) Gitbash shell - Set aliases for the copmile & link commands: (add to:  "~/.aliases")  
+## (5) Gitbash shell - Set aliases for the copmile & link commands: (add to:  "~/.aliases" or C:\Program Files\Git\etc\profile.d\aliases.sh)  
 alias rv_gcc='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-gcc.exe'  
 alias rv_objcopy='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-objcopy.exe'  
 alias rv_objdump='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-objdump.exe'  
