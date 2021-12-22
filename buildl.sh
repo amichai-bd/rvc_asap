@@ -32,21 +32,21 @@ main(){
     	exit 1
 	fi
 
-	#===== 1. Compile the Assembly files in apps/asm to apps/elf =====#
-	for f in "$APPS_ASM"/*; do
-	file_name="$(basename -- $f)"
-	clean_file_name="${file_name%.*}"
-		#==== 1.1 Compile Only the tests that were specified by the user ====#
-		for test in "$@"
-		do	
-			if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
-				rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf
-				if [[ ! -d "./target/$clean_file_name" ]]
-				then
-                mkdir ./target/$clean_file_name
-				fi
-			fi
-		done
+    #===== 1. Compile the Assembly files in apps/asm to apps/elf =====#
+    for f in "$APPS_ASM"/*; do
+    file_name="$(basename -- $f)"
+    clean_file_name="${file_name%.*}"
+        #==== 1.1 Compile Only the tests that were specified by the user ====#
+        for test in "$@"
+        do	
+        if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
+           rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf
+           if [[ ! -d "./target/$clean_file_name" ]]
+	       then
+           mkdir ./target/$clean_file_name
+           fi
+        fi
+        done
     done
 
 	#===== 2. Compile all the elf files in apps/elf to apps/sv =====#
