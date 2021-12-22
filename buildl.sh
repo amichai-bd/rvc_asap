@@ -42,7 +42,7 @@ main(){
         if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
            rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf
            if [[ ! -d "./target/$clean_file_name" ]]
-	       then
+           then
            mkdir ./target/$clean_file_name
            fi
         fi
