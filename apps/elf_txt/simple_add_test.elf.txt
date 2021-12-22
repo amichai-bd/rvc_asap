@@ -1,0 +1,18 @@
+
+./apps/elf/simple_add_test.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_stext>:
+   0:	00000013          	nop
+   4:	00000013          	nop
+   8:	00000013          	nop
+   c:	00000013          	nop
+
+00000010 <main>:
+  10:	00001fb7          	lui	x31,0x1
+  14:	00500093          	li	x1,5
+  18:	00a00113          	li	x2,10
+  1c:	ffb00193          	li	x3,-5
+  20:	ff600213          	li	x4,-10

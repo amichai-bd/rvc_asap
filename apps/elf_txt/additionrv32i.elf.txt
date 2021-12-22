@@ -1,0 +1,39 @@
+
+./apps/elf/additionrv32i.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <addition>:
+   0:	fe010113          	addi	x2,x2,-32
+   4:	00812e23          	sw	x8,28(x2)
+   8:	02010413          	addi	x8,x2,32
+   c:	fea42623          	sw	x10,-20(x8)
+  10:	feb42423          	sw	x11,-24(x8)
+  14:	fec42703          	lw	x14,-20(x8)
+  18:	fe842783          	lw	x15,-24(x8)
+  1c:	00f707b3          	add	x15,x14,x15
+  20:	00078513          	mv	x10,x15
+  24:	01c12403          	lw	x8,28(x2)
+  28:	02010113          	addi	x2,x2,32
+  2c:	00008067          	ret
+
+00000030 <main>:
+  30:	fe010113          	addi	x2,x2,-32
+  34:	00112e23          	sw	x1,28(x2)
+  38:	00812c23          	sw	x8,24(x2)
+  3c:	02010413          	addi	x8,x2,32
+  40:	00300793          	li	x15,3
+  44:	fef42623          	sw	x15,-20(x8)
+  48:	00500793          	li	x15,5
+  4c:	fef42423          	sw	x15,-24(x8)
+  50:	fe842583          	lw	x11,-24(x8)
+  54:	fec42503          	lw	x10,-20(x8)
+  58:	fa9ff0ef          	jal	x1,0 <addition>
+  5c:	fea42223          	sw	x10,-28(x8)
+  60:	00000793          	li	x15,0
+  64:	00078513          	mv	x10,x15
+  68:	01c12083          	lw	x1,28(x2)
+  6c:	01812403          	lw	x8,24(x2)
+  70:	02010113          	addi	x2,x2,32
+  74:	00008067          	ret

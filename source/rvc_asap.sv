@@ -191,12 +191,13 @@ end
 always_comb begin : branch_comp
   //for branch condition.
   unique casez ({CtrlBranchOp})
-    BEQ     : BranchCondMet =  (AluIn1==AluIn2)                   ;// BEQ
-    BNE     : BranchCondMet = ~(AluIn1==AluIn2)                   ;// BNE
-    BLT     : BranchCondMet =  ($signed(AluIn1)<$signed(AluIn2))  ;// BLT
-    BGE     : BranchCondMet = ~($signed(AluIn1)<$signed(AluIn2))  ;// BGE
-    BLTU    : BranchCondMet =  (AluIn1<AluIn2)                    ;// BLTU
-    BGEU    : BranchCondMet = ~(AluIn1<AluIn2)                    ;// BGEU
+    BEQ     : BranchCondMet =  (RegRdData1==RegRdData2)                   ;// BEQ
+    BNE     : BranchCondMet = ~(RegRdData1==RegRdData2)                   ;// BNE
+    BLT     : BranchCondMet =  ($signed(RegRdData1)<$signed(RegRdData2))  ;// BLT
+    BGE     : BranchCondMet = ~($signed(RegRdData1)<$signed(RegRdData2))  ;// BGE
+    BLTU    : BranchCondMet =  (RegRdData1<RegRdData2)                    ;// BLTU
+    BGEU    : BranchCondMet = ~(RegRdData1<RegRdData2
+    )                    ;// BGEU
     default : BranchCondMet = 1'b0                                ;
   endcase
 end
