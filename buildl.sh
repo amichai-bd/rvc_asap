@@ -27,8 +27,8 @@ main(){
     	echo "  all        build all tests"
     	echo "  All        build all tests"
     	echo "  example_1 : ./build.sh all"
-		echo "  example_2 : ./build.sh ALL"
-		echo "  example_3 : ./build.sh basic_commands1 basic_commands2 ... basic_commandsn"
+        echo "  example_2 : ./build.sh ALL"
+        echo "  example_3 : ./build.sh basic_commands1 basic_commands2 ... basic_commandsn"
     	exit 1
 	fi
 
@@ -43,7 +43,7 @@ main(){
 				rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf
 				if [[ ! -d "./target/$clean_file_name" ]]
 				then
-    			mkdir ./target/$clean_file_name
+                mkdir ./target/$clean_file_name
 				fi
 			fi
 		done
