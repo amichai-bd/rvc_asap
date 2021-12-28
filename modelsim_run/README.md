@@ -8,7 +8,7 @@
     - Simulate the Design with gui 
     > `vsim.exe -gui work.test_tb`   
 
-====The Commands=====
-vlog.exe -f rvc_asap_list.f
-vsim.exe work.rvc_asap_tb -c -do 'run -all'
-vsim.exe -gui work.rvc_asap_tb
+====The Commands=====  
+vlog.exe -f rvc_asap_list.f  
+vsim.exe work.rvc_asap_tb -c -do 'run -all'  
+vsim.exe -gui work.rvc_asap_tb  
