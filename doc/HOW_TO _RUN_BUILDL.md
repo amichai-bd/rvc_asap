@@ -1,11 +1,11 @@
 # Welcome to Explanation of the bash script buildl.sh 
 ## (1) First lets take a look in the usage of the script:
-		usage: ./buildl.sh [test_0] [test_1] ... [test_n]
-    	  all        build all tests"
-    	  All        build all tests"
-    	  example_1 : ./build.sh all"
-		  example_2 : ./build.sh ALL"
-		  example_3 : ./build.sh basic_commands1 basic_commands2 ... basic_commandsn
+        usage: ./buildl.sh [test_0] [test_1] ... [test_n]
+          all        build all tests"
+          All        build all tests"
+          example_1 : ./build.sh all"
+          example_2 : ./build.sh ALL"
+          example_3 : ./build.sh basic_commands1 basic_commands2 ... basic_commandsn
 
 ## (2) Let's dive into the details now:
 - The script need to be excecuted from rvc_asap dir.
