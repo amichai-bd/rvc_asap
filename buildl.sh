@@ -6,7 +6,7 @@
 #==========             (2) Compile the elf files to sv ====================#
 #==========             (3) Build the test with vlog.exe ===================#
 #==========             (4) Simulte the tests with vsim.exe ================#
-#==========             (5) Check the results - TO DO ======================#
+#==========             (5) Check the results ==============================#
 #===========================================================================#
 #========== Author    : Gil Ya'akov & Matan Eshel ==========================#
 #===========================================================================#
@@ -20,6 +20,8 @@ main(){
 	export APPS_SV="./apps/sv"
 	export MODELSIM_RUN="./modelsim_run"
 	export VERIF="./verif"
+	export TARGET="./target"
+	export GOLDEN_IMAGE="./verif/golden_image"
 
 	#==== Print usage in case there are no argumnets provided by the user ====# 
 	if [ $# -eq 1 ]; then
@@ -91,7 +93,40 @@ main(){
 		done
     done
 
-	#===== 5. Check the results - TO DO (Calling to python script) =====#
+	#===== 5. Check the results  =====#
+	for f in "$TARGET"/*; do
+	file_name="$(basename -- $f)"
+	clean_file_name="${file_name%.*}"
+		#==== 5.1 Check Only the tests that were specified by the user ====#
+		for test in "$@"
+		do	
+			if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then	
+				MSG="Check: $clean_file_name" BG="103m" FG="30m"
+				echo "========================================================="
+				echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
+				echo "========================================================="
+                input1="$TARGET/$clean_file_name/mem_snapshot.log"
+				input2="$GOLDEN_IMAGE/$clean_file_name/mem_snapshot.log"
+                if [ -f "$input1" ] && [ -f "$input2" ]; then
+                   while read compareFile1 <&3 && read compareFile2 <&4; do     
+                   if [ "$compareFile1" != "$compareFile2" ]; then
+                      MSG1="Error: Inequality" BG="101m" FG="30m"
+				      echo -en "              \033[$FG\033[$BG$MSG1\033[0m\n"
+					  echo "Real line: $compareFile1"
+					  echo "Gold line: $compareFile2"
+                   fi 
+                   done 3<$input1 4<$input2
+                else
+				echo "           This test have no memory snapshot             "
+				fi
+				echo "========================================================="
+				MSG="End Check: $clean_file_name" BG="103m" FG="30m"
+				echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
+				echo "========================================================="
+			fi
+		done
+    done
+
 }
 
 main "$@" "$#" # End main
