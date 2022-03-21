@@ -58,17 +58,16 @@ initial begin: test_seq
     $readmemh({"../apps/sv/",hpath,".sv"}, IMem);
     //$readmemh({"../apps/file_name_data_mem_rv32i.sv"}, DMem);
     // Backdoor load the Instruction memory
-    force rvc_asap_tb.rvc_asap.IMem = IMem; //XMR - cross module reference
-    assign Ebrake = rvc_asap_tb.rvc_asap.Instruction; //XMR - cross module reference
+    force rvc_asap_tb.rvc_top.rvc_mem_wrap.IMem = IMem; //XMR - cross module reference
+    assign Ebrake = rvc_asap_tb.rvc_top.rvc_asap.Instruction; //XMR - cross module reference
     // Backdoor load the data memory
-    force rvc_asap_tb.rvc_asap.DMem = DMem; //XMR - cross module reference
+    force rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem = DMem; //XMR - cross module reference
     # 10
-    release rvc_asap_tb.rvc_asap.DMem;
-    //assign DMem = rvc_asap_tb.rvc_asap.DMem;
+    release rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem;
     #10000 $finish;
 end: test_seq
-//Instantiating the rvc_asap core (!!)
-    rvc_asap rvc_asap (
+//Instantiating the rvc_top module
+    rvc_top rvc_top (
         .Clock  (Clock),
         .Rst    (Rst)
     );
@@ -89,10 +88,10 @@ task end_tb;
     if (fd) $display("File was open succesfully : %0d", fd);
     else $display("File was not open succesfully : %0d", fd);
     for (i = 0 ; i < SIZE_D_MEM; i = i+4) begin  
-        $fwrite(fd,"Offset %08x : %02x%02x%02x%02x\n",i+D_MEM_OFFSET, rvc_asap_tb.rvc_asap.DMem[i+D_MEM_OFFSET+3],
-                                                                      rvc_asap_tb.rvc_asap.DMem[i+D_MEM_OFFSET+2],
-                                                                      rvc_asap_tb.rvc_asap.DMem[i+D_MEM_OFFSET+1],
-                                                                      rvc_asap_tb.rvc_asap.DMem[i+D_MEM_OFFSET]);
+        $fwrite(fd,"Offset %08x : %02x%02x%02x%02x\n",i+D_MEM_OFFSET, rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem[i+D_MEM_OFFSET+3],
+                                                                      rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem[i+D_MEM_OFFSET+2],
+                                                                      rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem[i+D_MEM_OFFSET+1],
+                                                                      rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem[i+D_MEM_OFFSET]);
     end
     $fclose(fd);
     $display({"Test : ",msg});        

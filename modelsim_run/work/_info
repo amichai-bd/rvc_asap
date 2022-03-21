@@ -10,106 +10,187 @@ cModel Technology
 Z0 dC:/Users/gilya/OneDrive/Desktop/studies/4th/project/FinalProjectWS/rvc_asap/modelsim_run
 vrvc_asap
 Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-Z2 DXx4 work 12 rvc_asap_pkg 0 22 Z[WdYeU1iP2=K4zX<:J]T3
-Z3 !s110 1640682837
-!i10b 1
-!s100 bQ<SjSG3bfSaJAC1[BAeV0
-Z4 !s11b Dg1SIo80bB@j0V0VzS_@n1
-IlWz]6z[Dn60]m=@nG1_bz1
-Z5 VDg1SIo80bB@j0V0VzS_@n1
-S1
-R0
-w1640122310
-8../source/rvc_asap.sv
-F../source/rvc_asap.sv
-Z6 F../source//rvc_asap_macros.sv
-!i122 69
-L0 15 256
-Z7 OV;L;2020.1;71
+Z2 DXx4 work 12 rvc_asap_pkg 0 22 OHOhSK@HQ:AT48egM@m^B3
+DXx4 work 16 rvc_asap_sv_unit 0 22 <[F:aQz8o4ijj^cLbl8n32
+Z3 !s110 1647879727
+Z4 VDg1SIo80bB@j0V0VzS_@n1
 r1
 !s85 0
+!i10b 1
+!s100 OW6c9fR8@]o@GKb?gnPQE1
+IJfXFUoaG9WHPanNCPPF>;1
+!s105 rvc_asap_sv_unit
+S1
+R0
+Z5 w1647879598
+Z6 8../source/rvc_asap.sv
+Z7 F../source/rvc_asap.sv
+Z8 F../source//rvc_asap_macros.sv
+!i122 114
+L0 17 245
+Z9 OV;L;2020.1;71
 31
-Z8 !s108 1640682837.000000
-!s107 ../source//rvc_asap_macros.sv|../verif/rvc_asap_tb.sv|../source/rvc_asap.sv|../source/rvc_asap_pkg.sv|
-Z9 !s90 +define+HPATH=jump_commands|-f|rvc_asap_list.f|
+Z10 !s108 1647879727.000000
+!s107 ../source//rvc_asap_macros.sv|../verif/rvc_asap_tb.sv|../source/rvc_top.sv|../source/rvc_mem_wrap.sv|../source/rvc_asap.sv|../source/rvc_asap_pkg.sv|
+Z11 !s90 +define+HPATH=simple_add_test|-f|rvc_asap_list.f|
 !i113 1
-Z10 !s92 +define+HPATH=jump_commands +incdir+../verif/ +incdir+../source/
-Z11 tCvgOpt 0
+Z12 !s92 +define+HPATH=simple_add_test +incdir+../verif/ +incdir+../source/
+Z13 tCvgOpt 0
 Xrvc_asap_pkg
 R1
 R3
 !i10b 1
 !s100 `iHjQBa;C>jR0kil1_62d0
-R4
-IZ[WdYeU1iP2=K4zX<:J]T3
-VZ[WdYeU1iP2=K4zX<:J]T3
+Z14 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IOHOhSK@HQ:AT48egM@m^B3
+VOHOhSK@HQ:AT48egM@m^B3
 S1
 R0
 w1636475934
 8../source/rvc_asap_pkg.sv
 F../source/rvc_asap_pkg.sv
-!i122 69
+!i122 114
 L0 14 0
-R7
+R9
 r1
 !s85 0
 31
-R8
-Z12 !s107 ../source//rvc_asap_macros.sv|../verif/rvc_asap_tb.sv|../source/rvc_asap.sv|../source/rvc_asap_pkg.sv|
-R9
-!i113 1
 R10
+Z15 !s107 ../source//rvc_asap_macros.sv|../verif/rvc_asap_tb.sv|../source/rvc_top.sv|../source/rvc_mem_wrap.sv|../source/rvc_asap.sv|../source/rvc_asap_pkg.sv|
 R11
-vrvc_asap_tb
+!i113 1
+R12
+R13
+Xrvc_asap_sv_unit
 R1
-DXx4 work 19 rvc_asap_tb_sv_unit 0 22 ;dg@<SJkVXh6a6mNAc8C?0
 R2
 R3
-R5
+V<[F:aQz8o4ijj^cLbl8n32
 r1
 !s85 0
 !i10b 1
-!s100 Xc4N85^[cHPNCW3IVDz^J1
-IREBYe<AbzU=F6KQ>I<hMA2
-!s105 rvc_asap_tb_sv_unit
-S1
-R0
-Z13 w1640120016
-Z14 8../verif/rvc_asap_tb.sv
-Z15 F../verif/rvc_asap_tb.sv
-R6
-!i122 69
-L0 21 118
-R7
-31
-R8
-R12
-R9
-!i113 1
-R10
-R11
-Xrvc_asap_tb_sv_unit
-R1
-R3
-V;dg@<SJkVXh6a6mNAc8C?0
-r1
-!s85 0
-!i10b 1
-!s100 M6[i7]FBRM?VDdJJQW?h[1
-I;dg@<SJkVXh6a6mNAc8C?0
+!s100 b>]`bjRL5nEz[JlWZnh4P1
+I<[F:aQz8o4ijj^cLbl8n32
 !i103 1
 S1
 R0
-R13
-R14
-R15
-!i122 69
-L0 19 0
+R5
+R6
 R7
-31
-R8
-R12
+!i122 114
+L0 15 0
 R9
-!i113 1
+31
 R10
+R15
 R11
+!i113 1
+R12
+R13
+vrvc_asap_tb
+R1
+DXx4 work 19 rvc_asap_tb_sv_unit 0 22 a6X<3JcF@<SA@9hIbma1f0
+R2
+R3
+R4
+r1
+!s85 0
+!i10b 1
+!s100 0Uz5^faQ]_?1T8k]SB^`V1
+I=b?8gfZHL4A@IKXDd=SV91
+!s105 rvc_asap_tb_sv_unit
+S1
+R0
+Z16 w1647867039
+Z17 8../verif/rvc_asap_tb.sv
+Z18 F../verif/rvc_asap_tb.sv
+R8
+!i122 114
+L0 21 117
+R9
+31
+R10
+R15
+R11
+!i113 1
+R12
+R13
+Xrvc_asap_tb_sv_unit
+R1
+R3
+Va6X<3JcF@<SA@9hIbma1f0
+r1
+!s85 0
+!i10b 1
+!s100 TS312TzeP=YQDzDNkTPEL1
+Ia6X<3JcF@<SA@9hIbma1f0
+!i103 1
+S1
+R0
+R16
+R17
+R18
+!i122 114
+L0 19 0
+R9
+31
+R10
+R15
+R11
+!i113 1
+R12
+R13
+vrvc_mem_wrap
+R1
+R2
+R3
+!i10b 1
+!s100 0[mlW4b;1AZT_nY0znAPQ0
+R14
+Ig4Lm^zT7:U^7koaX?ETn:0
+R4
+S1
+R0
+w1647877948
+8../source/rvc_mem_wrap.sv
+F../source/rvc_mem_wrap.sv
+R8
+!i122 114
+L0 15 90
+R9
+r1
+!s85 0
+31
+R10
+R15
+R11
+!i113 1
+R12
+R13
+vrvc_top
+R1
+R2
+R3
+!i10b 1
+!s100 j8;VEIlo@BaGTHdN7@8cX3
+R14
+IilhmIaCKJlUX:;YLfBX9n0
+R4
+S1
+R0
+w1647879665
+8../source/rvc_top.sv
+F../source/rvc_top.sv
+R8
+!i122 114
+L0 14 89
+R9
+r1
+!s85 0
+31
+R10
+R15
+R11
+!i113 1
+R12
+R13
