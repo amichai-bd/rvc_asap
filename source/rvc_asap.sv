@@ -12,12 +12,22 @@
 // This module will comtain a complite RISCV Core supportint the RV32I
 // Will be implemented in a single cycle microarchitecture.
 // The I_MEM & D_MEM will support async memory read. (This will allow the single-cycle arch)
+import rvc_asap_pkg::*;  
+
 module rvc_asap (
-    input logic Clock,
-    input logic Rst
+    input  logic Clock,
+    output logic [31:0] Pc_To_Imem,             // To I_MEM
+    input  logic [31:0] Instruction_From_Imem,  // From I_MEM
+    output logic [31:0] RegRdData2_To_Dmem,     // To D_MEM
+    output logic [31:0] AluOut_To_Dmem,         // To D_MEM
+    output logic [3:0]  CtrlDMemByteEn_To_Dmem, // To D_MEM
+    output logic CtrlDMemWrEn_To_Dmem,          // To D_MEM
+    output logic SelDMemWb_To_Dmem,             // To D_MEM
+    output logic CtrlSignExt_To_Dmem,           // To D_MEM
+    input  logic [31:0] DMemRdData_From_Dmem,   // From D_MEM
+    input  logic Rst
 );
 `include "rvc_asap_macros.sv"
-import rvc_asap_pkg::*;  
 //Data-Path signals
 logic [31:0]        Pc;
 logic [31:0]        NextPc;
@@ -44,16 +54,27 @@ logic [2:0]         Funct3;
 logic [6:0]         Funct7;
 logic [4:0]         RegSrc1, RegSrc2, RegDst;
 logic [3:0]         CtrlDMemByteEn;
-logic               CtrlDMemWrEn ;
+logic               CtrlDMemWrEn;
+logic               CtrlSignExt;
 logic               SelAluPc ;
 logic               SelAluImm;
 t_immediate         SelImmType;
 t_alu_op            CtrlAluOp;
 t_branch_type       CtrlBranchOp;
 t_opcode            Opcode;
-//Memory array (behavrial - not for FPGA/ASIC)
-logic [7:0]         IMem [I_MEM_MSB:0];
-logic [7:0]         DMem [D_MEM_MSB:I_MEM_MSB+1];
+
+// Inputs from memory
+assign Instruction            = Instruction_From_Imem;
+assign DMemRdData             = DMemRdData_From_Dmem;
+// Outputs to memory
+assign Pc_To_Imem = Pc;
+assign RegRdData2_To_Dmem     = RegRdData2;
+assign AluOut_To_Dmem         = AluOut;
+assign CtrlDMemByteEn_To_Dmem = CtrlDMemByteEn;
+assign CtrlDMemWrEn_To_Dmem   = CtrlDMemWrEn;
+assign SelDMemWb_To_Dmem      = SelDMemWb;
+assign CtrlSignExt_To_Dmem    = CtrlSignExt;
+
 //======================
 // Instruction fetch
 //------------------
@@ -63,14 +84,6 @@ logic [7:0]         DMem [D_MEM_MSB:I_MEM_MSB+1];
 assign PcPlus4 = Pc + 3'h4;
 assign NextPc = SelNextPcAluOut ? AluOut : PcPlus4 ; //Mux
 `RVC_RST_MSFF(Pc, NextPc, Clock, Rst)
-// Note: This memory is writtin in behavrial way for simulation - for FPGA/ASIC should be replaced with SRAM/RF/LATCH based memory etc.
-// FIXME - currently this logic wont allow to load the I_MEM from HW interface - for simulation we will use Backdoor. (force with XMR)
-`RVC_MSFF(IMem, IMem, Clock)
-// This is the instruction fetch. (input pc, output Instruction)
-assign Instruction[7:0]   = IMem[Pc+0]; // mux - Pc is the selector, IMem is the Data, Instuction is the Out
-assign Instruction[15:8]  = IMem[Pc+1];
-assign Instruction[23:16] = IMem[Pc+2];
-assign Instruction[31:24] = IMem[Pc+3];
 //=========================
 //  Decode
 //--------------------------------
@@ -202,32 +215,10 @@ always_comb begin : branch_comp
   endcase
 end
 //==============================
-// Memory Access
-//------------------------------
-// aceess D_MEM for Wrote (STORE) and Reads (LOAD)
-//==============================
-// Note: This memory is writtin in behavrial way for simulation - for FPGA/ASIC should be replaced with SRAM/RF/LATCH based memory etc.
-`RVC_EN_MSFF(DMem[AluOut+0] , RegRdData2[7:0]   , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[0]))
-`RVC_EN_MSFF(DMem[AluOut+1] , RegRdData2[15:8]  , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[1]))
-`RVC_EN_MSFF(DMem[AluOut+2] , RegRdData2[23:16] , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[2]))
-`RVC_EN_MSFF(DMem[AluOut+3] , RegRdData2[31:24] , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[3]))
-// This is the load
-assign PreDMemRdData[7:0]   =  SelDMemWb ? DMem[AluOut+0] : 8'b0; 
-assign PreDMemRdData[15:8]  =  SelDMemWb ? DMem[AluOut+1] : 8'b0;
-assign PreDMemRdData[23:16] =  SelDMemWb ? DMem[AluOut+2] : 8'b0;
-assign PreDMemRdData[31:24] =  SelDMemWb ? DMem[AluOut+3] : 8'b0;
-assign DMemRdData[7:0]      =  CtrlDMemByteEn[0] ? PreDMemRdData[7:0]   : 8'b0;
-assign DMemRdData[15:8]     =  CtrlDMemByteEn[1] ? PreDMemRdData[15:8]  :
-                               CtrlSignExt       ? {8{DMemRdData[7]}}   : 8'b0;
-assign DMemRdData[23:16]    =  CtrlDMemByteEn[2] ? PreDMemRdData[23:16] :
-                               CtrlSignExt       ? {8{DMemRdData[15]}}  : 8'b0;
-assign DMemRdData[31:24]    =  CtrlDMemByteEn[3] ? PreDMemRdData[31:24] :
-                               CtrlSignExt       ? {8{DMemRdData[23]}}  : 8'b0;
-//==============================
 // Write-Back
 //------------------------------
 // Select which data should be write backed to the register file
 // AluOut vs DMemRdData
 //==============================
-assign WrBackData        =  SelDMemWb ? DMemRdData : AluOut;
+assign WrBackData = SelDMemWb ? DMemRdData : AluOut;
 endmodule // module rvc_asap
