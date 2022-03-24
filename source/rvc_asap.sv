@@ -11,8 +11,8 @@
 // Description :
 // This module will comtain a complite RISCV Core supportint the RV32I
 // Will be implemented in a single cycle microarchitecture.
-// The I_MEM & D_MEM will support async memory read. (This will allow the single-cycle arch)
-import rvc_asap_pkg::*;  
+// The I_MEM & D_MEM will support async memory read. (This will allow the single-cycle arch)  
+`include "rvc_asap_macros.sv"
 
 module rvc_asap (
     input  logic Clock,
@@ -27,7 +27,7 @@ module rvc_asap (
     input  logic [31:0] DMemRdData_From_Dmem,   // From D_MEM
     input  logic Rst
 );
-`include "rvc_asap_macros.sv"
+import rvc_asap_pkg::*;
 //Data-Path signals
 logic [31:0]        Pc;
 logic [31:0]        NextPc;
