@@ -10,13 +10,12 @@
 //-----------------------------------------------------------------------------
 // Description :
 // This module serves as the top module of the core and the memory.
+`include "rvc_asap_macros.sv"
 
 module rvc_top (
     input logic Clock,
     input logic Rst
 );
-
-`include "rvc_asap_macros.sv"
 import rvc_asap_pkg::*;  
 
 //=========================================

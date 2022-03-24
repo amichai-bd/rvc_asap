@@ -11,6 +11,7 @@
 // Description :
 // This module serves as the memory of the core. This module contains both data memory and
 // instruction memory. The I_MEM & D_MEM will support async memory read.
+`include "rvc_asap_macros.sv"
 
 module rvc_mem_wrap (
     input  logic Clock,
@@ -25,7 +26,6 @@ module rvc_mem_wrap (
     output logic [31:0] DMemRdData,     // D_MEM
     input  logic Rst
 );
-`include "rvc_asap_macros.sv"
 import rvc_asap_pkg::*;  
 //Memory array (behavrial - not for FPGA/ASIC)
 logic [7:0]         IMem [I_MEM_MSB:0];
