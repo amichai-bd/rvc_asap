@@ -1,9 +1,4 @@
-	.file	"addition.c"
-	.option nopic
 	.text
-	.align	2
-	.globl	addition
-	.type	addition, @function
 addition:
 	addi	sp,sp,-32
 	sw	s0,28(sp)
@@ -17,10 +12,6 @@ addition:
 	lw	s0,28(sp)
 	addi	sp,sp,32
 	jr	ra
-	.size	addition, .-addition
-	.align	2
-	.globl	main
-	.type	main, @function
 main:
 	addi	sp,sp,-32
 	sw	ra,28(sp)
@@ -40,5 +31,3 @@ main:
 	lw	s0,24(sp)
 	addi	sp,sp,32
 	jr	ra
-	.size	main, .-main
-	.ident	"GCC: (xPack GNU RISC-V Embedded GCC, 64-bit) 10.1.0"

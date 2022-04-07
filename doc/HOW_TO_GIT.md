@@ -1,4 +1,4 @@
-# Simple Git cheat-sheet - Minimal flow to add a to project 
+# Simple Git cheat-sheet - Minimal flow to add to the project 
 ## (1) Clone from repository  
 git clone https://github.com/amichai-bd/rvc_asap.git
 

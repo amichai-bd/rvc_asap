@@ -96,7 +96,7 @@ assign Funct3           = Instruction[14:12];
 assign Funct7           = Instruction[31:25];
 assign SelNextPcAluOut  = (Opcode == JAL) || (Opcode == JALR) || ((Opcode == BRANCH) && BranchCondMet);
 assign SelRegWrPc       = (Opcode == JAL) || (Opcode == JALR);
-assign SelAluPc         = (Opcode == JAL) || (Opcode == JALR) || (Opcode == BRANCH) || (Opcode == AUIPC);
+assign SelAluPc         = (Opcode == JAL) || (Opcode == BRANCH) || (Opcode == AUIPC);
 assign SelAluImm        =!(Opcode == R_OP); // Only in case of RegReg Operation the Imm Selector is deasserted - defualt is asserted
 assign SelDMemWb        = (Opcode == LOAD);
 assign CtrlLui          = (Opcode == LUI);

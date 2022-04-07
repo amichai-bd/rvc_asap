@@ -4,7 +4,7 @@
 
 Disassembly of section .text:
 
-00000000 <addition>:
+00000000 <_stext>:
    0:	fe010113          	addi	x2,x2,-32
    4:	00812e23          	sw	x8,28(x2)
    8:	02010413          	addi	x8,x2,32
@@ -29,7 +29,7 @@ Disassembly of section .text:
   4c:	fef42423          	sw	x15,-24(x8)
   50:	fe842583          	lw	x11,-24(x8)
   54:	fec42503          	lw	x10,-20(x8)
-  58:	fa9ff0ef          	jal	x1,0 <addition>
+  58:	fa9ff0ef          	jal	x1,0 <_stext>
   5c:	fea42223          	sw	x10,-28(x8)
   60:	00000793          	li	x15,0
   64:	00078513          	mv	x10,x15

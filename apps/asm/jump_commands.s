@@ -50,11 +50,13 @@ main:
 LABEL_0:
         sw   x30  , 0x0(x31)  # store true
 LABEL_1:bne x1,x2,LABEL_2     # don't need to jump
-        sw   x30  , 0x4(x31)  # store true
-        jal x28, LABEL_3      # jump over LABEL_2 
+        jal x1, LABEL_3      # jump over LABEL_2 
 LABEL_2:
-        sw   x29  , 0x4(x31)  # store false
+        sw   x30  , 0x4(x31)  # store false
+        jal x1, LABEL_35      
 LABEL_3:
+        jalr x0, x1, 0
+LABEL_35:
         blt x1,x3,LABEL_4     # need to jump
         sw   x29  , 0x8(x31)  # store false
         jal x28, LABEL_5      # jump over LABEL_4
