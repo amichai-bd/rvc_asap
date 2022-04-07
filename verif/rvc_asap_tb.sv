@@ -55,8 +55,8 @@ initial begin: test_seq
     //======================================
     //load the program to the TB
     //======================================
-    $readmemh({"../apps/sv/",hpath,".sv"}, IMem);
-    //$readmemh({"../apps/file_name_data_mem_rv32i.sv"}, DMem);
+    $readmemh({"../apps/sv/",hpath,"-inst_mem_rv32i.sv"}, IMem);
+    $readmemh({"../apps/sv/",hpath,"-data_mem_rv32i.sv"}, DMem);
     // Backdoor load the Instruction memory
     force rvc_asap_tb.rvc_top.rvc_mem_wrap.IMem = IMem; //XMR - cross module reference
     assign Ebrake = rvc_asap_tb.rvc_top.rvc_asap.Instruction; //XMR - cross module reference
@@ -64,7 +64,7 @@ initial begin: test_seq
     force rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem = DMem; //XMR - cross module reference
     # 10
     release rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem;
-    #10000 $finish;
+    #1000000 $finish;
 end: test_seq
 //Instantiating the rvc_top module
     rvc_top rvc_top (
