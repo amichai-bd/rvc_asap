@@ -36,18 +36,18 @@ main(){
     	exit 1
 	fi
 
-    #===== 1. Compile the C files in apps/C to apps/asm =====#
-    for f in "$APPS_C"/*; do
-    file_name="$(basename -- $f)"
-    clean_file_name="${file_name%.*}"
-        #==== 1.1 Compile Only the tests that were specified by the user ====#
-        for test in "$@"
-        do	
-        if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
-           rv_gcc -S -ffreestanding -march=rv32i $APPS_C/$file_name -o $APPS_ASM/$clean_file_name.s
-        fi
-        done
-    done
+    # #===== 1. Compile the C files in apps/C to apps/asm =====#
+    # for f in "$APPS_C"/*; do
+    # file_name="$(basename -- $f)"
+    # clean_file_name="${file_name%.*}"
+    #     #==== 1.1 Compile Only the tests that were specified by the user ====#
+    #     for test in "$@"
+    #     do	
+    #     if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
+    #        rv_gcc -S -ffreestanding -march=rv32i $APPS_C/$file_name -o $APPS_ASM/$clean_file_name.s
+    #     fi
+    #     done
+    # done
 
     #===== 2. Compile the Assembly files in apps/asm to apps/elf =====#
     for f in "$APPS_ASM"/*; do
@@ -57,7 +57,8 @@ main(){
         for test in "$@"
         do	
         if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
-           rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS/crt0.s $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf
+           #rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS/crt0.s $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf
+		   rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf
            if [[ ! -d "./target/$clean_file_name" ]]
            then
            mkdir ./target/$clean_file_name
@@ -107,6 +108,7 @@ main(){
 				cd modelsim_run 
 				vlog.exe +define+HPATH=$clean_file_name -f rvc_asap_list.f
 				vsim.exe work.rvc_asap_tb -c -do 'run -all'
+				#vsim.exe -gui work.rvc_asap_tb -do 'run -all'
 				cd ..
 				echo "========================================================="
 				echo "========================================================="
@@ -131,27 +133,26 @@ main(){
 				echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
 				echo "========================================================="
                 input1="$TARGET/$clean_file_name/mem_snapshot.log"
-				input2="$GOLDEN_IMAGE/$clean_file_name/mem_snapshot.log"
+                input2="$GOLDEN_IMAGE/$clean_file_name/mem_snapshot.log"
                 if [ -f "$input1" ] && [ -f "$input2" ]; then
                    while read compareFile1 <&3 && read compareFile2 <&4; do     
                    if [ "$compareFile1" != "$compareFile2" ]; then
                       MSG1="Error: Inequality" BG="101m" FG="30m"
-				      echo -en "              \033[$FG\033[$BG$MSG1\033[0m\n"
-					  echo "Real line: $compareFile1"
-					  echo "Gold line: $compareFile2"
+                      echo -en "              \033[$FG\033[$BG$MSG1\033[0m\n"
+                      echo "Real line: $compareFile1"
+                      echo "Gold line: $compareFile2"
                    fi 
                    done 3<$input1 4<$input2
                 else
-				echo "           This test have no memory snapshot             "
-				fi
-				echo "========================================================="
-				MSG="End Check: $clean_file_name" BG="103m" FG="30m"
-				echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
-				echo "========================================================="
-			fi
-		done
+                   echo "           This test have no memory snapshot             "
+                fi
+                echo "========================================================="
+                MSG="End Check: $clean_file_name" BG="103m" FG="30m"
+                echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
+                echo "========================================================="
+            fi
+        done
     done
-
 }
 
 main "$@" "$#" # End main

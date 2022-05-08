@@ -45,7 +45,7 @@ assign Instruction[31:24] = IMem[Pc+3];
 //==============================
 // Memory Access
 //------------------------------
-// aceess D_MEM for Wrote (STORE) and Reads (LOAD)
+// 1. Access D_MEM for Wrote (STORE) and Reads (LOAD)
 //==============================
 // Note: This memory is writtin in behavrial way for simulation - for FPGA/ASIC should be replaced with SRAM/RF/LATCH based memory etc.
 `RVC_EN_MSFF(DMem[AluOut+0] , RegRdData2[7:0]   , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[0]))

@@ -33,17 +33,17 @@ logic [31:0] DMemRdData;     // D_MEM
 
 // Instantiating the rvc_asap core
 rvc_asap rvc_asap (
-    .Clock                  (Clock),
-    .Pc_To_Imem             (Pc),             // To I_MEM
-    .Instruction_From_Imem  (Instruction),    // From I_MEM
-    .RegRdData2_To_Dmem     (RegRdData2),     // To D_MEM
-    .AluOut_To_Dmem         (AluOut),         // To D_MEM
-    .CtrlDMemByteEn_To_Dmem (CtrlDMemByteEn), // To D_MEM
-    .CtrlDMemWrEn_To_Dmem   (CtrlDMemWrEn),   // To D_MEM
-    .SelDMemWb_To_Dmem      (SelDMemWb),      // To D_MEM
-    .CtrlSignExt_To_Dmem    (CtrlSignExt),    // To D_MEM
-    .DMemRdData_From_Dmem   (DMemRdData),     // From D_MEM
-    .Rst                    (Rst)
+    .Clock                       (Clock),
+    .Pc_To_ImemQ100H             (Pc),             // To I_MEM
+    .Instruction_From_ImemQ100H  (Instruction),    // From I_MEM
+    .RegRdData2_To_DmemQ103H     (RegRdData2),     // To D_MEM
+    .AluOut_To_DmemQ103H         (AluOut),         // To D_MEM
+    .CtrlDMemByteEn_To_DmemQ103H (CtrlDMemByteEn), // To D_MEM
+    .CtrlDMemWrEn_To_DmemQ103H   (CtrlDMemWrEn),   // To D_MEM
+    .SelDMemWb_To_DmemQ103H      (SelDMemWb),      // To D_MEM
+    .CtrlSignExt_To_DmemQ103H    (CtrlSignExt),    // To D_MEM
+    .DMemRdData_From_DmemQ103H   (DMemRdData),     // From D_MEM
+    .Rst                         (Rst)
 );
 
 // Instantiating the rvc_mem_wrap memory

@@ -59,7 +59,7 @@ initial begin: test_seq
     $readmemh({"../apps/sv/",hpath,"-data_mem_rv32i.sv"}, DMem);
     // Backdoor load the Instruction memory
     force rvc_asap_tb.rvc_top.rvc_mem_wrap.IMem = IMem; //XMR - cross module reference
-    assign Ebrake = rvc_asap_tb.rvc_top.rvc_asap.Instruction; //XMR - cross module reference
+    assign Ebrake = rvc_asap_tb.rvc_top.rvc_asap.InstructionQ100H; //XMR - cross module reference
     // Backdoor load the data memory
     force rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem = DMem; //XMR - cross module reference
     # 10
