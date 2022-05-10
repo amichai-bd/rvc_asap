@@ -10,55 +10,55 @@ cModel Technology
 Z0 dC:/Users/gilya/OneDrive/Desktop/studies/4th/project/FinalProjectWS/rvc_asap/modelsim_run
 vrvc_asap
 Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-Z2 DXx4 work 12 rvc_asap_pkg 0 22 mRonXITmgQe==SD5U[>:J0
-Z3 !s110 1652209474
+Z2 DXx4 work 12 rvc_asap_pkg 0 22 ?3oCmN:=SEDnZ:Pcb0;Iz3
+Z3 !s110 1652210550
 !i10b 1
-!s100 33kJhJLPL=NHV2?@GPjdI0
+!s100 J_blM^hWNElBm]z;9I_hm0
 Z4 !s11b Dg1SIo80bB@j0V0VzS_@n1
-I3W8;2]5Z6eDLe7QVo3I<Y2
+IBd;jDXbShK[d5BeC3UcDN1
 Z5 VDg1SIo80bB@j0V0VzS_@n1
 S1
 R0
-w1652206216
-8../source/rvc_asap_5pl/rvc_asap.sv
-F../source/rvc_asap_5pl/rvc_asap.sv
-!i122 472
-L0 24 319
-Z6 OV;L;2020.1;71
+Z6 w1652205034
+8../source/rvc_asap_sc/rvc_asap.sv
+F../source/rvc_asap_sc/rvc_asap.sv
+!i122 490
+L0 17 208
+Z7 OV;L;2020.1;71
 r1
 !s85 0
 31
-Z7 !s108 1652209474.000000
-!s107 ../source/rvc_asap_5pl/rvc_asap_macros.sv|../verif/rvc_asap_tb.sv|../source/rvc_asap_5pl/rvc_top.sv|../source/rvc_asap_5pl/rvc_mem_wrap.sv|../source/rvc_asap_5pl/rvc_asap.sv|../source/rvc_asap_5pl/rvc_asap_pkg.sv|
-Z8 !s90 +define+HPATH=simple_add_test|-f|rvc_asap_5pl_list.f|
+Z8 !s108 1652210550.000000
+!s107 ../source/rvc_asap_sc/rvc_asap_macros.sv|../verif/rvc_asap_tb.sv|../source/rvc_asap_sc/rvc_top.sv|../source/rvc_asap_sc/rvc_mem_wrap.sv|../source/rvc_asap_sc/rvc_asap.sv|../source/rvc_asap_sc/rvc_asap_pkg.sv|
+Z9 !s90 +define+HPATH=simple_add_test|-f|rvc_asap_sc_list.f|
 !i113 1
-Z9 !s92 +define+HPATH=simple_add_test +incdir+../verif/ +incdir+../source/rvc_asap_5pl
-Z10 tCvgOpt 0
+Z10 !s92 +define+HPATH=simple_add_test +incdir+../verif/ +incdir+../source/rvc_asap_sc
+Z11 tCvgOpt 0
 Xrvc_asap_pkg
 R1
 R3
 !i10b 1
 !s100 `iHjQBa;C>jR0kil1_62d0
 R4
-ImRonXITmgQe==SD5U[>:J0
-VmRonXITmgQe==SD5U[>:J0
+I?3oCmN:=SEDnZ:Pcb0;Iz3
+V?3oCmN:=SEDnZ:Pcb0;Iz3
 S1
 R0
-w1636475934
-8../source/rvc_asap_5pl/rvc_asap_pkg.sv
-F../source/rvc_asap_5pl/rvc_asap_pkg.sv
-!i122 472
-L0 14 0
 R6
+8../source/rvc_asap_sc/rvc_asap_pkg.sv
+F../source/rvc_asap_sc/rvc_asap_pkg.sv
+!i122 490
+L0 14 0
+R7
 r1
 !s85 0
 31
-R7
-Z11 !s107 ../source/rvc_asap_5pl/rvc_asap_macros.sv|../verif/rvc_asap_tb.sv|../source/rvc_asap_5pl/rvc_top.sv|../source/rvc_asap_5pl/rvc_mem_wrap.sv|../source/rvc_asap_5pl/rvc_asap.sv|../source/rvc_asap_5pl/rvc_asap_pkg.sv|
 R8
-!i113 1
+Z12 !s107 ../source/rvc_asap_sc/rvc_asap_macros.sv|../verif/rvc_asap_tb.sv|../source/rvc_asap_sc/rvc_top.sv|../source/rvc_asap_sc/rvc_mem_wrap.sv|../source/rvc_asap_sc/rvc_asap.sv|../source/rvc_asap_sc/rvc_asap_pkg.sv|
 R9
+!i113 1
 R10
+R11
 Xrvc_asap_sv_unit
 R1
 DXx4 work 12 rvc_asap_pkg 0 22 OHOhSK@HQ:AT48egM@m^B3
@@ -77,17 +77,17 @@ w1647879598
 F../source/rvc_asap.sv
 !i122 120
 L0 15 0
-R6
+R7
 31
 !s108 1647880407.000000
 !s107 ../source//rvc_asap_macros.sv|../verif/rvc_asap_tb.sv|../source/rvc_top.sv|../source/rvc_mem_wrap.sv|../source/rvc_asap.sv|../source/rvc_asap_pkg.sv|
 !s90 +define+HPATH=simple_add_test|-f|rvc_asap_list.f|
 !i113 1
 !s92 +define+HPATH=simple_add_test +incdir+../verif/ +incdir+../source/
-R10
+R11
 vrvc_asap_tb
 R1
-DXx4 work 19 rvc_asap_tb_sv_unit 0 22 5A]KSZAH<<5i01LT^:6YU1
+DXx4 work 19 rvc_asap_tb_sv_unit 0 22 3i5m`ZB:jg[H3XRO_4BXS1
 R2
 R3
 R5
@@ -95,49 +95,49 @@ r1
 !s85 0
 !i10b 1
 !s100 i2N>oBi>_k36Q6j?5]lgf2
-I4EULGjlYKz7ZJ0R80]BLU3
+I=3iL2M`]H68BGK7U[mbB72
 !s105 rvc_asap_tb_sv_unit
 S1
 R0
-Z12 w1652206320
-Z13 8../verif/rvc_asap_tb.sv
-Z14 F../verif/rvc_asap_tb.sv
-F../source/rvc_asap_5pl/rvc_asap_macros.sv
-!i122 472
+Z13 w1652206320
+Z14 8../verif/rvc_asap_tb.sv
+Z15 F../verif/rvc_asap_tb.sv
+F../source/rvc_asap_sc/rvc_asap_macros.sv
+!i122 490
 L0 21 117
-R6
-31
 R7
-R11
+31
 R8
-!i113 1
+R12
 R9
+!i113 1
 R10
+R11
 Xrvc_asap_tb_sv_unit
 R1
 R3
-V5A]KSZAH<<5i01LT^:6YU1
+V3i5m`ZB:jg[H3XRO_4BXS1
 r1
 !s85 0
 !i10b 1
 !s100 TS312TzeP=YQDzDNkTPEL1
-I5A]KSZAH<<5i01LT^:6YU1
+I3i5m`ZB:jg[H3XRO_4BXS1
 !i103 1
 S1
 R0
-R12
 R13
 R14
-!i122 472
+R15
+!i122 490
 L0 19 0
-R6
-31
 R7
-R11
+31
 R8
-!i113 1
+R12
 R9
+!i113 1
 R10
+R11
 vrvc_mem_wrap
 R1
 R2
@@ -145,48 +145,48 @@ R3
 !i10b 1
 !s100 FaUXP>AF@UJ_9D3inDPfI1
 R4
-I^3=?WSJek4h^UkBYhzL<T3
+I57ENXcg=TCK[X0Xfk<;?i3
 R5
 S1
 R0
-w1651939766
-8../source/rvc_asap_5pl/rvc_mem_wrap.sv
-F../source/rvc_asap_5pl/rvc_mem_wrap.sv
-!i122 472
-L0 16 52
 R6
+8../source/rvc_asap_sc/rvc_mem_wrap.sv
+F../source/rvc_asap_sc/rvc_mem_wrap.sv
+!i122 490
+L0 16 52
+R7
 r1
 !s85 0
 31
-R7
-R11
 R8
-!i113 1
+R12
 R9
+!i113 1
 R10
+R11
 vrvc_top
 R1
 R2
 R3
 !i10b 1
-!s100 189_8=IV>a0D4:4j3EKU@2
+!s100 eE?R2Ia681YId=jOcIJ;F1
 R4
-IC0Y;g4N9Y:kZGBLEW<]0n0
+I<o<cZTF9TBzDi;nHbOJ>K0
 R5
 S1
 R0
-w1652206243
-8../source/rvc_asap_5pl/rvc_top.sv
-F../source/rvc_asap_5pl/rvc_top.sv
-!i122 472
-L0 15 50
 R6
+8../source/rvc_asap_sc/rvc_top.sv
+F../source/rvc_asap_sc/rvc_top.sv
+!i122 490
+L0 15 50
+R7
 r1
 !s85 0
 31
-R7
-R11
 R8
-!i113 1
+R12
 R9
+!i113 1
 R10
+R11
