@@ -43,7 +43,7 @@ logic [31:0]        PcQ100H, PcQ101H, PcQ102H;
 logic [31:0]        PcPlus4Q100H, PcPlus4Q101H, PcPlus4Q102H, PcPlus4Q103H, PcPlus4Q104H;
 logic [31:0]        NextPcQ102H;
 
-logic [31:0]        InstructionQ100H, InstructionQ101H;
+logic [31:0]        Instruction, InstructionQ101H;
 logic [31:1][31:0]  Register; 
 logic [31:0]        ImmediateQ101H, ImmediateQ102H;
 logic [4:0]         ShamtQ102H;
@@ -95,13 +95,13 @@ t_opcode            OpcodeQ101H;
 
 assign Pc_To_ImemQ100H  = PcQ100H;
 assign PcPlus4Q100H     = PcQ100H + 3'h4;
-assign InstructionQ100H = Instruction_From_ImemQ100H;
+assign Instruction = Instruction_From_ImemQ100H;
 `RVC_RST_MSFF(PcQ100H, NextPcQ102H, Clock, Rst)
 
 // Q100H to Q101H Flip Flops. 
 `RVC_MSFF(PcQ101H, PcQ100H, Clock)
 `RVC_MSFF(PcPlus4Q101H, PcPlus4Q100H, Clock)
-`RVC_MSFF(InstructionQ101H, InstructionQ100H, Clock)
+`RVC_MSFF(InstructionQ101H, Instruction, Clock)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //   _____  __     __   _____   _        ______          ____    __    ___    __   _    _ 
