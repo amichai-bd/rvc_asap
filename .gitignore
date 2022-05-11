@@ -12,3 +12,9 @@ transcript
 !modelsim_run/README*
 !modelsim_run/rvc_asap_list.f
 !target/README*
+# apps generated files
+apps/elf/*
+apps/elf_txt/*
+apps/sv/*
+# target generated files
+target/*
