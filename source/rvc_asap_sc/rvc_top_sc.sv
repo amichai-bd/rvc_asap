@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 // Title            : riscv as-fast-as-possible 
-// Project          : rvc_asap
+// Project          : rvc_asap_sc
 //-----------------------------------------------------------------------------
 // File             : rvc_top 
 // Original Author  : Matan Eshel & Gil Ya'akov
@@ -12,7 +12,7 @@
 // This module serves as the top module of the core and the memory.
 `include "rvc_asap_macros.sv"
 
-module rvc_top (
+module rvc_top_sc (
     input logic Clock,
     input logic Rst
 );
@@ -32,7 +32,7 @@ logic CtrlSignExt;           // D_MEM
 logic [31:0] DMemRdData;     // D_MEM
 
 // Instantiating the rvc_asap core
-rvc_asap rvc_asap (
+rvc_asap_sc rvc_asap_sc (
     .Clock                  (Clock),
     .Pc_To_Imem             (Pc),             // To I_MEM
     .Instruction_From_Imem  (Instruction),    // From I_MEM
@@ -47,7 +47,7 @@ rvc_asap rvc_asap (
 );
 
 // Instantiating the rvc_mem_wrap memory
-rvc_mem_wrap rvc_mem_wrap (
+rvc_mem_wrap_sc rvc_mem_wrap_sc (
     .Clock          (Clock),
     .Pc             (Pc),             // I_MEM
     .Instruction    (Instruction),    // I_MEM
@@ -61,4 +61,4 @@ rvc_mem_wrap rvc_mem_wrap (
     .Rst            (Rst)
 );
 
-endmodule // module rvc_top
+endmodule // module rvc_top_sc

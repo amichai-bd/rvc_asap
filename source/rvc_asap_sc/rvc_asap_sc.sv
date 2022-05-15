@@ -2,7 +2,7 @@
 // Title            : riscv as-fast-as-possible 
 // Project          : rvc_asap
 //-----------------------------------------------------------------------------
-// File             : rvc_asap 
+// File             : rvc_asap_sc 
 // Original Author  : Amichai Ben-David
 // Code Owner       : 
 // Adviser          : Amichai Ben-David
@@ -14,7 +14,7 @@
 // The I_MEM & D_MEM will support async memory read. (This will allow the single-cycle arch)  
 `include "rvc_asap_macros.sv"
 
-module rvc_asap (
+module rvc_asap_sc (
     input  logic Clock,
     output logic [31:0] Pc_To_Imem,             // To I_MEM
     input  logic [31:0] Instruction_From_Imem,  // From I_MEM
@@ -221,4 +221,4 @@ end
 // AluOut vs DMemRdData
 //==============================
 assign WrBackData = SelDMemWb ? DMemRdData : AluOut;
-endmodule // module rvc_asap
+endmodule // module rvc_asap_sc

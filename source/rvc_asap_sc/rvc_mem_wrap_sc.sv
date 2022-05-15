@@ -2,7 +2,7 @@
 // Title            : riscv as-fast-as-possible 
 // Project          : rvc_asap
 //-----------------------------------------------------------------------------
-// File             : rvc_mem_wrap
+// File             : rvc_mem_wrap_sc
 // Original Author  : Matan Eshel & Gil Ya'akov
 // Code Owner       : 
 // Adviser          : Amichai Ben-David
@@ -13,7 +13,7 @@
 // instruction memory. The I_MEM & D_MEM will support async memory read.
 `include "rvc_asap_macros.sv"
 
-module rvc_mem_wrap (
+module rvc_mem_wrap_sc (
     input  logic Clock,
     input  logic [31:0] Pc,             // I_MEM
     output logic [31:0] Instruction,    // I_MEM
@@ -64,4 +64,4 @@ assign DMemRdData[23:16]    =  CtrlDMemByteEn[2] ? PreDMemRdData[23:16] :
                                CtrlSignExt       ? {8{DMemRdData[15]}}  : 8'b0;
 assign DMemRdData[31:24]    =  CtrlDMemByteEn[3] ? PreDMemRdData[31:24] :
                                CtrlSignExt       ? {8{DMemRdData[23]}}  : 8'b0;
-endmodule // module rvc_mem_wrap
+endmodule // module rvc_mem_wrap_sc
