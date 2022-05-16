@@ -151,11 +151,26 @@ main(){
                 else
                     vlog.exe +define+HPATH=$clean_file_name -f rvc_asap_5pl_list.f # Default is 5pl
 				fi
-                if [ $gui == 1 ]; then
-                    vsim.exe -gui work.rvc_asap_tb -do 'run -all'
+
+                if [ $pl == 1 ]; then
+                    if [ $gui == 1 ]; then
+                        vsim.exe -gui work.rvc_asap_5pl_tb -do 'run -all'
+                    else
+                        vsim.exe work.rvc_asap_5pl_tb -c -do 'run -all' # Default is not gui
+                    fi
+                elif [ $sc == 1 ]; then
+                      if [ $gui == 1 ]; then
+                          vsim.exe -gui work.rvc_asap_sc_tb -do 'run -all'
+                      else
+                          vsim.exe work.rvc_asap_sc_tb -c -do 'run -all' # Default is not gui
+                      fi
                 else
-                    vsim.exe work.rvc_asap_tb -c -do 'run -all' # Default is not gui
-				fi
+                      if [ $gui == 1 ]; then
+                          vsim.exe -gui work.rvc_asap_5pl_tb -do 'run -all'
+                      else
+                          vsim.exe work.rvc_asap_5pl_tb -c -do 'run -all' # Default is not gui
+                      fi # Default is 5pl
+                fi
 				cd ..
 				echo "========================================================="
 				echo "========================================================="

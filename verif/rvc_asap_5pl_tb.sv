@@ -2,14 +2,14 @@
 // Title            : riscv as-fast-as-possible 
 // Project          : rvc_asap
 //-----------------------------------------------------------------------------
-// File             : rvc_asap_tb
+// File             : rvc_asap_5pl_tb
 // Original Author  : Amichai Ben-David
 // Code Owner       : 
 // Adviser          : Amichai Ben-David
 // Created          : 10/2021
 //-----------------------------------------------------------------------------
 // Description :
-// This module will comtain the test bench of the rvc_asap core 
+// This module will contain the test bench of the rvc_asap_5pl core 
 // (1) generate the clock & rts. 
 // (2) load backdoor the I_MEM & D_MEM.
 // (3) End the test when the ebrake command is executed
@@ -18,7 +18,7 @@
 `define HPATH 
 string hpath = `TEST_DEFINE(`HPATH);
 
-module rvc_asap_tb ();
+module rvc_asap_5pl_tb ();
     logic Clock;
     logic Rst;
 `include "rvc_asap_macros.sv"
@@ -58,16 +58,16 @@ initial begin: test_seq
     $readmemh({"../apps/sv/",hpath,"-inst_mem_rv32i.sv"}, IMem);
     $readmemh({"../apps/sv/",hpath,"-data_mem_rv32i.sv"}, DMem);
     // Backdoor load the Instruction memory
-    force rvc_asap_tb.rvc_top.rvc_mem_wrap.IMem = IMem; //XMR - cross module reference
-    assign Ebrake = rvc_asap_tb.rvc_top.rvc_asap.Instruction; //XMR - cross module reference
+    force rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.IMem = IMem; //XMR - cross module reference
+    assign Ebrake = rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl.InstructionQ101H; //XMR - cross module reference
     // Backdoor load the data memory
-    force rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem = DMem; //XMR - cross module reference
+    force rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem = DMem; //XMR - cross module reference
     # 10
-    release rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem;
+    release rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem;
     #1000000 $finish;
 end: test_seq
-//Instantiating the rvc_top module
-    rvc_top rvc_top (
+//Instantiating the rvc_top_5pl module
+    rvc_top_5pl rvc_top_5pl (
         .Clock  (Clock),
         .Rst    (Rst)
     );
@@ -88,13 +88,13 @@ task end_tb;
     if (fd) $display("File was open succesfully : %0d", fd);
     else $display("File was not open succesfully : %0d", fd);
     for (i = 0 ; i < SIZE_D_MEM; i = i+4) begin  
-        $fwrite(fd,"Offset %08x : %02x%02x%02x%02x\n",i+D_MEM_OFFSET, rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem[i+D_MEM_OFFSET+3],
-                                                                      rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem[i+D_MEM_OFFSET+2],
-                                                                      rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem[i+D_MEM_OFFSET+1],
-                                                                      rvc_asap_tb.rvc_top.rvc_mem_wrap.DMem[i+D_MEM_OFFSET]);
+        $fwrite(fd,"Offset %08x : %02x%02x%02x%02x\n",i+D_MEM_OFFSET, rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem[i+D_MEM_OFFSET+3],
+                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem[i+D_MEM_OFFSET+2],
+                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem[i+D_MEM_OFFSET+1],
+                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem[i+D_MEM_OFFSET]);
     end
     $fclose(fd);
     $display({"Test : ",msg});        
     $finish;
 endtask
-endmodule // test_tb
+endmodule // module rvc_asap_5pl_tb

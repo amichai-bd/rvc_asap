@@ -2,7 +2,7 @@
 // Title            : riscv as-fast-as-possible 
 // Project          : rvc_asap
 //-----------------------------------------------------------------------------
-// File             : rvc_asap 
+// File             : rvc_asap_5pl 
 // Original Author  : Amichai Ben-David
 // Code Owner       : 
 // Adviser          : Amichai Ben-David
@@ -21,12 +21,12 @@
 
 `include "rvc_asap_macros.sv"
 
-module rvc_asap (
+module rvc_asap_5pl (
     input  logic Clock,
     input  logic Rst,
     // Instruction Memory
     output logic [31:0] Pc_To_ImemQ100H,             // To I_MEM
-    input  logic [31:0] Instruction_From_ImemQ100H,  // From I_MEM
+    input  logic [31:0] InstructionQ101H,            // From I_MEM
     // Data Memory
     output logic [31:0] RegRdData2_To_DmemQ103H,     // To D_MEM
     output logic [31:0] AluOut_To_DmemQ103H,         // To D_MEM
@@ -34,7 +34,7 @@ module rvc_asap (
     output logic CtrlDMemWrEn_To_DmemQ103H,          // To D_MEM
     output logic SelDMemWb_To_DmemQ103H,             // To D_MEM
     output logic CtrlSignExt_To_DmemQ103H,           // To D_MEM
-    input  logic [31:0] DMemRdData_From_DmemQ103H    // From D_MEM
+    input  logic [31:0] DMemRdData_From_DmemQ104H    // From D_MEM
 );
 import rvc_asap_pkg::*;
 // ---- Data-Path signals ----
@@ -43,16 +43,14 @@ logic [31:0]        PcQ100H, PcQ101H, PcQ102H;
 logic [31:0]        PcPlus4Q100H, PcPlus4Q101H, PcPlus4Q102H, PcPlus4Q103H, PcPlus4Q104H;
 logic [31:0]        NextPcQ102H;
 
-logic [31:0]        Instruction, InstructionQ101H;
 logic [31:1][31:0]  Register; 
 logic [31:0]        ImmediateQ101H, ImmediateQ102H;
 logic [4:0]         ShamtQ102H;
-logic [31:0]        DMemRdDataQ103H, DMemRdDataQ104H;
 logic [31:0]        AluIn1Q102H;
 logic [31:0]        AluIn2Q102H;
 logic [31:0]        AluOutQ102H, AluOutQ103H, AluOutQ104H;
-logic [31:0]        RegRdData1Q101H, RegRdData1Q102H, RegRdData1Q103H;
-logic [31:0]        RegRdData2Q101H, RegRdData2Q102H, RegRdData2Q103H;
+logic [31:0]        RegRdData1Q101H, PreRegRdData1Q102H, RegRdData1Q102H, RegRdData1Q103H;
+logic [31:0]        RegRdData2Q101H, PreRegRdData2Q102H, RegRdData2Q102H, RegRdData2Q103H;
 logic [31:0]        RegWrDataQ104H; 
 logic [31:0]        WrBackDataQ104H;
 // Control Bits
@@ -64,7 +62,9 @@ logic               BranchCondMetQ102H;
 logic               SelDMemWbQ101H, SelDMemWbQ102H, SelDMemWbQ103H, SelDMemWbQ104H;
 logic [2:0]         Funct3Q101H;
 logic [6:0]         Funct7Q101H;
-logic [4:0]         RegSrc1Q101H, RegSrc2Q101H, RegDstQ101H, RegDstQ102H, RegDstQ103H, RegDstQ104H;
+logic [4:0]         RegSrc1Q101H, RegSrc1Q102H; 
+logic [4:0]         RegSrc2Q101H, RegSrc2Q102H;
+logic [4:0]         RegDstQ101H, RegDstQ102H, RegDstQ103H, RegDstQ104H;
 logic [3:0]         CtrlDMemByteEnQ101H, CtrlDMemByteEnQ102H, CtrlDMemByteEnQ103H;
 logic               CtrlDMemWrEnQ101H, CtrlDMemWrEnQ102H, CtrlDMemWrEnQ103H;
 logic               CtrlSignExtQ101H, CtrlSignExtQ102H, CtrlSignExtQ103H;
@@ -95,13 +95,11 @@ t_opcode            OpcodeQ101H;
 
 assign Pc_To_ImemQ100H  = PcQ100H;
 assign PcPlus4Q100H     = PcQ100H + 3'h4;
-assign Instruction = Instruction_From_ImemQ100H;
 `RVC_RST_MSFF(PcQ100H, NextPcQ102H, Clock, Rst)
 
 // Q100H to Q101H Flip Flops. 
 `RVC_MSFF(PcQ101H, PcQ100H, Clock)
 `RVC_MSFF(PcPlus4Q101H, PcPlus4Q100H, Clock)
-`RVC_MSFF(InstructionQ101H, Instruction, Clock)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //   _____  __     __   _____   _        ______          ____    __    ___    __   _    _ 
@@ -193,8 +191,11 @@ assign RegDstQ101H = InstructionQ101H[11:7];
 assign RegSrc1Q101H = InstructionQ101H[19:15];
 assign RegSrc2Q101H = InstructionQ101H[24:20];
 // ---- Read Register File ----
-assign RegRdData1Q101H = (RegSrc1Q101H == 5'b0) ? 32'b0 : Register[RegSrc1Q101H];
-assign RegRdData2Q101H = (RegSrc2Q101H == 5'b0) ? 32'b0 : Register[RegSrc2Q101H];
+assign RegRdData1Q101H = (RegSrc1Q101H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc1Q101H != 5'b0) ? RegWrDataQ104H:
+                         (RegSrc1Q101H == 5'b0) ? 32'b0 : Register[RegSrc1Q101H];
+
+assign RegRdData2Q101H = (RegSrc2Q101H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc2Q101H != 5'b0) ? RegWrDataQ104H:
+                         (RegSrc2Q101H == 5'b0) ? 32'b0 : Register[RegSrc2Q101H];
 
 // Q101H to Q102H Flip Flops
 `RVC_MSFF(PcQ102H               , PcQ101H               , Clock)
@@ -213,8 +214,10 @@ assign RegRdData2Q101H = (RegSrc2Q101H == 5'b0) ? 32'b0 : Register[RegSrc2Q101H]
 `RVC_MSFF(CtrlBranchOpQ102H     , CtrlBranchOpQ101H     , Clock)
 `RVC_MSFF(CtrlAluOpQ102H        , CtrlAluOpQ101H        , Clock)
 `RVC_MSFF(ImmediateQ102H        , ImmediateQ101H        , Clock)
-`RVC_MSFF(RegRdData1Q102H       , RegRdData1Q101H       , Clock)
-`RVC_MSFF(RegRdData2Q102H       , RegRdData2Q101H       , Clock)
+`RVC_MSFF(RegSrc1Q102H          , RegSrc1Q101H          , Clock)
+`RVC_MSFF(RegSrc2Q102H          , RegSrc2Q101H          , Clock)
+`RVC_MSFF(PreRegRdData1Q102H    , RegRdData1Q101H       , Clock)
+`RVC_MSFF(PreRegRdData2Q102H    , RegRdData2Q101H       , Clock)
 `RVC_MSFF(RegDstQ102H           , RegDstQ101H           , Clock)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,6 +237,13 @@ assign RegRdData2Q101H = (RegSrc2Q101H == 5'b0) ? 32'b0 : Register[RegSrc2Q101H]
 //      c) Calculate branch/jump target.
 // 2. Check branch condition.
 //////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Take care to data hazard
+assign RegRdData1Q102H = (RegSrc1Q102H == RegDstQ103H) && (CtrlRegWrEnQ103H) && (RegSrc1Q102H != 5'b0) ? AluOutQ103H :
+                         (RegSrc1Q102H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc1Q102H != 5'b0) ? RegWrDataQ104H : PreRegRdData1Q102H;
+
+assign RegRdData2Q102H = (RegSrc2Q102H == RegDstQ103H) && (CtrlRegWrEnQ103H) && (RegSrc2Q102H != 5'b0) ? AluOutQ103H :
+                         (RegSrc2Q102H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc2Q102H != 5'b0) ? RegWrDataQ104H : PreRegRdData2Q102H;
 
 assign AluIn1Q102H = SelAluPcQ102H  ? PcQ102H          : RegRdData1Q102H;
 assign AluIn2Q102H = SelAluImmQ102H ? ImmediateQ102H   : RegRdData2Q102H;
@@ -308,12 +318,8 @@ assign CtrlDMemWrEn_To_DmemQ103H        = CtrlDMemWrEnQ103H;
 assign SelDMemWb_To_DmemQ103H           = SelDMemWbQ103H;
 assign CtrlSignExt_To_DmemQ103H         = CtrlSignExtQ103H;
 
-// Inputs from memory
-assign DMemRdDataQ103H                  = DMemRdData_From_DmemQ103H;
-
 // Q103H to Q104H Flip Flops
 `RVC_MSFF(AluOutQ104H      , AluOutQ103H      , Clock)
-`RVC_MSFF(DMemRdDataQ104H  , DMemRdDataQ103H  , Clock)
 `RVC_MSFF(SelDMemWbQ104H   , SelDMemWbQ103H   , Clock)
 `RVC_MSFF(PcPlus4Q104H     , PcPlus4Q103H     , Clock)
 `RVC_MSFF(SelRegWrPcQ104H  , SelRegWrPcQ103H  , Clock)
@@ -335,8 +341,8 @@ assign DMemRdDataQ103H                  = DMemRdData_From_DmemQ103H;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 // ---- Select what write to the register file ----
-assign WrBackDataQ104H = SelDMemWbQ104H ? DMemRdDataQ104H : AluOutQ104H;
+assign WrBackDataQ104H = SelDMemWbQ104H ? DMemRdData_From_DmemQ104H : AluOutQ104H;
 assign RegWrDataQ104H  = SelRegWrPcQ104H ? PcPlus4Q104H : WrBackDataQ104H;
 //---- The Register File ----
  `RVC_EN_MSFF(Register[RegDstQ104H] , RegWrDataQ104H , Clock , (CtrlRegWrEnQ104H && (RegDstQ104H!=5'b0)))
-endmodule // Module rvc_asap
+endmodule // Module rvc_asap_5pl
