@@ -17,9 +17,10 @@ https://gitforwindows.org/
 - https://xpack.github.io/riscv-none-embed-gcc/install/  -> follow "Manual install" (Only extract in correct location)  
   
 ## (5) Gitbash shell - Set aliases for the copmile & link commands: (add to:  "~/.aliases" or C:\Program Files\Git\etc\profile.d\aliases.sh)  
-alias rv_gcc='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-gcc.exe'  
-alias rv_objcopy='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-objcopy.exe'  
-alias rv_objdump='/c/Users/Amichaib/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.1.0-1.1/bin/riscv-none-embed-objdump.exe'  
+alias rv_gcc='/c/Users/amich/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.2.0-1.2/bin/riscv-none-embed-gcc.exe'
+alias rv_objcopy='/c/Users/amich/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.2.0-1.2/bin/riscv-none-embed-objcopy.exe'
+alias rv_objdump='/c/Users/amich/AppData/Roaming/xPacks/riscv-none-embed-gcc/xpack-riscv-none-embed-gcc-10.2.0-1.2/bin/riscv-none-embed-objdump.exe'
+
 
 ## (6) Test the RISCV toolchain:  
 ### 1. Create a simple c program. - "alive.c"  
@@ -148,12 +149,12 @@ make sure you have the files:
     initial begin : assign_input
         in_0 = 1'b0;
         in_1 = 1'b0; // 0&0
-     #4 $display("out = in_0 & in_1:\n    > %b = %b & %b",out ,in_0, in_1);
-     #4 in_1 = 1'b1; // 0&1
-        $display("out = in_0 & in_1:\n    > %b = %b & %b",out ,in_0, in_1);
-     #4 in_0 = 1'b1; // 1&1
-        $display("out = in_0 & in_1:\n    > %b = %b & %b",out ,in_0, in_1);
-     #4 $finish;
+    #4 $display("out = in_0 & in_1:\n    > %b = %b & %b",out ,in_0, in_1);
+    #4 in_1 = 1'b1; // 0&1
+    #4 $display("out = in_0 & in_1:\n    > %b = %b & %b",out ,in_0, in_1);
+    #4 in_0 = 1'b1; // 1&1
+    #4 $display("out = in_0 & in_1:\n    > %b = %b & %b",out ,in_0, in_1);
+    #4 $finish;
     end// initial
     test test_and (
         .in_0(in_0),
