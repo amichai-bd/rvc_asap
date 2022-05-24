@@ -50,6 +50,8 @@ logic               SelNextPcAluOut;
 logic               SelRegWrPc; 
 logic               BranchCondMet;
 logic               SelDMemWb;
+logic               CtrlLui;
+logic               CtrlRegWrEn;
 logic [2:0]         Funct3;
 logic [6:0]         Funct7;
 logic [4:0]         RegSrc1, RegSrc2, RegDst;

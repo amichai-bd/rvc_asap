@@ -30,6 +30,7 @@ import rvc_asap_pkg::*;
 //Memory array (behavrial - not for FPGA/ASIC)
 logic [7:0]         IMem [I_MEM_MSB:0];
 logic [7:0]         DMem [D_MEM_MSB:I_MEM_MSB+1];
+logic [7:0]         NextDMem [D_MEM_MSB:I_MEM_MSB+1];
 
 //Data-Path signals
 logic [31:0]        PreDMemRdData;
@@ -48,10 +49,23 @@ assign Instruction[31:24] = IMem[Pc+3];
 // aceess D_MEM for Wrote (STORE) and Reads (LOAD)
 //==============================
 // Note: This memory is writtin in behavrial way for simulation - for FPGA/ASIC should be replaced with SRAM/RF/LATCH based memory etc.
-`RVC_EN_MSFF(DMem[AluOut+0] , RegRdData2[7:0]   , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[0]))
-`RVC_EN_MSFF(DMem[AluOut+1] , RegRdData2[15:8]  , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[1]))
-`RVC_EN_MSFF(DMem[AluOut+2] , RegRdData2[23:16] , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[2]))
-`RVC_EN_MSFF(DMem[AluOut+3] , RegRdData2[31:24] , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[3]))
+//`RVC_EN_MSFF(DMem[AluOut+0] , RegRdData2[7:0]   , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[0]))
+//`RVC_EN_MSFF(DMem[AluOut+1] , RegRdData2[15:8]  , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[1]))
+//`RVC_EN_MSFF(DMem[AluOut+2] , RegRdData2[23:16] , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[2]))
+//`RVC_EN_MSFF(DMem[AluOut+3] , RegRdData2[31:24] , Clock , (CtrlDMemWrEn && CtrlDMemByteEn[3]))
+always_comb begin
+    NextDMem = DMem;
+    for(int i = I_MEM_MSB+1 ; i<D_MEM_MSB+1; i=i+4) begin
+        if(AluOut+0 == i) begin
+            if(CtrlDMemWrEn && CtrlDMemByteEn[0]) NextDMem[i]   = RegRdData2[7:0];
+            if(CtrlDMemWrEn && CtrlDMemByteEn[1]) NextDMem[i+1] = RegRdData2[15:8] ;
+            if(CtrlDMemWrEn && CtrlDMemByteEn[2]) NextDMem[i+2] = RegRdData2[23:16];
+            if(CtrlDMemWrEn && CtrlDMemByteEn[3]) NextDMem[i+3] = RegRdData2[31:24];
+        end
+    end
+end
+`RVC_MSFF(DMem , NextDMem , Clock)
+
 // This is the load
 assign PreDMemRdData[7:0]   =  SelDMemWb ? DMem[AluOut+0] : 8'b0; 
 assign PreDMemRdData[15:8]  =  SelDMemWb ? DMem[AluOut+1] : 8'b0;

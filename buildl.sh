@@ -154,19 +154,19 @@ main(){
 
                 if [ $pl == 1 ]; then
                     if [ $gui == 1 ]; then
-                        vsim.exe -gui work.rvc_asap_5pl_tb -do 'run -all'
+                        vsim.exe -gui work.rvc_asap_5pl_tb 
                     else
                         vsim.exe work.rvc_asap_5pl_tb -c -do 'run -all' # Default is not gui
                     fi
                 elif [ $sc == 1 ]; then
                       if [ $gui == 1 ]; then
-                          vsim.exe -gui work.rvc_asap_sc_tb -do 'run -all'
+                          vsim.exe -gui work.rvc_asap_sc_tb 
                       else
                           vsim.exe work.rvc_asap_sc_tb -c -do 'run -all' # Default is not gui
                       fi
                 else
                       if [ $gui == 1 ]; then
-                          vsim.exe -gui work.rvc_asap_5pl_tb -do 'run -all'
+                          vsim.exe -gui work.rvc_asap_5pl_tb 
                       else
                           vsim.exe work.rvc_asap_5pl_tb -c -do 'run -all' # Default is not gui
                       fi # Default is 5pl

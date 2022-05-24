@@ -23,3 +23,8 @@ apps/sv/*
 !apps/sv/README.md
 # target generated files
 target/*
+#FPGA
+quartus/output_files/*
+quartus/incremental_db/*
+quartus/db/*
+
