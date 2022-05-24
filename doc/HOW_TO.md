@@ -1,13 +1,16 @@
 # Welcome to RVC_ASAP tool-chain tutorial!! 
-## (1) Download a text editor  
+## (0) Download a text editor  
 - vscode: https://code.visualstudio.com/download  
 - add usefully extensions (vim, powershell, git-bash, Systemverilog, venus Terminal)  
+
+## (1) Download gitbash for Windows  
+https://gitforwindows.org/  
   
 ## (2) Set gitbash in the vscode  
 - you may configure the ~/.bashrc & ~/.aliases with your preferences.
   
 ## (3) Download modelsim - a system verilog compiler & simulator (lite free version)  
-- https://fpgasoftware.intel.com/20.1.1/?edition=lite&platform=windows  
+- https://www.intel.com/content/www/us/en/software-kit/660907/intel-quartus-prime-lite-edition-design-software-version-20-1-1-for-windows.html  
   
 ## (4) Download the RISCV ToolChain:  
 - https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/ -> File name: "xpack-riscv-none-embed-gcc-10.1.0-1.1-win32-x64.zip")  
