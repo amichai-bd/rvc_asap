@@ -117,7 +117,8 @@ creates the instruction file
 >  rv_objdump -gd `alive`_rv32i.elf > `alive`_rv32i_elf.txt    
 >  rv_objcopy --srec-len 1 --output-target=verilog `alive`_rv32i.elf `alive`_inst_mem_rv32i.sv   
 ### 5. Run ls -l in shell to see all the generated toolchain files. 
->   ls -l  
+>   ls -l
+
 make sure you have the files:
 - crt0.S  
 - link.common.ld  
