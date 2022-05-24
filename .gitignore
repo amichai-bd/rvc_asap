@@ -9,15 +9,17 @@ modelsim/work/*
 modelsim_run/*
 target/*
 transcript
-!modelsim_run/README*
+!modelsim_run/README.md
+!modelsim_run/rvc_asap_5pl_list.f
+!modelsim_run/rvc_asap_sc_list.f
 !modelsim_run/rvc_asap_list.f
 !target/README*
 # apps generated files
 apps/elf/*
 apps/elf_txt/*
 apps/sv/*
-!apps/elf/README*
-!apps/elf_txt/README*
-!apps/sv/README*
+!apps/elf/README.md
+!apps/elf_txt/README.md
+!apps/sv/README.md
 # target generated files
 target/*
