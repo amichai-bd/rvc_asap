@@ -16,5 +16,8 @@ transcript
 apps/elf/*
 apps/elf_txt/*
 apps/sv/*
+!apps/elf/README*
+!apps/elf_txt/README*
+!apps/sv/README*
 # target generated files
 target/*
