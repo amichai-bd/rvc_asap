@@ -184,6 +184,5 @@ make sure you have the files:
 ## (8) Now you have everything you need to start designing a RISCV core in systemverilog!!
 Good place to start:
 A single cycle RV32I core:
-![image](single_cycle_RVC.png)
-Good luck!  
+![image](https://user-images.githubusercontent.com/81047407/170105460-3ea25fe6-b71a-451c-a75f-c8f6696e6713.png)Good luck!  
 Please contact me with any issue. `amichai-bd`
