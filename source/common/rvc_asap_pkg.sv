@@ -58,4 +58,6 @@ typedef enum logic [6:0] {
    SYSCAL = 7'b1110011
 } t_opcode ;
 
+parameter NOP = 32'b000000000000000000000000010011; //addi x0 , x0 , 0
+
 endpackage
