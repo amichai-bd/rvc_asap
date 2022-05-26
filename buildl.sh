@@ -29,6 +29,7 @@ main(){
     sc=0
 	pl=0
 	gui=0
+    compile=0
     for flag in "$@"
     do	
     if [ "$flag" == "-sc" ]; then
@@ -40,6 +41,9 @@ main(){
     if [ "$flag" == "-gui" ]; then
         gui=1
     fi
+    if [ "$flag" == "-compile" ]; then
+        compile=1
+    fi
     if [ "$flag" == "--help" ]; then
 		echo "usage: $0 [arch] [gui] [test_0] [test_1] ... [test_n]"
     	echo "  all        Build all tests"
@@ -47,6 +51,7 @@ main(){
 		echo "  arch       [-sc] [-5pl]   "
 		echo "             Basic arch is 5pl"
 		echo "  gui        [-gui]         "
+        echo "  compile    [-compile]     "
     	echo "  example_1 : ./build.sh all"
         echo "  example_2 : ./build.sh ALL"
         echo "  example_3 : ./build.sh basic_commands1 basic_commands2 ... basic_commandsn"
@@ -65,6 +70,7 @@ main(){
 		echo "  arch       [-sc] [-5pl]   "
 		echo "             Basic arch is 5pl"
 		echo "  gui        [-gui]         "
+        echo "  compile    [-compile]     "
     	echo "  example_1 : ./build.sh all"
         echo "  example_2 : ./build.sh ALL"
         echo "  example_3 : ./build.sh basic_commands1 basic_commands2 ... basic_commandsn"
@@ -74,18 +80,43 @@ main(){
     	exit 1
 	fi
 
+    #==== Check if the directories apps/elf apps/elf_txt apps/sv exist - if not create them ====#
+    if [ -d $APPS_ELF ] 
+    then
+        echo "Directory $APPS_ELF exists." 
+    else
+        mkdir $APPS_ELF
+    fi
+
+    if [ -d $APPS_ELF_TXT ] 
+    then
+        echo "Directory $APPS_ELF_TXT exists." 
+    else
+        mkdir $APPS_ELF_TXT
+    fi
+
+    if [ -d $APPS_SV ] 
+    then
+        echo "Directory $APPS_SV exists." 
+    else
+        mkdir $APPS_SV
+    fi
+
+    #==== Clean target directory ====#
+    rm -r $TARGET/*
+
     # #===== 1. Compile the C files in apps/C to apps/asm =====#
-    # for f in "$APPS_C"/*; do
-    # file_name="$(basename -- $f)"
-    # clean_file_name="${file_name%.*}"
-    #     #==== 1.1 Compile Only the tests that were specified by the user ====#
-    #     for test in "$@"
-    #     do	
-    #     if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
-    #        rv_gcc -S -ffreestanding -march=rv32i $APPS_C/$file_name -o $APPS_ASM/$clean_file_name.s
-    #     fi
-    #     done
-    # done
+    for f in "$APPS_C"/*; do
+    file_name="$(basename -- $f)"
+    clean_file_name="${file_name%.*}"
+        #==== 1.1 Compile Only the tests that were specified by the user ====#
+        for test in "$@"
+        do	
+        if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
+           rv_gcc -S -ffreestanding -march=rv32i $APPS_C/$file_name -o $APPS_ASM/$clean_file_name.s
+        fi
+        done
+    done
 
     #===== 2. Compile the Assembly files in apps/asm to apps/elf =====#
     for f in "$APPS_ASM"/*; do
@@ -95,8 +126,8 @@ main(){
         for test in "$@"
         do	
         if [ "$test" == "$clean_file_name" ] || [ "$test" == "all" ] || [ "$test" == "ALL" ] || [ $# -eq 1 ]; then
-           #rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS/crt0.s $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf
-		   rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf
+           rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS/crt0.s $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf # for C files
+		   # rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf # for just asm files
            if [[ ! -d "./target/$clean_file_name" ]]
            then
            mkdir ./target/$clean_file_name
@@ -137,7 +168,7 @@ main(){
 		for test in "$@"
 		do	
 			if [ "$test" == "$clean_file_name" ] || [ "$test" == "all" ] || [ "$test" == "ALL" ] || [ $# -eq 1 ]; then	
-				MSG="Test: $clean_file_name" BG="42m" FG="30m"
+				MSG="Test: $clean_file_name" BG="46m" FG="30m"
 				echo "========================================================="
 				echo "========================================================="
 				echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
@@ -174,13 +205,18 @@ main(){
 				cd ..
 				echo "========================================================="
 				echo "========================================================="
-				MSG="End Test: $clean_file_name" BG="42m" FG="30m"
+				MSG="End Test: $clean_file_name" BG="46m" FG="30m"
 				echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
 				echo "========================================================="
 				echo "========================================================="
 			fi
 		done
     done
+
+    #===== If compile flag is set in this stage we exit - no check tests results =====#
+    if [ $compile == 1 ]; then
+        exit        
+    fi
 
 	#===== 6. Check the results  =====#
 	for f in "$TARGET"/*; do
@@ -197,14 +233,21 @@ main(){
                 input1="$TARGET/$clean_file_name/mem_snapshot.log"
                 input2="$GOLDEN_IMAGE/$clean_file_name/mem_snapshot.log"
                 if [ -f "$input1" ] && [ -f "$input2" ]; then
+                   error=0
                    while read compareFile1 <&3 && read compareFile2 <&4; do     
                    if [ "$compareFile1" != "$compareFile2" ]; then
                       MSG1="Error: Inequality" BG="101m" FG="30m"
                       echo -en "              \033[$FG\033[$BG$MSG1\033[0m\n"
                       echo "Real line: $compareFile1"
                       echo "Gold line: $compareFile2"
+                      error=1
                    fi 
                    done 3<$input1 4<$input2
+                   if [ $error == 0 ]; then
+                       MSG2="The test ended successfully!" BG="42m" FG="30m"
+                       echo -en "              \033[$FG\033[$BG$MSG2\033[0m\n"
+                       echo -n $'                        \U1F600\n'
+                   fi
                 else
                    echo "           This test have no memory snapshot             "
                 fi

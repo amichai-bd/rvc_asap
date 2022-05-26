@@ -52,6 +52,7 @@ LABEL_0:
         sw   x3, 0x0(x31)
         sw   x4, 0x4(x31)
         sw   x5, 0x8(x31)
+        sw   x6, 0xc(x31)
 eot:
     nop
     nop

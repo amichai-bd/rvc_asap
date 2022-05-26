@@ -30,6 +30,7 @@ import rvc_asap_pkg::*;
 // Memory array (behavrial - not for FPGA/ASIC)
 logic [7:0]         IMem [I_MEM_MSB:0];
 logic [7:0]         DMem [D_MEM_MSB:I_MEM_MSB+1];
+logic [7:0]         NextDMem [D_MEM_MSB:I_MEM_MSB+1];
 
 // Data-Path signals
 logic [31:0]        PreDMemRdData;
