@@ -18,6 +18,7 @@ transcript
 apps/elf/*
 apps/elf_txt/*
 apps/sv/*
+apps/asm/*
 !apps/elf/README.md
 !apps/elf_txt/README.md
 !apps/sv/README.md

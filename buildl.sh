@@ -17,6 +17,7 @@ main(){
 	export APPS="./apps"
 	export APPS_C="./apps/C"
 	export APPS_ASM="./apps/asm"
+    export APPS_ASM_VERIF="./apps/asm_verif"
 	export APPS_ELF="./apps/elf"
 	export APPS_ELF_TXT="./apps/elf_txt"
 	export APPS_SV="./apps/sv"
@@ -30,6 +31,7 @@ main(){
 	pl=0
 	gui=0
     compile=0
+    asmverif=0
     for flag in "$@"
     do	
     if [ "$flag" == "-sc" ]; then
@@ -44,6 +46,9 @@ main(){
     if [ "$flag" == "-compile" ]; then
         compile=1
     fi
+    if [ "$flag" == "-asm_verif" ]; then
+        asmverif=1
+    fi
     if [ "$flag" == "--help" ]; then
 		echo "usage: $0 [arch] [gui] [test_0] [test_1] ... [test_n]"
     	echo "  all        Build all tests"
@@ -52,6 +57,7 @@ main(){
 		echo "             Basic arch is 5pl"
 		echo "  gui        [-gui]         "
         echo "  compile    [-compile]     "
+        echo "  just asm   [-asm_verif]   "
     	echo "  example_1 : ./build.sh all"
         echo "  example_2 : ./build.sh ALL"
         echo "  example_3 : ./build.sh basic_commands1 basic_commands2 ... basic_commandsn"
@@ -71,6 +77,7 @@ main(){
 		echo "             Basic arch is 5pl"
 		echo "  gui        [-gui]         "
         echo "  compile    [-compile]     "
+        echo "  just asm   [-asm_verif]   "
     	echo "  example_1 : ./build.sh all"
         echo "  example_2 : ./build.sh ALL"
         echo "  example_3 : ./build.sh basic_commands1 basic_commands2 ... basic_commandsn"
@@ -102,23 +109,36 @@ main(){
         mkdir $APPS_SV
     fi
 
+    if [ -d $APPS_ASM ] 
+    then
+        echo "Directory $APPS_ASM exists." 
+    else
+        mkdir $APPS_ASM
+    fi
+
     #==== Clean target directory ====#
     rm -r $TARGET/*
 
-    # #===== 1. Compile the C files in apps/C to apps/asm =====#
-    for f in "$APPS_C"/*; do
-    file_name="$(basename -- $f)"
-    clean_file_name="${file_name%.*}"
-        #==== 1.1 Compile Only the tests that were specified by the user ====#
-        for test in "$@"
-        do	
-        if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
-           rv_gcc -S -ffreestanding -march=rv32i $APPS_C/$file_name -o $APPS_ASM/$clean_file_name.s
-        fi
-        done
-    done
+    if [ $asmverif == 0 ]; then
+        #===== 1. Compile the C files in apps/C to apps/asm =====#
+        for f in "$APPS_C"/*; do
+            file_name="$(basename -- $f)"
+            clean_file_name="${file_name%.*}"
+            #==== 1.1 Compile Only the tests that were specified by the user ====#
+            for test in "$@"
+               do	
+               if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
+               rv_gcc -S -ffreestanding -march=rv32i $APPS_C/$file_name -o $APPS_ASM/$clean_file_name.s
+               fi
+               done
+            done
+    fi
 
     #===== 2. Compile the Assembly files in apps/asm to apps/elf =====#
+    if [ $asmverif == 1 ]; then
+        APPS_ASM=$APPS_ASM_VERIF
+    fi
+
     for f in "$APPS_ASM"/*; do
     file_name="$(basename -- $f)"
     clean_file_name="${file_name%.*}"
@@ -126,8 +146,11 @@ main(){
         for test in "$@"
         do	
         if [ "$test" == "$clean_file_name" ] || [ "$test" == "all" ] || [ "$test" == "ALL" ] || [ $# -eq 1 ]; then
-           rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS/crt0.s $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf # for C files
-		   # rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf # for just asm files
+           if [ $asmverif == 0 ]; then
+               rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS/crt0.s $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf # for C files
+           else
+               rv_gcc -O3 -march=rv32i -T$APPS/link.common.ld -nostartfiles -D__riscv__ $APPS_ASM/$file_name -o $APPS_ELF/$clean_file_name.elf # for just asm files
+           fi
            if [[ ! -d "./target/$clean_file_name" ]]
            then
            mkdir ./target/$clean_file_name
