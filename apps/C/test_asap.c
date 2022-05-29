@@ -1,22 +1,22 @@
 #define _ASMLANGUAGE
 #define MEM_SCRATCH_PAD  ((volatile int *) (0x00001000))
 
-int  gcd(int a, int b); // work
-static int  fibonacci(unsigned n); // work
-void swap(int *xp, int *yp); // work
-void bubbleSort(int arr[], int n); // work
+int  gcd(int a, int b);
+static int  fibonacci(unsigned n);
+void swap(int *xp, int *yp);
+void bubbleSort(int arr[], int n);
 
 int main() 
 {
     int arr[] = {80,200,60,300,100,70,90};
 
-    bubbleSort(arr,7); // bubble sort works well
+    bubbleSort(arr,7);
 
     for(int i=0;i<7;i++)
         MEM_SCRATCH_PAD[i] = arr[i];
 
-    MEM_SCRATCH_PAD[7] = fibonacci(9); // fibonacci works well
-    MEM_SCRATCH_PAD[8] = gcd(24,16); // gcd works well
+    MEM_SCRATCH_PAD[7] = fibonacci(9);
+    MEM_SCRATCH_PAD[8] = gcd(24,16);
     
     return 0;
 }

@@ -45,7 +45,7 @@ main:
   li    x31 , 0x1000
   sw    x1  , 0x0(x31) # -> FAFAFAFAh
   sh    x1  , 0x4(x31) # -> 0000FAFAh
-  sb    x1  , 0x8(x31) # -> 000000FAh
+  sb    x1  , 0x9(x31) # -> 0000FA00h
   sh    x2  , 0x0(x31) # -> FAFABCBCh
   lh    x3  , 0x0(x31) # -> FFFFBCBCh
   lb    x4  , 0x0(x31) # -> FFFFFFBCh
