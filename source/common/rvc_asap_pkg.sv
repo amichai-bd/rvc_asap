@@ -13,8 +13,21 @@
 
 package rvc_asap_pkg;
 
-parameter I_MEM_MSB = 'h1000-1; 
-parameter D_MEM_MSB = 'h2000-1;
+parameter I_MEM_MSB   = 'h1000-1; 
+parameter D_MEM_MSB   = 'h2000-1;
+parameter CR_MEM_MSB  = 'h3000-1;
+parameter VGA_MEM_MSB = 'h4000-1;
+
+// Region bits
+parameter LSB_REGION = 12;
+parameter MSB_REGION = 13;
+
+// Encoded regions
+parameter I_MEM_REGION   = 2'b00;
+parameter D_MEM_REGION   = 2'b01;
+parameter CR_MEM_REGION  = 2'b10;
+parameter VGA_MEM_REGION = 2'b11;
+
 typedef enum logic [2:0] {
     U_TYPE = 3'b000 , 
     I_TYPE = 3'b001 ,  
@@ -35,6 +48,7 @@ typedef enum logic [3:0] {
     OR   = 4'b0110 ,
     AND  = 4'b0111
 } t_alu_op ;
+
 typedef enum logic [2:0] {
    BEQ  = 3'b000 ,
    BNE  = 3'b001 ,
@@ -58,6 +72,34 @@ typedef enum logic [6:0] {
    SYSCAL = 7'b1110011
 } t_opcode ;
 
-parameter NOP = 32'b000000000000000000000000010011; //addi x0 , x0 , 0
+parameter NOP = 32'b000000000000000000000000010011; // addi x0 , x0 , 0
+
+// CR Address Offsets
+parameter CR_SEG7_0    = 20'h2000 ; // RW 7 bit
+parameter CR_SEG7_1    = 20'h2004 ; // RW 7 bit
+parameter CR_SEG7_2    = 20'h2008 ; // RW 7 bit
+parameter CR_SEG7_3    = 20'h200c ; // RW 7 bit
+parameter CR_SEG7_4    = 20'h2010 ; // RW 7 bit
+parameter CR_SEG7_5    = 20'h2014 ; // RW 7 bit
+parameter CR_LED       = 20'h2018 ; // RW 7 bit
+parameter CR_Button_0  = 20'h201c ; // RO 1 bit
+parameter CR_Button_1  = 20'h2020 ; // RO 1 bit
+parameter CR_Switch    = 20'h2024 ; // RO 10 bit
+
+typedef struct packed { // RO
+    logic       Button_0;
+    logic       Button_1;
+    logic [9:0] Switch;
+} t_cr_ro ;
+
+typedef struct packed { // RW
+    logic [6:0] SEG7_0;
+    logic [6:0] SEG7_1;
+    logic [6:0] SEG7_2;
+    logic [6:0] SEG7_3;
+    logic [6:0] SEG7_4;
+    logic [6:0] SEG7_5;
+    logic [6:0] LED;
+} t_cr_rw ;
 
 endpackage

@@ -58,12 +58,12 @@ initial begin: test_seq
     $readmemh({"../apps/sv/",hpath,"-inst_mem_rv32i.sv"}, IMem);
     $readmemh({"../apps/sv/",hpath,"-data_mem_rv32i.sv"}, DMem);
     // Backdoor load the Instruction memory
-    force rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.IMem = IMem; //XMR - cross module reference
+    force rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_mem_wrap_5pl.rvc_asap_5pl_i_mem.IMem = IMem; //XMR - cross module reference
     assign Ebrake = rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl.InstructionQ101H; //XMR - cross module reference
     // Backdoor load the data memory
-    force rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem = DMem; //XMR - cross module reference
+    force rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_mem_wrap_5pl.rvc_asap_5pl_d_mem.DMem = DMem; //XMR - cross module reference
     # 10
-    release rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem;
+    release rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_mem_wrap_5pl.rvc_asap_5pl_d_mem.DMem;
     #1000000 $finish;
 end: test_seq
 //Instantiating the rvc_top_5pl module
@@ -88,10 +88,10 @@ task end_tb;
     if (fd) $display("File was open succesfully : %0d", fd);
     else $display("File was not open succesfully : %0d", fd);
     for (i = 0 ; i < SIZE_D_MEM; i = i+4) begin  
-        $fwrite(fd,"Offset %08x : %02x%02x%02x%02x\n",i+D_MEM_OFFSET, rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem[i+D_MEM_OFFSET+3],
-                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem[i+D_MEM_OFFSET+2],
-                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem[i+D_MEM_OFFSET+1],
-                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_mem_wrap_5pl.DMem[i+D_MEM_OFFSET]);
+        $fwrite(fd,"Offset %08x : %02x%02x%02x%02x\n",i+D_MEM_OFFSET, rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_mem_wrap_5pl.rvc_asap_5pl_d_mem.DMem[i+D_MEM_OFFSET+3],
+                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_mem_wrap_5pl.rvc_asap_5pl_d_mem.DMem[i+D_MEM_OFFSET+2],
+                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_mem_wrap_5pl.rvc_asap_5pl_d_mem.DMem[i+D_MEM_OFFSET+1],
+                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_mem_wrap_5pl.rvc_asap_5pl_d_mem.DMem[i+D_MEM_OFFSET]);
     end
     $fclose(fd);
     $display({"Test : ",msg});        

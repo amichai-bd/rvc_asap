@@ -128,7 +128,7 @@ main(){
             for test in "$@"
                do	
                if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
-               rv_gcc -S -ffreestanding -march=rv32i $APPS_C/$file_name -o $APPS_ASM/$clean_file_name.s
+               rv_gcc -S -ffreestanding -march=rv32i $APPS_C/$file_name  -o $APPS_ASM/$clean_file_name.s
                fi
                done
             done
