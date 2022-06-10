@@ -14,7 +14,25 @@
 
 module rvc_top_5pl (
     input logic Clock,
-    input logic Rst
+    input logic Rst,
+    // FPGA interface inputs              
+    input  logic       Button_0, // CR_MEM
+    input  logic       Button_1, // CR_MEM
+    input  logic [9:0] Switch,   // CR_MEM
+    // FPGA interface outputs
+    output logic [6:0] SEG7_0,   // CR_MEM
+    output logic [6:0] SEG7_1,   // CR_MEM
+    output logic [6:0] SEG7_2,   // CR_MEM
+    output logic [6:0] SEG7_3,   // CR_MEM
+    output logic [6:0] SEG7_4,   // CR_MEM
+    output logic [6:0] SEG7_5,   // CR_MEM
+    output logic [6:0] LED,      // CR_MEM
+    // VGA output
+    output logic [3:0] RED,
+    output logic [3:0] GREEN,
+    output logic [3:0] BLUE,
+    output logic       h_sync,
+    output logic       v_sync
 );
 import rvc_asap_pkg::*;  
 
@@ -30,22 +48,6 @@ logic CtrlDMemWrEn;               // D_MEM
 logic SelDMemWb;                  // D_MEM
 logic CtrlSignExt;                // D_MEM
 logic [31:0] DMemRdDataQ104H;     // D_MEM
-//=========================================
-//     FPGA - Core interface
-//=========================================
-// FPGA interface inputs              
-logic       Button_0;
-logic       Button_1;
-logic [9:0] Switch;
-
-// FPGA interface outputs
-logic [6:0] SEG7_0;
-logic [6:0] SEG7_1;
-logic [6:0] SEG7_2;
-logic [6:0] SEG7_3;
-logic [6:0] SEG7_4;
-logic [6:0] SEG7_5;
-logic [6:0] LED;
 
 // Instantiating the rvc_asap_5pl core
 rvc_asap_5pl rvc_asap_5pl (
@@ -62,8 +64,8 @@ rvc_asap_5pl rvc_asap_5pl (
     .DMemRdData_From_DmemQ104H   (DMemRdDataQ104H)      // From D_MEM
 );
 
-// Instantiating the rvc_asap_mem_wrap_5pl memory
-rvc_asap_mem_wrap_5pl rvc_asap_mem_wrap_5pl (
+// Instantiating the rvc_asap_5pl_mem_wrap memory
+rvc_asap_5pl_mem_wrap rvc_asap_5pl_mem_wrap (
     .Clock            (Clock),
     .Rst              (Rst),
     .Pc               (Pc),                  // I_MEM
@@ -84,7 +86,12 @@ rvc_asap_mem_wrap_5pl rvc_asap_mem_wrap_5pl (
     .SEG7_3           (SEG7_3),              // CR_MEM
     .SEG7_4           (SEG7_4),              // CR_MEM
     .SEG7_5           (SEG7_5),              // CR_MEM
-    .LED              (LED)                  // CR_MEM
+    .LED              (LED),                 // CR_MEM
+    .RED              (RED),                 // VGA_OUTPUT
+    .GREEN            (GREEN),               // VGA_OUTPUT
+    .BLUE             (BLUE),                // VGA_OUTPUT
+    .h_sync           (h_sync),              // VGA_OUTPUT
+    .v_sync           (v_sync)               // VGA_OUTPUT
 );
 
 endmodule // Module rvc_top_5pl
