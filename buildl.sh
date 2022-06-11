@@ -131,8 +131,8 @@ main(){
     fi
 
     #==== Clean target directory and compilation directories ====#
-    rm -r $TARGET/*
-    rm -r $APPS_ELF/* $APPS_ELF_TXT/* $APPS_SV/*
+    rm -rf $TARGET/*
+    rm -rf $APPS_ELF/* $APPS_ELF_TXT/* $APPS_SV/*
 
     if [ $lib == 0 ]; then # Because if lib == 1 we will make all this steps from the make file of apps/library
         if [ $asmverif == 0 ]; then
@@ -256,9 +256,9 @@ main(){
 				echo "========================================================="
 				echo "========================================================="
 				MSG="End Test: $clean_file_name" BG="46m" FG="30m"
-				echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
-				echo "========================================================="
-				echo "========================================================="
+				echo  -en "              \033[$FG\033[$BG$MSG\033[0m\n"
+				echo      "========================================================="
+				echo  -en "=========================================================\n\n"
 			fi
 		done
     done
@@ -271,7 +271,7 @@ main(){
     fi
 
     if [ $debug == 0 ]; then
-        rm -r $APPS_ELF/* $APPS_ELF_TXT/* $APPS_SV/*
+        rm -rf $APPS_ELF/* $APPS_ELF_TXT/* $APPS_SV/*
     fi
 
     #===== If compile flag is set in this stage we exit - no check tests results =====#
@@ -315,7 +315,7 @@ main(){
                 echo "========================================================="
                 MSG="End Check: $clean_file_name" BG="103m" FG="30m"
                 echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
-                echo "========================================================="
+				echo -en "=========================================================\n~~~~~\n~~~~~\n~~~~~"
             fi
         done
     done
