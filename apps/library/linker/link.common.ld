@@ -5,11 +5,11 @@ MEMORY
 {
     instrram    : ORIGIN = 0x00000000, LENGTH = 0x1000
     dataram     : ORIGIN = 0x00001000, LENGTH = 0x0E00
-    stack       : ORIGIN = 0x00001E00, LENGTH = 0x0100
+    stack       : ORIGIN = 0x00001E00, LENGTH = 0x0200
 }
 
 /* Stack information variables */
-_min_stack      = 0x0100;   /* 4K - minimum stack space to reserve */
+_min_stack      = 0x0200;   /* 4K - minimum stack space to reserve */
 _stack_len     = LENGTH(stack);
 _stack_start   = ORIGIN(stack) + LENGTH(stack);
 
