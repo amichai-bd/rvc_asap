@@ -14,7 +14,6 @@
 
 #ifndef CR_API_H
 #define CR_API_H
-#define _ASMLANGUAGE
 #define WRITE_REG(REG,VAL) (*REG) = VAL
 #define READ_REG(VAL,REG)  VAL    = (*REG)
 
@@ -33,26 +32,25 @@
 
 /* Control registers API functions */
 /* Write functions */
-static void cr_seg7_0_write(unsigned int val);
-static void cr_seg7_1_write(unsigned int val);
-static void cr_seg7_2_write(unsigned int val);
-static void cr_seg7_3_write(unsigned int val);
-static void cr_seg7_4_write(unsigned int val);
-static void cr_seg7_5_write(unsigned int val);
-static void cr_led_write(unsigned int val);
+void cr_seg7_0_write(unsigned int val);
+void cr_seg7_1_write(unsigned int val);
+void cr_seg7_2_write(unsigned int val);
+void cr_seg7_3_write(unsigned int val);
+void cr_seg7_4_write(unsigned int val);
+void cr_seg7_5_write(unsigned int val);
+void cr_led_write(unsigned int val);
 
 /* Read functions */
-static int cr_seg7_0_read();
-static int cr_seg7_1_read();
-static int cr_seg7_2_read();
-static int cr_seg7_3_read();
-static int cr_seg7_4_read();
-static int cr_seg7_5_read();
-static int cr_led_read();
-static int cr_button_0_read();
-static int cr_button_1_read();
-static int cr_switch_read();
-int main();
+int cr_seg7_0_read();
+int cr_seg7_1_read();
+int cr_seg7_2_read();
+int cr_seg7_3_read();
+int cr_seg7_4_read();
+int cr_seg7_5_read();
+int cr_led_read();
+int cr_button_0_read();
+int cr_button_1_read();
+int cr_switch_read();
 
 #endif /* CR_API_H */
 

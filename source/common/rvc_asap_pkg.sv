@@ -16,17 +16,21 @@ package rvc_asap_pkg;
 parameter I_MEM_MSB   = 'h1000-1; 
 parameter D_MEM_MSB   = 'h2000-1;
 parameter CR_MEM_MSB  = 'h3000-1;
-parameter VGA_MEM_MSB = 'h4000-1;
+parameter VGA_MEM_MSB = 'hc600-1;
 
 // Region bits
 parameter LSB_REGION = 12;
 parameter MSB_REGION = 13;
 
+// VGA Region bits
+parameter VGA_LSB_REGION = 12;
+parameter VGA_MSB_REGION = 15;
+
 // Encoded regions
-parameter I_MEM_REGION   = 2'b00;
-parameter D_MEM_REGION   = 2'b01;
-parameter CR_MEM_REGION  = 2'b10;
-parameter VGA_MEM_REGION = 2'b11;
+parameter I_MEM_REGION         = 2'b00;
+parameter D_MEM_REGION         = 2'b01;
+parameter CR_MEM_REGION        = 2'b10;
+parameter VGA_MEM_REGION_FLOOR = 4'b0011;
 
 typedef enum logic [2:0] {
     U_TYPE = 3'b000 , 
@@ -85,6 +89,8 @@ parameter CR_LED       = 20'h2018 ; // RW 7 bit
 parameter CR_Button_0  = 20'h201c ; // RO 1 bit
 parameter CR_Button_1  = 20'h2020 ; // RO 1 bit
 parameter CR_Switch    = 20'h2024 ; // RO 10 bit
+parameter CR_CURSOR_H  = 20'h2028 ; // RW 32 bit
+parameter CR_CURSOR_V  = 20'h202c ; // RW 32 bit
 
 typedef struct packed { // RO
     logic       Button_0;
@@ -93,13 +99,15 @@ typedef struct packed { // RO
 } t_cr_ro ;
 
 typedef struct packed { // RW
-    logic [6:0] SEG7_0;
-    logic [6:0] SEG7_1;
-    logic [6:0] SEG7_2;
-    logic [6:0] SEG7_3;
-    logic [6:0] SEG7_4;
-    logic [6:0] SEG7_5;
-    logic [6:0] LED;
+    logic [6:0]  SEG7_0;
+    logic [6:0]  SEG7_1;
+    logic [6:0]  SEG7_2;
+    logic [6:0]  SEG7_3;
+    logic [6:0]  SEG7_4;
+    logic [6:0]  SEG7_5;
+    logic [6:0]  LED;
+    logic [31:0] CR_CURSOR_H;
+    logic [31:0] CR_CURSOR_V;
 } t_cr_rw ;
 
 endpackage

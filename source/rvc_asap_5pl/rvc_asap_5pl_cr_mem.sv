@@ -60,13 +60,15 @@ always_comb begin
     if(CtrlCRMemWrEn) begin
         unique casez (AluOut) // AluOut holds the offset
             // ---- RW memory ----
-            CR_SEG7_0 : cr_rw_next.SEG7_0 = RegRdData2[6:0];
-            CR_SEG7_1 : cr_rw_next.SEG7_1 = RegRdData2[6:0];
-            CR_SEG7_2 : cr_rw_next.SEG7_2 = RegRdData2[6:0];
-            CR_SEG7_3 : cr_rw_next.SEG7_3 = RegRdData2[6:0];
-            CR_SEG7_4 : cr_rw_next.SEG7_4 = RegRdData2[6:0];
-            CR_SEG7_5 : cr_rw_next.SEG7_5 = RegRdData2[6:0];
-            CR_LED    : cr_rw_next.LED    = RegRdData2[6:0];
+            CR_SEG7_0   : cr_rw_next.SEG7_0         = RegRdData2[6:0];
+            CR_SEG7_1   : cr_rw_next.SEG7_1         = RegRdData2[6:0];
+            CR_SEG7_2   : cr_rw_next.SEG7_2         = RegRdData2[6:0];
+            CR_SEG7_3   : cr_rw_next.SEG7_3         = RegRdData2[6:0];
+            CR_SEG7_4   : cr_rw_next.SEG7_4         = RegRdData2[6:0];
+            CR_SEG7_5   : cr_rw_next.SEG7_5         = RegRdData2[6:0];
+            CR_LED      : cr_rw_next.LED            = RegRdData2[6:0];
+            CR_CURSOR_H : cr_rw_next.CR_CURSOR_H    = RegRdData2[31:0];
+            CR_CURSOR_V : cr_rw_next.CR_CURSOR_V    = RegRdData2[31:0];
             // ---- Other ----
             default   : /* Do nothing */;
         endcase
@@ -92,6 +94,8 @@ always_comb begin
             CR_SEG7_4   : CRMemRdDataQ103H = {27'b0 , cr_rw_next.SEG7_4}   ;
             CR_SEG7_5   : CRMemRdDataQ103H = {27'b0 , cr_rw_next.SEG7_5}   ;
             CR_LED      : CRMemRdDataQ103H = {27'b0 , cr_rw_next.LED}      ;
+            CR_CURSOR_H : CRMemRdDataQ103H = cr_rw_next.CR_CURSOR_H        ;
+            CR_CURSOR_V : CRMemRdDataQ103H = cr_rw_next.CR_CURSOR_V        ;
             // ---- RO memory ----
             CR_Button_0 : CRMemRdDataQ103H = {31'b0 , cr_ro_next.Button_0} ;
             CR_Button_1 : CRMemRdDataQ103H = {31'b0 , cr_ro_next.Button_1} ;
