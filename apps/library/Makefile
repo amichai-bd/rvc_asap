@@ -25,11 +25,11 @@ endif
 
 CFLAGS := $(BASE_CFLAGS)
 
-all: librvc out/bin/cr_api_test.elf
+all: librvc out/bin/cr_api_test.elf out/bin/graphic_screen_api_test.elf
 
 librvc: out/lib/librvc.a obj/crt0.o
 
-obj/crt0.o: src/crt0.s
+obj/crt0.o: ../crt0.s
 	@mkdir -p `dirname $@`
 	$(CC) $(CFLAGS) -c -o $@ $^
 
@@ -37,18 +37,29 @@ obj/cr_api.o: src/cr_api.c
 	@mkdir -p `dirname $@`
 	$(CC) $(CFLAGS) -c -o $@ $^
 
-out/lib/librvc.a: obj/cr_api.o
+obj/graphic_screen_api.o: src/graphic_screen_api.c
+	@mkdir -p `dirname $@`
+	$(CC) $(CFLAGS) -c -o $@ $^
+
+out/lib/librvc.a: obj/cr_api.o obj/graphic_screen_api.o
 	@mkdir -p `dirname $@`
 	$(AR) -csr $@ $^
-	cp -f $^ $@
 
 obj/cr_api_test.o: examples/cr_api_test.c
 	@mkdir -p `dirname $@`
 	$(CC) $(CFLAGS) -c -o $@ $^
 
+obj/graphic_screen_api_test.o: examples/graphic_screen_api_test.c
+	@mkdir -p `dirname $@`
+	$(CC) $(CFLAGS) -c -o $@ $^
+
 out/bin/cr_api_test.elf: obj/crt0.o obj/cr_api_test.o
 	@mkdir -p `dirname $@`
-	$(LD) -T linker/link.common.ld -m elf32lriscv $^ -lrvc -Lout/lib -o $@
+	$(LD) -T ../link.common.ld -m elf32lriscv $^ -lrvc -Lout/lib -o $@
+
+out/bin/graphic_screen_api_test.elf: obj/crt0.o obj/graphic_screen_api_test.o
+	@mkdir -p `dirname $@`
+	$(LD) -T ../link.common.ld -m elf32lriscv $^ -lrvc -Lout/lib -o $@
 
 clean:
 	rm -rf out/* obj/*

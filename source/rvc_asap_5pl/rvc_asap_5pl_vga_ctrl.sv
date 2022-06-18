@@ -124,19 +124,19 @@ rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
 `else
 rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
 `endif
-	.Clock             (CLK_50),
+    .Clock             (CLK_50),
     .CLK_25            (CLK_25),
     // Write
-	.RegRdData2        (RegRdData2),
-	.AluOut            (AluOut),
+    .RegRdData2        (RegRdData2),
+    .AluOut            (AluOut),
     .CtrlVGAMemByteEn  (CtrlVGAMemByteEn),
-	.CtrlVGAMemWrEn    (CtrlVGAMemWrEn),
+    .CtrlVGAMemWrEn    (CtrlVGAMemWrEn),
     // Read from core
     .SelVGAMemWb       (SelVGAMemWb),
     .VGAMemRdDataQ104H (VGAMemRdDataQ104H),
     // Read from vga controller
     .rdaddress         (WordOffsetQ1), // Word offset (not Byte)
-	.q                 (RdDataQ2)
+    .q                 (RdDataQ2)
 );
 
 assign NextRED   = (inDisplayArea) ? {4{CurentPixelQ2}} : '0;
