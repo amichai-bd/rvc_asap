@@ -30,8 +30,8 @@ parameter VGA_MSB_REGION = 15;
 parameter I_MEM_REGION         = 2'b00;
 parameter D_MEM_REGION         = 2'b01;
 parameter CR_MEM_REGION        = 2'b10;
-parameter VGA_MEM_REGION_FLOOR = 16'b0011000000000000;
-parameter VGA_MEM_REGION_ROOF  = 16'b1100011000000000;
+parameter VGA_MEM_REGION_FLOOR = 16'h3000;
+parameter VGA_MEM_REGION_ROOF  = 16'hc600;
 
 typedef enum logic [2:0] {
     U_TYPE = 3'b000 , 
@@ -200,12 +200,12 @@ typedef struct packed { // RO
 } t_cr_ro ;
 
 typedef struct packed { // RW
-    logic [6:0]  SEG7_0;
-    logic [6:0]  SEG7_1;
-    logic [6:0]  SEG7_2;
-    logic [6:0]  SEG7_3;
-    logic [6:0]  SEG7_4;
-    logic [6:0]  SEG7_5;
+    logic [7:0]  SEG7_0;
+    logic [7:0]  SEG7_1;
+    logic [7:0]  SEG7_2;
+    logic [7:0]  SEG7_3;
+    logic [7:0]  SEG7_4;
+    logic [7:0]  SEG7_5;
     logic [9:0]  LED;
     logic [31:0] CR_CURSOR_H;
     logic [31:0] CR_CURSOR_V;

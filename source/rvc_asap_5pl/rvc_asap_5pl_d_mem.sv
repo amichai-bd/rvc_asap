@@ -14,15 +14,13 @@
 `include "rvc_asap_macros.sv"
 
 module rvc_asap_5pl_d_mem (
-    input  logic        Clock,
-    input  logic        Rst,
-    input  logic [31:0] RegRdData2,
-    input  logic [31:0] AluOut,
-    input  logic [3:0]  CtrlDMemByteEn,
-    input  logic        CtrlDMemWrEn,
-    input  logic        SelDMemWb,
-    input  logic        CtrlSignExt,
-    output logic [31:0] DMemRdDataQ104H
+    input  logic        clock,
+    input  logic [31:0] data_a,
+    input  logic [31:0] address_a,
+    input  logic [3:0]  byteena_a,
+    input  logic        wren_a,
+    input  logic        rden_a,
+    output logic [31:0] q_a
 );
 import rvc_asap_pkg::*;
 // Memory array (behavrial - not for FPGA/ASIC)
@@ -40,28 +38,25 @@ logic [31:0]        DMemRdDataQ103H;
 //==============================
 always_comb begin
     NextDMem = DMem;
-    if(CtrlDMemWrEn) begin
-        if(CtrlDMemByteEn[0]) NextDMem[AluOut+0] = RegRdData2[7:0];
-        if(CtrlDMemByteEn[1]) NextDMem[AluOut+1] = RegRdData2[15:8] ;
-        if(CtrlDMemByteEn[2]) NextDMem[AluOut+2] = RegRdData2[23:16];
-        if(CtrlDMemByteEn[3]) NextDMem[AluOut+3] = RegRdData2[31:24];
+    if(wren_a) begin
+        if(byteena_a[0]) NextDMem[address_a+0] = data_a[7:0];
+        if(byteena_a[1]) NextDMem[address_a+1] = data_a[15:8] ;
+        if(byteena_a[2]) NextDMem[address_a+2] = data_a[23:16];
+        if(byteena_a[3]) NextDMem[address_a+3] = data_a[31:24];
     end
 end
 
-`RVC_MSFF(DMem , NextDMem , Clock)
+`RVC_MSFF(DMem , NextDMem , clock)
 // This is the load
-assign PreDMemRdData[7:0]     =  SelDMemWb ? DMem[AluOut+0] : 8'b0; 
-assign PreDMemRdData[15:8]    =  SelDMemWb ? DMem[AluOut+1] : 8'b0;
-assign PreDMemRdData[23:16]   =  SelDMemWb ? DMem[AluOut+2] : 8'b0;
-assign PreDMemRdData[31:24]   =  SelDMemWb ? DMem[AluOut+3] : 8'b0;
-assign DMemRdDataQ103H[7:0]   =  CtrlDMemByteEn[0] ? PreDMemRdData[7:0]   : 8'b0;
-assign DMemRdDataQ103H[15:8]  =  CtrlDMemByteEn[1] ? PreDMemRdData[15:8]  :
-                                                     CtrlSignExt ? {8{DMemRdDataQ103H[7]}}   : 8'b0;
-assign DMemRdDataQ103H[23:16] =  CtrlDMemByteEn[2] ? PreDMemRdData[23:16] :
-                                                     CtrlSignExt ? {8{DMemRdDataQ103H[15]}}  : 8'b0;
-assign DMemRdDataQ103H[31:24] =  CtrlDMemByteEn[3] ? PreDMemRdData[31:24] :
-                                                     CtrlSignExt ? {8{DMemRdDataQ103H[23]}}  : 8'b0;
+assign PreDMemRdData[7:0]     =  rden_a ? DMem[address_a+0] : 8'b0; 
+assign PreDMemRdData[15:8]    =  rden_a ? DMem[address_a+1] : 8'b0;
+assign PreDMemRdData[23:16]   =  rden_a ? DMem[address_a+2] : 8'b0;
+assign PreDMemRdData[31:24]   =  rden_a ? DMem[address_a+3] : 8'b0;
+assign DMemRdDataQ103H[7:0]   =  byteena_a[0] ? PreDMemRdData[7:0]   : 8'b0;
+assign DMemRdDataQ103H[15:8]  =  byteena_a[1] ? PreDMemRdData[15:8]  : 8'b0;
+assign DMemRdDataQ103H[23:16] =  byteena_a[2] ? PreDMemRdData[23:16] : 8'b0;
+assign DMemRdDataQ103H[31:24] =  byteena_a[3] ? PreDMemRdData[31:24] : 8'b0;
 // Sample the data load - synchorus load
-`RVC_MSFF(DMemRdDataQ104H, DMemRdDataQ103H, Clock)
+`RVC_MSFF(q_a, DMemRdDataQ103H, clock)
 
 endmodule // Module rvc_asap_5pl_d_mem
