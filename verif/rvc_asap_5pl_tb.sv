@@ -82,7 +82,7 @@ logic [6:0] SEG7_2;
 logic [6:0] SEG7_3;
 logic [6:0] SEG7_4;
 logic [6:0] SEG7_5;
-logic [6:0] LED;
+logic [9:0] LED;
 
 //=========================================
 //     VGA - Core interface

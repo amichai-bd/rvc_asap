@@ -11,9 +11,13 @@ _start:
   .org 0x14
   jal x0, reset_handler
 
+# Resets
 reset_handler:
+  li  x31 , 0x2028 # CR_CURSOR_H Address
   mv  x1, x0
-  li  x2, 0x00001E00
+  sw  x1  , 0x0(x31) # Reset CR_CURSOR_H
+  sw  x1  , 0x4(x31) # Reset CR_CURSOR_V
+  li  x2, 0x00001E00 # Stack pointer
   mv  x3, x1
   mv  x4, x1
   mv  x5, x1

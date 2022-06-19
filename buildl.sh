@@ -258,7 +258,7 @@ main(){
 				MSG="End Test: $clean_file_name" BG="46m" FG="30m"
 				echo  -en "              \033[$FG\033[$BG$MSG\033[0m\n"
 				echo      "========================================================="
-				echo  -en "=========================================================\n\n"
+				echo  -en "=========================================================\n"
 			fi
 		done
     done
@@ -279,6 +279,10 @@ main(){
         exit        
     fi
 
+    total_tests=0
+    tests_pass=0
+    tests_unknown=0
+    tests_fail=0
 	#===== 6. Check the results  =====#
 	for f in "$TARGET"/*; do
 	file_name="$(basename -- $f)"
@@ -287,7 +291,8 @@ main(){
 		for test in "$@"
 		do	
 			if [ "$test" == "$clean_file_name" ] || [ "$test" == "all" ] || [ "$test" == "ALL" ] || [ $# -eq 1 ]; then	
-				MSG="Check: $clean_file_name" BG="103m" FG="30m"
+                total_tests=$((total_tests+1))
+                MSG="Check: $clean_file_name" BG="103m" FG="30m"
 				echo "========================================================="
 				echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
 				echo "========================================================="
@@ -302,23 +307,33 @@ main(){
                       echo "Real line: $compareFile1"
                       echo "Gold line: $compareFile2"
                       error=1
+                      tests_fail=$((tests_fail+1))
                    fi 
                    done 3<$input1 4<$input2
                    if [ $error == 0 ]; then
+                       tests_pass=$((tests_pass+1))
                        MSG2="The test ended successfully!" BG="42m" FG="30m"
                        echo -en "              \033[$FG\033[$BG$MSG2\033[0m\n"
                        echo -n $'                        \U1F600\n'
                    fi
                 else
+                   tests_unknown=$((tests_unknown+1))
                    echo "           This test have no memory snapshot             "
                 fi
                 echo "========================================================="
                 MSG="End Check: $clean_file_name" BG="103m" FG="30m"
                 echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
-				echo -en "=========================================================\n~~~~~\n~~~~~\n~~~~~\n"
+				echo -en "=========================================================\n"
             fi
         done
     done
+    echo -en "======================== Summary ========================\n"
+    echo -en "Total tests  : $total_tests\n"
+    echo -en "Tests Pass   : $tests_pass\n"
+    echo -en "Tests Fail   : $tests_fail\n"
+    echo -en "Tests unknown: $tests_unknown\n"
+    echo -en "=========================================================\n"
+
 }
 
 main "$@" "$#" # End main

@@ -1,29 +1,4 @@
-#define WRITE_REG(REG,VAL) (*REG) = VAL
-#define READ_REG(VAL,REG)  VAL    = (*REG)
-#define VGA_PTR(PTR,OFF)   PTR    = (volatile int *) (VGA_MEM_BASE + OFF)
-
-/* Control registers addresses */
-#define CR_MEM_BASE 0x00002000
-#define CR_CURSOR_H (volatile int *) (CR_MEM_BASE + 0x2c)
-#define CR_CURSOR_V (volatile int *) (CR_MEM_BASE + 0x28)
-
-/* VGA defines */
-#define VGA_MEM_BASE       0x00003000
-#define VGA_MEM_SIZE_BYTES 38400
-#define VGA_MEM_SIZE_WORDS 9600
-#define LINE               320
-#define BYTES              4
-#define COLUMN             80 /* COLUMN between 0 - 79 (80x60) */
-#define RAWS               60 /* RAWS between 0 - 59 (80x60) */
-
-/* ASCII tables addresses */
-#define ASCII_TOP_BASE    ((volatile int *) 0x00002100)
-#define ASCII_BOTTOM_BASE ((volatile int *) 0x00002300)
-
-/* ANIME tables addresses */
-#define ANIME_TOP_BASE    ((volatile int *) 0x00002500)
-#define ANIME_BOTTOM_BASE ((volatile int *) 0x00002600)
-
+#include "graphic_screen_api.h"
 /* This function print a char note on the screen in (raw,col) position */
 void draw_char(char note, int raw, int col)
 {
@@ -107,25 +82,4 @@ void clear_screen()
     {
         ptr[i] = 0;
     }
-}
-
-int main()
-{
-    int i = 0;
-
-    for(i = 0 ; i < 1 ; i++)
-    {
-        rvc_printf("WE ARE THE PEOPLE THAT RULE THE WORLD.\n");
-        rvc_printf("A FORCE RUNNING IN EVERY BOY AND GIRL.\n");
-        rvc_printf("ALL REJOICING IN THE WORLD, TAKE ME NOW WE CAN TRY.\n");
-        rvc_printf("0123456789\n");
-    }
-
-    draw_symbol(1, 10, 15);
-    draw_symbol(2, 10, 16);
-    draw_symbol(3, 10, 17);
-    draw_symbol(4, 10, 18);
-    draw_symbol(5, 10, 19);
-
-    return 0;
 }
