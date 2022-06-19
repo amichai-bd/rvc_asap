@@ -51,12 +51,12 @@ main:
   sw    x1  , 0x24(x31) # -> FFFFFFFFh to CR_Swith
 
 load_from_memory:
-  lw    x3   , 0x0(x31)  # -> 0000007Fh to x3
-  lw    x4   , 0x4(x31)  # -> 0000007Fh to x4
-  lw    x5   , 0x8(x31)  # -> 0000007Fh to x5
-  lw    x6   , 0xc(x31)  # -> 0000007Fh to x6
-  lw    x7   , 0x10(x31) # -> 0000007Fh to x7
-  lw    x8   , 0x14(x31) # -> 0000007Fh to x8
+  lw    x3   , 0x0(x31)  # -> 000000FFh to x3
+  lw    x4   , 0x4(x31)  # -> 000000FFh to x4
+  lw    x5   , 0x8(x31)  # -> 000000FFh to x5
+  lw    x6   , 0xc(x31)  # -> 000000FFh to x6
+  lw    x7   , 0x10(x31) # -> 000000FFh to x7
+  lw    x8   , 0x14(x31) # -> 000000FFh to x8
   lw    x9   , 0x18(x31) # -> 000003FFh to x9
   # Don't need to work because it is just read only memory
   lw    x10  , 0x1c(x31) # -> 0000000Xh to x10
@@ -64,12 +64,12 @@ load_from_memory:
   lw    x12  , 0x24(x31) # -> XXXXXXXXh to x12
 
 store_results_in_D_MEM:
-  sw    x3   , 0x0(x30)  # -> 0000007Fh to 0x00001000
-  sw    x4   , 0x4(x30)  # -> 0000007Fh to 0x00001004
-  sw    x5   , 0x8(x30)  # -> 0000007Fh to 0x00001008
-  sw    x6   , 0xc(x30)  # -> 0000007Fh to 0x0000100c
-  sw    x7   , 0x10(x30) # -> 0000007Fh to 0x00001010
-  sw    x8   , 0x14(x30) # -> 0000007Fh to 0x00001014
+  sw    x3   , 0x0(x30)  # -> 000000FFh to 0x00001000
+  sw    x4   , 0x4(x30)  # -> 000000FFh to 0x00001004
+  sw    x5   , 0x8(x30)  # -> 000000FFh to 0x00001008
+  sw    x6   , 0xc(x30)  # -> 000000FFh to 0x0000100c
+  sw    x7   , 0x10(x30) # -> 000000FFh to 0x00001010
+  sw    x8   , 0x14(x30) # -> 000000FFh to 0x00001014
   sw    x9   , 0x18(x30) # -> 000003FFh to 0x00001018
   sw    x10  , 0x1c(x30) # -> XXXXXXXXh to 0x0000101C
   sw    x11  , 0x20(x30) # -> XXXXXXXXh to 0x00001020

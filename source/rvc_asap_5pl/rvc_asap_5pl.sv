@@ -33,7 +33,6 @@ module rvc_asap_5pl (
     output logic [3:0]  CtrlDMemByteEn_To_DmemQ103H, // To D_MEM
     output logic CtrlDMemWrEn_To_DmemQ103H,          // To D_MEM
     output logic SelDMemWb_To_DmemQ103H,             // To D_MEM
-    output logic CtrlSignExt_To_DmemQ103H,           // To D_MEM
     input  logic [31:0] DMemRdData_From_DmemQ104H    // From D_MEM
 );
 import rvc_asap_pkg::*;
@@ -54,6 +53,8 @@ logic [31:0]        RegRdData1Q101H, PreRegRdData1Q102H, RegRdData1Q102H, RegRdD
 logic [31:0]        RegRdData2Q101H, PreRegRdData2Q102H, RegRdData2Q102H, RegRdData2Q103H;
 logic [31:0]        RegWrDataQ104H; 
 logic [31:0]        WrBackDataQ104H;
+logic [31:0]        PostDMemRdData_From_DmemQ104H;
+
 // Control bits
 logic               SelNextPcAluOutJQ101H, SelNextPcAluOutJQ102H;
 logic               SelNextPcAluOutBQ101H, SelNextPcAluOutBQ102H;
@@ -66,9 +67,9 @@ logic [6:0]         Funct7Q101H;
 logic [4:0]         PreRegSrc1Q101H, RegSrc1Q101H, RegSrc1Q102H; 
 logic [4:0]         PreRegSrc2Q101H, RegSrc2Q101H, RegSrc2Q102H;
 logic [4:0]         RegDstQ101H, RegDstQ102H, RegDstQ103H, RegDstQ104H;
-logic [3:0]         CtrlDMemByteEnQ101H, CtrlDMemByteEnQ102H, CtrlDMemByteEnQ103H;
+logic [3:0]         CtrlDMemByteEnQ101H, CtrlDMemByteEnQ102H, CtrlDMemByteEnQ103H, CtrlDMemByteEnQ104H;
 logic               CtrlDMemWrEnQ101H, CtrlDMemWrEnQ102H, CtrlDMemWrEnQ103H;
-logic               CtrlSignExtQ101H, CtrlSignExtQ102H, CtrlSignExtQ103H;
+logic               CtrlSignExtQ101H, CtrlSignExtQ102H, CtrlSignExtQ103H, CtrlSignExtQ104H;
 logic               CtrlLuiQ101H, CtrlLuiQ102H;
 logic               CtrlRegWrEnQ101H, CtrlRegWrEnQ102H, CtrlRegWrEnQ103H, CtrlRegWrEnQ104H;
 logic               SelAluPcQ101H, SelAluPcQ102H;
@@ -87,7 +88,6 @@ t_immediate         SelImmTypeQ101H;
 t_alu_op            CtrlAluOpQ101H, CtrlAluOpQ102H;
 t_branch_type       CtrlBranchOpQ101H, CtrlBranchOpQ102H;
 t_opcode            OpcodeQ101H, OpcodeQ102H;
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //   _____  __     __   _____   _        ______          ____    __    ___     ___    _    _ 
@@ -352,15 +352,16 @@ assign AluOut_To_DmemQ103H              = AluOutQ103H;
 assign CtrlDMemByteEn_To_DmemQ103H      = CtrlDMemByteEnQ103H;
 assign CtrlDMemWrEn_To_DmemQ103H        = CtrlDMemWrEnQ103H;
 assign SelDMemWb_To_DmemQ103H           = SelDMemWbQ103H;
-assign CtrlSignExt_To_DmemQ103H         = CtrlSignExtQ103H;
 
 // Q103H to Q104H Flip Flops
-`RVC_MSFF(AluOutQ104H      , AluOutQ103H      , Clock)
-`RVC_MSFF(SelDMemWbQ104H   , SelDMemWbQ103H   , Clock)
-`RVC_MSFF(PcPlus4Q104H     , PcPlus4Q103H     , Clock)
-`RVC_MSFF(SelRegWrPcQ104H  , SelRegWrPcQ103H  , Clock)
-`RVC_MSFF(RegDstQ104H      , RegDstQ103H      , Clock)
-`RVC_MSFF(CtrlRegWrEnQ104H , CtrlRegWrEnQ103H , Clock)
+`RVC_MSFF(AluOutQ104H         , AluOutQ103H         , Clock)
+`RVC_MSFF(SelDMemWbQ104H      , SelDMemWbQ103H      , Clock)
+`RVC_MSFF(PcPlus4Q104H        , PcPlus4Q103H        , Clock)
+`RVC_MSFF(SelRegWrPcQ104H     , SelRegWrPcQ103H     , Clock)
+`RVC_MSFF(RegDstQ104H         , RegDstQ103H         , Clock)
+`RVC_MSFF(CtrlRegWrEnQ104H    , CtrlRegWrEnQ103H    , Clock)
+`RVC_MSFF(CtrlSignExtQ104H    , CtrlSignExtQ103H    , Clock)
+`RVC_MSFF(CtrlDMemByteEnQ104H , CtrlDMemByteEnQ103H , Clock)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //    ____  __     __   _____   _        ______          ____    __    ___    _  _     _    _ 
@@ -376,8 +377,17 @@ assign CtrlSignExt_To_DmemQ103H         = CtrlSignExtQ103H;
 // 1. Select which data should be written back to the register file AluOut or DMemRdData.
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Sign extend taking care of
+assign PostDMemRdData_From_DmemQ104H[7:0]   =  CtrlDMemByteEnQ104H[0] ? DMemRdData_From_DmemQ104H[7:0]     : 8'b0;
+assign PostDMemRdData_From_DmemQ104H[15:8]  =  CtrlDMemByteEnQ104H[1] ? DMemRdData_From_DmemQ104H[15:8]    :
+                                                     CtrlSignExtQ104H ? {8{DMemRdData_From_DmemQ104H[7]}}  : 8'b0;
+assign PostDMemRdData_From_DmemQ104H[23:16] =  CtrlDMemByteEnQ104H[2] ? DMemRdData_From_DmemQ104H[23:16]   :
+                                                     CtrlSignExtQ104H ? {8{DMemRdData_From_DmemQ104H[15]}} : 8'b0;
+assign PostDMemRdData_From_DmemQ104H[31:24] =  CtrlDMemByteEnQ104H[3] ? DMemRdData_From_DmemQ104H[31:24]   :
+                                                     CtrlSignExtQ104H ? {8{DMemRdData_From_DmemQ104H[23]}} : 8'b0;
+
 // ---- Select what write to the register file ----
-assign WrBackDataQ104H = SelDMemWbQ104H ? DMemRdData_From_DmemQ104H : AluOutQ104H;
+assign WrBackDataQ104H = SelDMemWbQ104H ? PostDMemRdData_From_DmemQ104H : AluOutQ104H;
 assign RegWrDataQ104H  = SelRegWrPcQ104H ? PcPlus4Q104H : WrBackDataQ104H;
 //---- The Register File ----
  `RVC_EN_MSFF(Register[RegDstQ104H] , RegWrDataQ104H , Clock , (CtrlRegWrEnQ104H && (RegDstQ104H!=5'b0)))

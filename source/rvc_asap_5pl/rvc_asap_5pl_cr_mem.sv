@@ -30,12 +30,12 @@ module rvc_asap_5pl_cr_mem (
     input  logic [9:0] Switch,
 
     // FPGA interface outputs
-    output logic [6:0] SEG7_0,
-    output logic [6:0] SEG7_1,
-    output logic [6:0] SEG7_2,
-    output logic [6:0] SEG7_3,
-    output logic [6:0] SEG7_4,
-    output logic [6:0] SEG7_5,
+    output logic [7:0] SEG7_0,
+    output logic [7:0] SEG7_1,
+    output logic [7:0] SEG7_2,
+    output logic [7:0] SEG7_3,
+    output logic [7:0] SEG7_4,
+    output logic [7:0] SEG7_5,
     output logic [9:0] LED
 );
 import rvc_asap_pkg::*;
@@ -60,12 +60,12 @@ always_comb begin
     if(CtrlCRMemWrEn) begin
         unique casez (AluOut) // AluOut holds the offset
             // ---- RW memory ----
-            CR_SEG7_0   : cr_rw_next.SEG7_0         = RegRdData2[6:0];
-            CR_SEG7_1   : cr_rw_next.SEG7_1         = RegRdData2[6:0];
-            CR_SEG7_2   : cr_rw_next.SEG7_2         = RegRdData2[6:0];
-            CR_SEG7_3   : cr_rw_next.SEG7_3         = RegRdData2[6:0];
-            CR_SEG7_4   : cr_rw_next.SEG7_4         = RegRdData2[6:0];
-            CR_SEG7_5   : cr_rw_next.SEG7_5         = RegRdData2[6:0];
+            CR_SEG7_0   : cr_rw_next.SEG7_0         = RegRdData2[7:0];
+            CR_SEG7_1   : cr_rw_next.SEG7_1         = RegRdData2[7:0];
+            CR_SEG7_2   : cr_rw_next.SEG7_2         = RegRdData2[7:0];
+            CR_SEG7_3   : cr_rw_next.SEG7_3         = RegRdData2[7:0];
+            CR_SEG7_4   : cr_rw_next.SEG7_4         = RegRdData2[7:0];
+            CR_SEG7_5   : cr_rw_next.SEG7_5         = RegRdData2[7:0];
             CR_LED      : cr_rw_next.LED            = RegRdData2[9:0];
             CR_CURSOR_H : cr_rw_next.CR_CURSOR_H    = RegRdData2[31:0];
             CR_CURSOR_V : cr_rw_next.CR_CURSOR_V    = RegRdData2[31:0];
@@ -87,12 +87,12 @@ always_comb begin
     if(SelCRMemWb) begin
         unique casez (AluOut) // AluOut holds the offset
             // ---- RW memory ----
-            CR_SEG7_0   : CRMemRdDataQ103H = {27'b0 , cr_rw_next.SEG7_0}   ; 
-            CR_SEG7_1   : CRMemRdDataQ103H = {27'b0 , cr_rw_next.SEG7_1}   ;
-            CR_SEG7_2   : CRMemRdDataQ103H = {27'b0 , cr_rw_next.SEG7_2}   ;
-            CR_SEG7_3   : CRMemRdDataQ103H = {27'b0 , cr_rw_next.SEG7_3}   ;
-            CR_SEG7_4   : CRMemRdDataQ103H = {27'b0 , cr_rw_next.SEG7_4}   ;
-            CR_SEG7_5   : CRMemRdDataQ103H = {27'b0 , cr_rw_next.SEG7_5}   ;
+            CR_SEG7_0   : CRMemRdDataQ103H = {24'b0 , cr_rw_next.SEG7_0}   ; 
+            CR_SEG7_1   : CRMemRdDataQ103H = {24'b0 , cr_rw_next.SEG7_1}   ;
+            CR_SEG7_2   : CRMemRdDataQ103H = {24'b0 , cr_rw_next.SEG7_2}   ;
+            CR_SEG7_3   : CRMemRdDataQ103H = {24'b0 , cr_rw_next.SEG7_3}   ;
+            CR_SEG7_4   : CRMemRdDataQ103H = {24'b0 , cr_rw_next.SEG7_4}   ;
+            CR_SEG7_5   : CRMemRdDataQ103H = {24'b0 , cr_rw_next.SEG7_5}   ;
             CR_LED      : CRMemRdDataQ103H = {22'b0 , cr_rw_next.LED}      ;
             CR_CURSOR_H : CRMemRdDataQ103H = cr_rw_next.CR_CURSOR_H        ;
             CR_CURSOR_V : CRMemRdDataQ103H = cr_rw_next.CR_CURSOR_V        ;

@@ -20,12 +20,12 @@ module rvc_top_5pl (
     input  logic       Button_1, // CR_MEM
     input  logic [9:0] Switch,   // CR_MEM
     // FPGA interface outputs
-    output logic [6:0] SEG7_0,   // CR_MEM
-    output logic [6:0] SEG7_1,   // CR_MEM
-    output logic [6:0] SEG7_2,   // CR_MEM
-    output logic [6:0] SEG7_3,   // CR_MEM
-    output logic [6:0] SEG7_4,   // CR_MEM
-    output logic [6:0] SEG7_5,   // CR_MEM
+    output logic [7:0] SEG7_0,   // CR_MEM
+    output logic [7:0] SEG7_1,   // CR_MEM
+    output logic [7:0] SEG7_2,   // CR_MEM
+    output logic [7:0] SEG7_3,   // CR_MEM
+    output logic [7:0] SEG7_4,   // CR_MEM
+    output logic [7:0] SEG7_5,   // CR_MEM
     output logic [9:0] LED,      // CR_MEM
     // VGA output
     output logic [3:0] RED,
@@ -46,7 +46,6 @@ logic [31:0] AluOut;              // D_MEM
 logic [3:0]  CtrlDMemByteEn;      // D_MEM
 logic CtrlDMemWrEn;               // D_MEM
 logic SelDMemWb;                  // D_MEM
-logic CtrlSignExt;                // D_MEM
 logic [31:0] DMemRdDataQ104H;     // D_MEM
 
 // Instantiating the rvc_asap_5pl core
@@ -60,7 +59,6 @@ rvc_asap_5pl rvc_asap_5pl (
     .CtrlDMemByteEn_To_DmemQ103H (CtrlDMemByteEn),      // To D_MEM
     .CtrlDMemWrEn_To_DmemQ103H   (CtrlDMemWrEn),        // To D_MEM
     .SelDMemWb_To_DmemQ103H      (SelDMemWb),           // To D_MEM
-    .CtrlSignExt_To_DmemQ103H    (CtrlSignExt),         // To D_MEM
     .DMemRdData_From_DmemQ104H   (DMemRdDataQ104H)      // From D_MEM
 );
 
@@ -75,7 +73,6 @@ rvc_asap_5pl_mem_wrap rvc_asap_5pl_mem_wrap (
     .CtrlDMemByteEn   (CtrlDMemByteEn),      // D_MEM
     .CtrlDMemWrEn     (CtrlDMemWrEn),        // D_MEM
     .SelDMemWb        (SelDMemWb),           // D_MEM
-    .CtrlSignExt      (CtrlSignExt),         // D_MEM
     .DMemRdDataQ104H  (DMemRdDataQ104H),     // D_MEM
     .Button_0         (Button_0),            // CR_MEM
     .Button_1         (Button_1),            // CR_MEM
