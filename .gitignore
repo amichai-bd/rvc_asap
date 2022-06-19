@@ -30,4 +30,7 @@ target/*
 quartus/output_files/*
 quartus/incremental_db/*
 quartus/db/*
+modelsim_run/transcript
+modelsim_run/work/_lib.qdb
+modelsim_run/work/_vmake
 
