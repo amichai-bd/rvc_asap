@@ -37,7 +37,7 @@ module rvc_asap_5pl_mem_wrap (
     output logic [6:0] SEG7_3,            // CR_MEM
     output logic [6:0] SEG7_4,            // CR_MEM
     output logic [6:0] SEG7_5,            // CR_MEM
-    output logic [6:0] LED,               // CR_MEM
+    output logic [9:0] LED,               // CR_MEM
     // VGA output
     output logic [3:0]  RED,
     output logic [3:0]  GREEN,
@@ -56,7 +56,7 @@ logic [31:0] PreCRMemRdDataQ104H;
 logic [31:0] PreVGAMemRdDataQ104H;
 
 always_comb begin
-    MatchVGAMemRegionQ103H = (AluOut[VGA_MSB_REGION:VGA_LSB_REGION] >= VGA_MEM_REGION_FLOOR);
+    MatchVGAMemRegionQ103H = ((AluOut[VGA_MSB_REGION:VGA_LSB_REGION] >= VGA_MEM_REGION_FLOOR) && (AluOut[VGA_MSB_REGION:VGA_LSB_REGION] <= VGA_MEM_REGION_ROOF));
     MatchDMemRegionQ103H   = MatchVGAMemRegionQ103H ? 1'b0 : (AluOut[MSB_REGION:LSB_REGION] == D_MEM_REGION);
     MatchCRMemRegionQ103H  = MatchVGAMemRegionQ103H ? 1'b0 : (AluOut[MSB_REGION:LSB_REGION] == CR_MEM_REGION);
 end

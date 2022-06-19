@@ -26,7 +26,7 @@ module rvc_top_5pl (
     output logic [6:0] SEG7_3,   // CR_MEM
     output logic [6:0] SEG7_4,   // CR_MEM
     output logic [6:0] SEG7_5,   // CR_MEM
-    output logic [6:0] LED,      // CR_MEM
+    output logic [9:0] LED,      // CR_MEM
     // VGA output
     output logic [3:0] RED,
     output logic [3:0] GREEN,

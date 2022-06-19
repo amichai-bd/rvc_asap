@@ -44,7 +44,8 @@ logic [7:0] RdByte2;
 logic [7:0] RdByte3;
 logic [31:0] pre_q;
 logic [15:0] RdAddressByteAl;
-assign  RdAddressByteAl = {rdaddress,2'b00};
+assign  RdAddressByteAl = {rdaddress,2'b00}; // The memory is "32bit aligned" but we save and measure the memory in Bytes.
+                                             // This is to make this model behave as the FPGA Memory we use.
 
 //==============================
 // Memory Access

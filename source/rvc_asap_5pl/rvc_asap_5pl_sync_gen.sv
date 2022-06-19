@@ -4,7 +4,7 @@
 //-----------------------------------------------------------------------------
 // File             : rvc_asap_5pl_sync_gen 
 // Original Author  : Amichai Ben-David
-// Code Owner       : 
+// Code Owner       : Matan Eshel & Gil Ya'akov
 // Adviser          : Amichai Ben-David
 // Created          : 03/2022
 //-----------------------------------------------------------------------------
