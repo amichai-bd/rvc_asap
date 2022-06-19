@@ -64,7 +64,7 @@ initial begin: test_seq
     force rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem = DMem; //XMR - cross module reference
     # 10
     release rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem;
-    #100000000 $finish;
+    #1000000 $finish;
 end: test_seq
 
 //=========================================
@@ -76,12 +76,12 @@ logic       Button_1;
 logic [9:0] Switch;
 
 // FPGA interface outputs
-logic [6:0] SEG7_0;
-logic [6:0] SEG7_1;
-logic [6:0] SEG7_2;
-logic [6:0] SEG7_3;
-logic [6:0] SEG7_4;
-logic [6:0] SEG7_5;
+logic [7:0] SEG7_0;
+logic [7:0] SEG7_1;
+logic [7:0] SEG7_2;
+logic [7:0] SEG7_3;
+logic [7:0] SEG7_4;
+logic [7:0] SEG7_5;
 logic [9:0] LED;
 
 //=========================================

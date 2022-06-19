@@ -24,19 +24,18 @@ module rvc_asap_5pl_mem_wrap (
     input  logic [3:0]  CtrlDMemByteEn,   // D_MEM
     input  logic CtrlDMemWrEn,            // D_MEM
     input  logic SelDMemWb,               // D_MEM
-    input  logic CtrlSignExt,             // D_MEM
     output logic [31:0] DMemRdDataQ104H,  // D_MEM
     // FPGA interface inputs              
     input  logic       Button_0,          // CR_MEM
     input  logic       Button_1,          // CR_MEM
     input  logic [9:0] Switch,            // CR_MEM
     // FPGA interface outputs
-    output logic [6:0] SEG7_0,            // CR_MEM
-    output logic [6:0] SEG7_1,            // CR_MEM
-    output logic [6:0] SEG7_2,            // CR_MEM
-    output logic [6:0] SEG7_3,            // CR_MEM
-    output logic [6:0] SEG7_4,            // CR_MEM
-    output logic [6:0] SEG7_5,            // CR_MEM
+    output logic [7:0] SEG7_0,            // CR_MEM
+    output logic [7:0] SEG7_1,            // CR_MEM
+    output logic [7:0] SEG7_2,            // CR_MEM
+    output logic [7:0] SEG7_3,            // CR_MEM
+    output logic [7:0] SEG7_4,            // CR_MEM
+    output logic [7:0] SEG7_5,            // CR_MEM
     output logic [9:0] LED,               // CR_MEM
     // VGA output
     output logic [3:0]  RED,
@@ -74,23 +73,20 @@ assign DMemRdDataQ104H = MatchCRMemRegionQ104H  ? PreCRMemRdDataQ104H  :
                                                  
 // Instantiating the rvc_asap_5pl_i_mem instruction memory
 rvc_asap_5pl_i_mem rvc_asap_5pl_i_mem (
-    .Clock            (Clock),
-    .Rst              (Rst),
-    .Pc               (Pc),
-    .InstructionQ101H (InstructionQ101H)
+    .clock            (Clock),
+    .address_a        (Pc),
+    .q_a              (InstructionQ101H)
 );
 
 // Instantiating the rvc_asap_5pl_d_mem data memory
 rvc_asap_5pl_d_mem rvc_asap_5pl_d_mem (
-    .Clock            (Clock),
-    .Rst              (Rst),
-    .RegRdData2       (RegRdData2),
-    .AluOut           (AluOut),
-    .CtrlDMemByteEn   (CtrlDMemByteEn),
-    .CtrlDMemWrEn     (CtrlDMemWrEn && MatchDMemRegionQ103H),
-    .SelDMemWb        (SelDMemWb && MatchDMemRegionQ103H),
-    .CtrlSignExt      (CtrlSignExt),
-    .DMemRdDataQ104H  (PreDMemRdDataQ104H)
+    .clock            (Clock),
+    .data_a           (RegRdData2),
+    .address_a        (AluOut),
+    .byteena_a        (CtrlDMemByteEn),
+    .wren_a           (CtrlDMemWrEn && MatchDMemRegionQ103H),
+    .rden_a           (SelDMemWb && MatchDMemRegionQ103H),   
+    .q_a              (PreDMemRdDataQ104H)
 );
 
 // Instantiating the rvc_asap_5pl_cr_mem data memory

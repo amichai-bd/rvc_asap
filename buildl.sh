@@ -300,21 +300,24 @@ main(){
                 input2="$GOLDEN_IMAGE/$clean_file_name/mem_snapshot.log"
                 if [ -f "$input1" ] && [ -f "$input2" ]; then
                    error=0
-                   while read compareFile1 <&3 && read compareFile2 <&4; do     
+                   x=1
+                   while read compareFile1 <&3 && read compareFile2 <&4 && [ $x -le 256 ]; do     
                    if [ "$compareFile1" != "$compareFile2" ]; then
                       MSG1="Error: Inequality" BG="101m" FG="30m"
                       echo -en "              \033[$FG\033[$BG$MSG1\033[0m\n"
                       echo "Real line: $compareFile1"
                       echo "Gold line: $compareFile2"
                       error=1
-                      tests_fail=$((tests_fail+1))
                    fi 
+                      x=$(( $x + 1 ))
                    done 3<$input1 4<$input2
                    if [ $error == 0 ]; then
                        tests_pass=$((tests_pass+1))
                        MSG2="The test ended successfully!" BG="42m" FG="30m"
                        echo -en "              \033[$FG\033[$BG$MSG2\033[0m\n"
                        echo -n $'                        \U1F600\n'
+                   else
+                       tests_fail=$((tests_fail+1))
                    fi
                 else
                    tests_unknown=$((tests_unknown+1))
