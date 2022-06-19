@@ -188,6 +188,7 @@ main(){
 		do	
 			if [ "$test" == "$clean_file_name" ] || [ "$test" == "all" ] || [ "$test" == "ALL" ] || [ $# -eq 1 ]; then	
     			rv_objcopy --srec-len 1 --output-target=verilog $APPS_ELF/$file_name $APPS_SV/$clean_file_name-inst_mem_rv32i.sv
+    			rv_objcopy --srec-len 1 --output-target=ihex $APPS_ELF/$file_name $APPS_SV/$clean_file_name-ihex.hex
     			rv_objdump -gd -M numeric $APPS_ELF/$file_name > $APPS_ELF_TXT/$file_name.txt  
 				#==== 3.2 Split the .sv file to instruction memory and data memory ====# 
                 if grep -q @00001000 "$APPS_SV/$clean_file_name-inst_mem_rv32i.sv"; then
