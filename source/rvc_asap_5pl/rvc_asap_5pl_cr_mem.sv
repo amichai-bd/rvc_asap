@@ -84,6 +84,7 @@ end
 
 // This is the load
 always_comb begin
+    CRMemRdDataQ103H = '0;
     if(SelCRMemWb) begin
         unique casez (AluOut) // AluOut holds the offset
             // ---- RW memory ----

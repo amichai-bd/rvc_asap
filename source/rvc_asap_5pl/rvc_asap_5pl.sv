@@ -228,7 +228,7 @@ assign RegSrc2Q101H = InstructionQ101H[24:20];
 // ---- Read Register File ----
 assign MatchRd1AftrWrQ101H = (RegSrc1Q101H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc1Q101H != 5'b0);
 
-assign RegRdData1Q101H = MatchRd1AftrWrQ101H     ? RegWrDataQ104H        : // forword WrDataQ104H -> RdDataQ101H
+assign RegRdData1Q101H = MatchRd1AftrWrQ101H     ? RegWrDataQ104H       : // forword WrDataQ104H -> RdDataQ101H
                          (RegSrc1Q101H == 5'b0) ? 32'b0                 : // Reading from Register[0] should result in '0
                                                   Register[RegSrc1Q101H]; // Common Case - reading from Register file
 

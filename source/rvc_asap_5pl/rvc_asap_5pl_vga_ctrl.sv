@@ -98,17 +98,16 @@ assign LineQ0   = pixel_y[8:0];
 //=========================
 // Read CurrentPixelQ2 using VGA Virtual Address -> Physical Address in RAM
 //=========================
-assign EnCountBitOffset   = 1'b1;
 assign EnCountByteOffset  = ((CountWordOffsetQ1 == 79) && EnCountWordOffset);
 assign EnCountWordOffset  = (CountBitOffsetQ1 == 3'b111);
 assign RstCountBitOffset  = SampleReset[4] || (!inDisplayArea);
 assign RstCountByteOffset = SampleReset[4];
-assign RstCountWordOffset = SampleReset[4] || ((CountWordOffsetQ1 == 79) && EnCountWordOffset);
-`RVC_EN_RST_MSFF(CountBitOffsetQ1 , (CountBitOffsetQ1 +1), CLK_25, EnCountBitOffset , RstCountBitOffset )
-`RVC_EN_RST_MSFF(CountByteOffsetQ1, (CountByteOffsetQ1+1), CLK_25, EnCountByteOffset, RstCountByteOffset)
-`RVC_EN_RST_MSFF(CountWordOffsetQ1, (CountWordOffsetQ1+1), CLK_25, EnCountWordOffset, RstCountWordOffset)
+assign RstCountWordOffset = SampleReset[4] || ((CountWordOffsetQ1 == 8'd79) && EnCountWordOffset);
+`RVC_RST_MSFF   (CountBitOffsetQ1 , (CountBitOffsetQ1 +3'b01), CLK_25, RstCountBitOffset )
+`RVC_EN_RST_MSFF(CountByteOffsetQ1, (CountByteOffsetQ1+2'b01), CLK_25, EnCountByteOffset, RstCountByteOffset)
+`RVC_EN_RST_MSFF(CountWordOffsetQ1, (CountWordOffsetQ1+8'b01), CLK_25, EnCountWordOffset, RstCountWordOffset)
 
-assign WordOffsetQ1 = ((LineQ1[8:2])*80 + CountWordOffsetQ1);
+assign WordOffsetQ1 = ((LineQ1[8:2])*8'd80 + CountWordOffsetQ1);
 
 // Align latency
 `RVC_MSFF(CountBitOffsetQ2  , CountBitOffsetQ1  , CLK_25)
@@ -121,9 +120,6 @@ assign CurentPixelQ2 = RdDataQ2[{CountByteOffsetQ2,CountBitOffsetQ2}];
 //=========================
 `ifdef SIMULATION_ON
 rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
-`else
-rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
-`endif
     .Clock             (CLK_50),
     .CLK_25            (CLK_25),
     // Write
@@ -138,6 +134,25 @@ rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
     .rdaddress         (WordOffsetQ1), // Word offset (not Byte)
     .q                 (RdDataQ2)
 );
+`else
+vga_mem rvc_asap_5pl_vga_mem(
+	//CORE interface
+    .clock_a        (CLK_50),
+    .wren_a         (CtrlVGAMemWrEn),	
+    .byteena_a      (CtrlVGAMemByteEn),
+    .address_a      (AluOut),
+    .data_a         (RegRdData2),
+    .rden_a         (SelVGAMemWb),	
+    .q_a            (VGAMemRdDataQ104H),
+    //VGA interface
+    .clock_b        (CLK_25),
+    .wren_b         (1'b0),
+    .address_b      (WordOffsetQ1),
+    .data_b         ('0),
+    .rden_b         (1'b1),
+    .q_b            (RdDataQ2)
+    );
+`endif
 
 assign NextRED   = (inDisplayArea) ? {4{CurentPixelQ2}} : '0;
 assign NextGREEN = (inDisplayArea) ? {4{CurentPixelQ2}} : '0;

@@ -2,6 +2,7 @@
 *.qdb
 *.qpg
 *.qtl
+*.bak
 _info
 # modelsim generated files
 *.swp
@@ -34,3 +35,20 @@ modelsim_run/transcript
 modelsim_run/work/_lib.qdb
 modelsim_run/work/_vmake
 
+
+
+#############
+#FPGA
+#############
+FPGA/db/.cmp.kpt
+FPGA/db/*
+FPGA/incremental_db/*
+FPGA/output_files/*
+FPGA/greybox_tmp/cbx_args.txt
+FPGA/CPU_GARAGE.qws
+
+
+
+!modelsim/README*
+!target/README*
+!FPGA/output_files/*.sof

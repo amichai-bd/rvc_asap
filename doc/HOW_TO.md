@@ -11,7 +11,8 @@ https://gitforwindows.org/
   
 ## (3) Download modelsim  - a system verilog compiler & simulator (lite free version)  
 - https://www.intel.com/content/www/us/en/software-kit/660907/intel-quartus-prime-lite-edition-design-software-version-20-1-1-for-windows.html  
- Download quartus - Note: after both programs were downloaded, run the Quartus instullation which will automatecly install modelsim to.  
+Download indevidual files: modelsim, quartus, "Intel MAX 10 Device Support".  
+  - Note: after all three programs were downloaded, run the Quartus instullation which will automatecly install modelsim & MAX10.  
 
 ## (4) Download the RISCV ToolChain:  
 - https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/ -> File name: "xpack-riscv-none-embed-gcc-10.1.0-1.1-win32-x64.zip")  

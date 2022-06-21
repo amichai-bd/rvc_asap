@@ -72,21 +72,29 @@ assign DMemRdDataQ104H = MatchCRMemRegionQ104H  ? PreCRMemRdDataQ104H  :
                                                   32'b0                ;
                                                  
 // Instantiating the rvc_asap_5pl_i_mem instruction memory
+`ifndef SIMULATION_ON // if NOT def
+i_mem_4kb rvc_asap_5pl_i_mem (
+`else
 rvc_asap_5pl_i_mem rvc_asap_5pl_i_mem (
-    .clock            (Clock),
-    .address_a        (Pc),
-    .q_a              (InstructionQ101H)
+`endif
+    .clock          (Clock),
+    .address        (Pc),
+    .q              (InstructionQ101H)
 );
 
 // Instantiating the rvc_asap_5pl_d_mem data memory
+`ifndef SIMULATION_ON // if NOT def
+d_mem_4kb rvc_asap_5pl_d_mem (
+`else
 rvc_asap_5pl_d_mem rvc_asap_5pl_d_mem (
+`endif
     .clock            (Clock),
-    .data_a           (RegRdData2),
-    .address_a        (AluOut),
-    .byteena_a        (CtrlDMemByteEn),
-    .wren_a           (CtrlDMemWrEn && MatchDMemRegionQ103H),
-    .rden_a           (SelDMemWb && MatchDMemRegionQ103H),   
-    .q_a              (PreDMemRdDataQ104H)
+    .data           (RegRdData2),
+    .address        (AluOut),
+    .byteena        (CtrlDMemByteEn),
+    .wren           (CtrlDMemWrEn && MatchDMemRegionQ103H),
+    .rden           (SelDMemWb && MatchDMemRegionQ103H),   
+    .q              (PreDMemRdDataQ104H)
 );
 
 // Instantiating the rvc_asap_5pl_cr_mem data memory
