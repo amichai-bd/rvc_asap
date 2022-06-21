@@ -18,7 +18,9 @@ module top(
         output logic        v_sync
     );
 	 
-
+logic [3:0] NextRed;
+logic [3:0] NextGreen;
+logic [3:0] NextBlue;
 	 logic Rst;
 	 assign Rst = ~BUTTON[0];
 // Instantiating the rvc_top_5pl module
@@ -35,16 +37,17 @@ rvc_top_5pl rvc_top_5pl (
     .SEG7_4   (HEX4),   // CR_MEM
     .SEG7_5   (HEX5),   // CR_MEM
     .LED      (LED),      // CR_MEM
-    .RED      (/*RED*/),
-    .GREEN    (/*GREEN*/),
-    .BLUE     (/*BLUE*/),
+    .RED      (NextRed),//RED),
+    .GREEN    (NextGreen),//GREEN),
+    .BLUE     (NextBlue),//BLUE),
     .h_sync   (h_sync),
     .v_sync   (v_sync)
 );
 
 
-assign RED 		= 4'b1111;
-assign GREEN 	= 4'b0000;
-assign BLUE		= 4'b1111;
+assign RED   = NextRed;     //& SW[3:0];   just to play with the display color
+assign GREEN = NextGreen;   //& SW[6:3];
+assign BLUE  = NextBlue;    //& SW[9:6];
+
 
 endmodule

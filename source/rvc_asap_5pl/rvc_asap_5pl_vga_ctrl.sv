@@ -154,6 +154,9 @@ vga_mem rvc_asap_5pl_vga_mem(
     );
 `endif
 
+//assign NextRED   = (inDisplayArea) ? 4'b1111 : '0;//{4{CurentPixelQ2}} : '0;
+//assign NextGREEN = (inDisplayArea) ? 4'b1111 : '0;//{4{CurentPixelQ2}} : '0;
+//assign NextBLUE  = (inDisplayArea) ? 4'b1111 : '0;//{4{CurentPixelQ2}} : '0;
 assign NextRED   = (inDisplayArea) ? {4{CurentPixelQ2}} : '0;
 assign NextGREEN = (inDisplayArea) ? {4{CurentPixelQ2}} : '0;
 assign NextBLUE  = (inDisplayArea) ? {4{CurentPixelQ2}} : '0;

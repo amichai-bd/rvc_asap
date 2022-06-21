@@ -88,7 +88,7 @@ d_mem_4kb rvc_asap_5pl_d_mem (
 `else
 rvc_asap_5pl_d_mem rvc_asap_5pl_d_mem (
 `endif
-    .clock            (Clock),
+    .clock          (Clock),
     .data           (RegRdData2),
     .address        (AluOut),
     .byteena        (CtrlDMemByteEn),
