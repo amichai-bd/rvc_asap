@@ -10,8 +10,8 @@ void draw_char(char note, int raw, int col)
     VGA_PTR(ptr_top    , horizontal + vertical);
     VGA_PTR(ptr_bottom , horizontal + vertical + LINE);
 
-    WRITE_REG(ptr_top    , ASCII_TOP_BASE[note]);
-    WRITE_REG(ptr_bottom , ASCII_BOTTOM_BASE[note]);
+    WRITE_REG(ptr_top    , ASCII_TOP[note]);
+    WRITE_REG(ptr_bottom , ASCII_BOTTOM[note]);
 }
 
 /* This function print a string on the screen in (CR_CURSOR_V,CR_CURSOR_H) position */
@@ -68,8 +68,8 @@ void draw_symbol(int symbol, int raw, int col)
     VGA_PTR(ptr_top    , horizontal + vertical);
     VGA_PTR(ptr_bottom , horizontal + vertical + LINE);
 
-    WRITE_REG(ptr_top    , ANIME_TOP_BASE[symbol]);
-    WRITE_REG(ptr_bottom , ANIME_BOTTOM_BASE[symbol]);
+    WRITE_REG(ptr_top    , ANIME_TOP[symbol]);
+    WRITE_REG(ptr_bottom , ANIME_BOTTOM[symbol]);
 }
 
 /* This function clear the screen */

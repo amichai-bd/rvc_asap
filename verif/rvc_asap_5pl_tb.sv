@@ -151,8 +151,9 @@ task end_tb;
     for (i = 0 ; i < 38400; i = i+320) begin // Lines
         for (j = 0 ; j < 4; j = j+1) begin // Bytes
             for (k = 0 ; k < 320; k = k+4) begin // Words
-                for (l = 0 ; l < 8; l = l+1) begin // Bits  
-                    $fwrite(fd1,"%01b",rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_vga_ctrl.rvc_asap_5pl_vga_mem.VGAMem[VGA_MEM_OFFSET+k+j+i][l]);
+                for (l = 0 ; l < 8; l = l+1) begin // Bits
+                    if (rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_vga_ctrl.rvc_asap_5pl_vga_mem.VGAMem[VGA_MEM_OFFSET+k+j+i][l]) $fwrite(fd1,"X");
+                    else $fwrite(fd1," ");
                 end        
             end 
             $fwrite(fd1,"\n");
