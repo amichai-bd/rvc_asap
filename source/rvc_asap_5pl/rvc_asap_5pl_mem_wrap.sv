@@ -72,20 +72,27 @@ assign q = MatchCRMemRegionQ104H  ? PreCRMemRdDataQ104H  :
                                     32'b0                ;
                                                  
 // Instantiating the rvc_asap_5pl_i_mem instruction memory
+`ifndef SIMULATION_ON // if NOT def
+i_mem_4kb rvc_asap_5pl_i_mem (
+`else
 rvc_asap_5pl_i_mem rvc_asap_5pl_i_mem (
+`endif
     .clock          (Clock),
     .address        (Pc[31:2]),
     .q              (InstructionQ101H)
 );
 
 // Instantiating the rvc_asap_5pl_d_mem data memory
+`ifndef SIMULATION_ON // if NOT def
+d_mem_4kb rvc_asap_5pl_d_mem (
+`else
 rvc_asap_5pl_d_mem rvc_asap_5pl_d_mem (
     .clock          (Clock),
     .data           (data),
     .address        (address[31:2]),
     .byteena        (byteena),
     .wren           (wren && MatchDMemRegionQ103H),
-    .rden           (rden && MatchDMemRegionQ103H),   
+    .rden           (rden && MatchDMemRegionQ103H),
     .q              (PreDMemRdDataQ104H)
 );
 

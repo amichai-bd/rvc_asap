@@ -89,6 +89,12 @@ t_alu_op            CtrlAluOpQ101H, CtrlAluOpQ102H;
 t_branch_type       CtrlBranchOpQ101H, CtrlBranchOpQ102H;
 t_opcode            OpcodeQ101H, OpcodeQ102H;
 
+logic Hazard1Data1Q102H;
+logic Hazard2Data1Q102H;
+logic Hazard1Data2Q102H;
+logic Hazard2Data2Q102H;
+logic MatchRd1AftrWrQ101H;
+logic MatchRd2AftrWrQ101H;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //   _____  __     __   _____   _        ______          ____    __    ___     ___    _    _ 
 //  / ____| \ \   / /  / ____| | |      |  ____|        / __ \  /_ |  / _ \   / _ \  | |  | |
@@ -220,11 +226,16 @@ assign RegDstQ101H  = InstructionQ101H[11:7];
 assign RegSrc1Q101H = InstructionQ101H[19:15];
 assign RegSrc2Q101H = InstructionQ101H[24:20];
 // ---- Read Register File ----
-assign RegRdData1Q101H = (RegSrc1Q101H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc1Q101H != 5'b0) ? RegWrDataQ104H:
-                         (RegSrc1Q101H == 5'b0) ? 32'b0 : Register[RegSrc1Q101H];
+assign MatchRd1AftrWrQ101H = (RegSrc1Q101H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc1Q101H != 5'b0);
 
-assign RegRdData2Q101H = (RegSrc2Q101H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc2Q101H != 5'b0) ? RegWrDataQ104H:
-                         (RegSrc2Q101H == 5'b0) ? 32'b0 : Register[RegSrc2Q101H];
+assign RegRdData1Q101H = MatchRd1AftrWrQ101H     ? RegWrDataQ104H       : // forword WrDataQ104H -> RdDataQ101H
+                         (RegSrc1Q101H == 5'b0) ? 32'b0                 : // Reading from Register[0] should result in '0
+                                                  Register[RegSrc1Q101H]; // Common Case - reading from Register file
+
+assign MatchRd2AftrWrQ101H = (RegSrc2Q101H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc2Q101H != 5'b0);
+assign RegRdData2Q101H =  MatchRd2AftrWrQ101H   ? RegWrDataQ104H        : // forword WrDataQ104H -> RdDataQ101H
+                         (RegSrc2Q101H == 5'b0) ? 32'b0                 : // Reading from Register[0] should result in '0 
+                                                  Register[RegSrc2Q101H]; // Common Case - reading from Register file
 
 // Q101H to Q102H Flip Flops
 `RVC_MSFF(PcQ102H                  , PcQ101H               , Clock)
@@ -270,12 +281,19 @@ assign RegRdData2Q101H = (RegSrc2Q101H == RegDstQ104H) && (CtrlRegWrEnQ104H) && 
 // 2. Check branch condition.
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Take care to data hazard
-assign RegRdData1Q102H = (RegSrc1Q102H == RegDstQ103H) && (CtrlRegWrEnQ103H) && (RegSrc1Q102H != 5'b0) ? AluOutQ103H :
-                         (RegSrc1Q102H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc1Q102H != 5'b0) ? RegWrDataQ104H : PreRegRdData1Q102H;
+// Hazard Detection
+assign Hazard1Data1Q102H = (RegSrc1Q102H == RegDstQ103H) && (CtrlRegWrEnQ103H) && (RegSrc1Q102H != 5'b0);
+assign Hazard2Data1Q102H = (RegSrc1Q102H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc1Q102H != 5'b0);
+assign Hazard1Data2Q102H = (RegSrc2Q102H == RegDstQ103H) && (CtrlRegWrEnQ103H) && (RegSrc2Q102H != 5'b0);
+assign Hazard2Data2Q102H = (RegSrc2Q102H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc2Q102H != 5'b0);
+// Forwording unite
+assign RegRdData1Q102H = Hazard1Data1Q102H ? AluOutQ103H       : // Rd 102 After Wr 103
+                         Hazard2Data1Q102H ? RegWrDataQ104H    : // Rd 102 After Wr 104
+                                             PreRegRdData1Q102H; // Common Case - No Hazard
 
-assign RegRdData2Q102H = (RegSrc2Q102H == RegDstQ103H) && (CtrlRegWrEnQ103H) && (RegSrc2Q102H != 5'b0) ? AluOutQ103H :
-                         (RegSrc2Q102H == RegDstQ104H) && (CtrlRegWrEnQ104H) && (RegSrc2Q102H != 5'b0) ? RegWrDataQ104H : PreRegRdData2Q102H;
+assign RegRdData2Q102H = Hazard1Data2Q102H ? AluOutQ103H       : // Rd 102 After Wr 103
+                         Hazard2Data2Q102H ? RegWrDataQ104H    : // Rd 102 After Wr 104 
+                                             PreRegRdData2Q102H; // Common Case - No Hazard
 
 // End Take care to data hazard
 assign AluIn1Q102H = SelAluPcQ102H  ? PcQ102H          : RegRdData1Q102H;

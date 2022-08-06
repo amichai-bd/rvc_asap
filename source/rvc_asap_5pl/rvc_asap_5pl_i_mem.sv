@@ -31,12 +31,13 @@ assign address_aligned = {address,2'b00};
 // FIXME - currently this logic wont allow to load the I_MEM from HW interface - for simulation we will use Backdoor. (force with XMR)
 `RVC_MSFF(IMem, IMem, clock)
 // This is the instruction fetch. (input pc, output Instruction)
+
 assign InstructionQ100H[7:0]   = IMem[address_aligned+0]; // mux - address_aligned is the selector, IMem is the Data, Instuction is the Out
 assign InstructionQ100H[15:8]  = IMem[address_aligned+1];
 assign InstructionQ100H[23:16] = IMem[address_aligned+2];
 assign InstructionQ100H[31:24] = IMem[address_aligned+3];
-
 // Sample the instruction read - synchorus read
+
 `RVC_MSFF(q, InstructionQ100H, clock)
 
 endmodule // Module rvc_asap_5pl_i_mem
