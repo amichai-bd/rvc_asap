@@ -18,13 +18,13 @@ module rvc_asap_5pl_vga_ctrl (
     input  logic        CLK_50,
     input  logic        Reset,
     // VGA memory Access
-    input  logic [31:0] RegRdData2,
-    input  logic [31:0] AluOut,
-    input  logic [3:0]  CtrlVGAMemByteEn,
-    input  logic        CtrlVGAMemWrEn,
+    input  logic [31:0] data,
+    input  logic [31:0] address,
+    input  logic [3:0]  byteena,
+    input  logic        wren,
     // Read core
-    input  logic        SelVGAMemWb,
-    output logic [31:0] VGAMemRdDataQ104H,
+    input  logic        rden,
+    output logic [31:0] q,
     // VGA output
     output logic [3:0]  RED,
     output logic [3:0]  GREEN,
@@ -120,19 +120,22 @@ assign CurentPixelQ2 = RdDataQ2[{CountByteOffsetQ2,CountBitOffsetQ2}];
 //=========================
 `ifdef SIMULATION_ON
 rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
-    .Clock             (CLK_50),
-    .CLK_25            (CLK_25),
+`else
+rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
+`endif
+    .clock_a             (CLK_50),
+    .clock_b             (CLK_25),
     // Write
-    .RegRdData2        (RegRdData2),
-    .AluOut            (AluOut),
-    .CtrlVGAMemByteEn  (CtrlVGAMemByteEn),
-    .CtrlVGAMemWrEn    (CtrlVGAMemWrEn),
+    .data_a              (data),
+    .address_a           (address[31:2]),
+    .byteena_a           (byteena),
+    .wren_a              (wren),
     // Read from core
-    .SelVGAMemWb       (SelVGAMemWb),
-    .VGAMemRdDataQ104H (VGAMemRdDataQ104H),
+    .rden_a              (rden),
+    .q_a                 (q),
     // Read from vga controller
-    .rdaddress         (WordOffsetQ1), // Word offset (not Byte)
-    .q                 (RdDataQ2)
+    .address_b           (WordOffsetQ1), // Word offset (not Byte)
+    .q_b                 (RdDataQ2)
 );
 `else
 vga_mem rvc_asap_5pl_vga_mem(

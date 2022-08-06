@@ -12,10 +12,10 @@ int main()
         rvc_printf("0123456789\n");
     }
 
-    draw_symbol(1, 10, 15);
-    draw_symbol(2, 10, 16);
-    draw_symbol(3, 10, 17);
-    draw_symbol(4, 10, 18);
-    draw_symbol(5, 10, 19);
+    draw_symbol(0, 10, 15);
+    draw_symbol(1, 10, 16);
+    draw_symbol(2, 10, 17);
+    draw_symbol(3, 10, 18);
+    draw_symbol(4, 10, 19);
     return 0;
 }

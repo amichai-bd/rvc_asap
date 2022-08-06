@@ -25,15 +25,15 @@ module rvc_asap_5pl (
     input  logic Clock,
     input  logic Rst,
     // Instruction Memory
-    output logic [31:0] Pc_To_ImemQ100H,             // To I_MEM
-    input  logic [31:0] PreInstructionQ101H,         // From I_MEM
+    output logic [31:0] Pc_To_ImemQ100H,     // To I_MEM
+    input  logic [31:0] PreInstructionQ101H, // From I_MEM
     // Data Memory
-    output logic [31:0] RegRdData2_To_DmemQ103H,     // To D_MEM
-    output logic [31:0] AluOut_To_DmemQ103H,         // To D_MEM
-    output logic [3:0]  CtrlDMemByteEn_To_DmemQ103H, // To D_MEM
-    output logic CtrlDMemWrEn_To_DmemQ103H,          // To D_MEM
-    output logic SelDMemWb_To_DmemQ103H,             // To D_MEM
-    input  logic [31:0] DMemRdData_From_DmemQ104H    // From D_MEM
+    output logic [31:0] data,                // To D_MEM
+    output logic [31:0] address,             // To D_MEM
+    output logic [3:0]  byteena,             // To D_MEM
+    output logic wren,                       // To D_MEM
+    output logic rden,                       // To D_MEM
+    input  logic [31:0] q                    // From D_MEM
 );
 import rvc_asap_pkg::*;
 // ---- Data-Path signals ----
@@ -365,11 +365,19 @@ assign flushQ102H = SelNextPcAluOutQ102H;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Outputs to memory
-assign RegRdData2_To_DmemQ103H          = RegRdData2Q103H;
-assign AluOut_To_DmemQ103H              = AluOutQ103H;
-assign CtrlDMemByteEn_To_DmemQ103H      = CtrlDMemByteEnQ103H;
-assign CtrlDMemWrEn_To_DmemQ103H        = CtrlDMemWrEnQ103H;
-assign SelDMemWb_To_DmemQ103H           = SelDMemWbQ103H;
+always_comb begin
+data          = (address[1:0] == 2'b01 ) ? { RegRdData2Q103H[23:0],8'b0  } :
+                (address[1:0] == 2'b10 ) ? { RegRdData2Q103H[15:0],16'b0 } :
+                (address[1:0] == 2'b11 ) ? { RegRdData2Q103H[7:0] ,24'b0 } :
+                                             RegRdData2Q103H;
+byteena       = (address[1:0] == 2'b01 ) ? { CtrlDMemByteEnQ103H[2:0],1'b0 } :
+                (address[1:0] == 2'b10 ) ? { CtrlDMemByteEnQ103H[1:0],2'b0 } :
+                (address[1:0] == 2'b11 ) ? { CtrlDMemByteEnQ103H[0]  ,3'b0 } :
+                                             CtrlDMemByteEnQ103H;
+end
+assign address = AluOutQ103H;
+assign wren    = CtrlDMemWrEnQ103H;
+assign rden    = SelDMemWbQ103H;
 
 // Q103H to Q104H Flip Flops
 `RVC_MSFF(AluOutQ104H         , AluOutQ103H         , Clock)
@@ -395,14 +403,23 @@ assign SelDMemWb_To_DmemQ103H           = SelDMemWbQ103H;
 // 1. Select which data should be written back to the register file AluOut or DMemRdData.
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+logic [1:0]  ByteOffset;
+logic [31:0] RdDataAfterShiftQ104H;
+assign ByteOffset = AluOutQ104H[1:0]; 
+assign RdDataAfterShiftQ104H = (ByteOffset == 2'b00) ?        q         :
+                               (ByteOffset == 2'b01) ? { 8'b0,q[31:8]}  :
+                               (ByteOffset == 2'b10) ? {16'b0,q[31:16]} :
+                               (ByteOffset == 2'b11) ? {24'b0,q[31:24]} :
+                                                              q         ;
+
 // Sign extend taking care of
-assign PostDMemRdData_From_DmemQ104H[7:0]   =  CtrlDMemByteEnQ104H[0] ? DMemRdData_From_DmemQ104H[7:0]     : 8'b0;
-assign PostDMemRdData_From_DmemQ104H[15:8]  =  CtrlDMemByteEnQ104H[1] ? DMemRdData_From_DmemQ104H[15:8]    :
-                                                     CtrlSignExtQ104H ? {8{DMemRdData_From_DmemQ104H[7]}}  : 8'b0;
-assign PostDMemRdData_From_DmemQ104H[23:16] =  CtrlDMemByteEnQ104H[2] ? DMemRdData_From_DmemQ104H[23:16]   :
-                                                     CtrlSignExtQ104H ? {8{DMemRdData_From_DmemQ104H[15]}} : 8'b0;
-assign PostDMemRdData_From_DmemQ104H[31:24] =  CtrlDMemByteEnQ104H[3] ? DMemRdData_From_DmemQ104H[31:24]   :
-                                                     CtrlSignExtQ104H ? {8{DMemRdData_From_DmemQ104H[23]}} : 8'b0;
+assign PostDMemRdData_From_DmemQ104H[7:0]   =  CtrlDMemByteEnQ104H[0] ? RdDataAfterShiftQ104H[7:0]     : 8'b0;
+assign PostDMemRdData_From_DmemQ104H[15:8]  =  CtrlDMemByteEnQ104H[1] ? RdDataAfterShiftQ104H[15:8]    :
+                                                     CtrlSignExtQ104H ? {8{RdDataAfterShiftQ104H[7]}}  : 8'b0;
+assign PostDMemRdData_From_DmemQ104H[23:16] =  CtrlDMemByteEnQ104H[2] ? RdDataAfterShiftQ104H[23:16]   :
+                                                     CtrlSignExtQ104H ? {8{RdDataAfterShiftQ104H[15]}} : 8'b0;
+assign PostDMemRdData_From_DmemQ104H[31:24] =  CtrlDMemByteEnQ104H[3] ? RdDataAfterShiftQ104H[31:24]   :
+                                                     CtrlSignExtQ104H ? {8{RdDataAfterShiftQ104H[23]}} : 8'b0;
 
 // ---- Select what write to the register file ----
 assign WrBackDataQ104H = SelDMemWbQ104H ? PostDMemRdData_From_DmemQ104H : AluOutQ104H;

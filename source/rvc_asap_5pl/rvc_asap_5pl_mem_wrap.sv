@@ -19,12 +19,12 @@ module rvc_asap_5pl_mem_wrap (
     input  logic Rst,
     input  logic [31:0] Pc,               // I_MEM
     output logic [31:0] InstructionQ101H, // I_MEM
-    input  logic [31:0] RegRdData2,       // D_MEM
-    input  logic [31:0] AluOut,           // D_MEM
-    input  logic [3:0]  CtrlDMemByteEn,   // D_MEM
-    input  logic CtrlDMemWrEn,            // D_MEM
-    input  logic SelDMemWb,               // D_MEM
-    output logic [31:0] DMemRdDataQ104H,  // D_MEM
+    input  logic [31:0] data,             // D_MEM
+    input  logic [31:0] address,          // D_MEM
+    input  logic [3:0]  byteena,          // D_MEM
+    input  logic wren,                    // D_MEM
+    input  logic rden,                    // D_MEM
+    output logic [31:0] q,                // D_MEM
     // FPGA interface inputs              
     input  logic       Button_0,          // CR_MEM
     input  logic       Button_1,          // CR_MEM
@@ -55,9 +55,9 @@ logic [31:0] PreCRMemRdDataQ104H;
 logic [31:0] PreVGAMemRdDataQ104H;
 
 always_comb begin
-    MatchVGAMemRegionQ103H = ((AluOut[VGA_MSB_REGION:VGA_LSB_REGION] >= VGA_MEM_REGION_FLOOR) && (AluOut[VGA_MSB_REGION:VGA_LSB_REGION] <= VGA_MEM_REGION_ROOF));
-    MatchDMemRegionQ103H   = MatchVGAMemRegionQ103H ? 1'b0 : (AluOut[MSB_REGION:LSB_REGION] == D_MEM_REGION);
-    MatchCRMemRegionQ103H  = MatchVGAMemRegionQ103H ? 1'b0 : (AluOut[MSB_REGION:LSB_REGION] == CR_MEM_REGION);
+    MatchVGAMemRegionQ103H = ((address[VGA_MSB_REGION:VGA_LSB_REGION] >= VGA_MEM_REGION_FLOOR) && (address[VGA_MSB_REGION:VGA_LSB_REGION] <= VGA_MEM_REGION_ROOF));
+    MatchDMemRegionQ103H   = MatchVGAMemRegionQ103H ? 1'b0 : (address[MSB_REGION:LSB_REGION] == D_MEM_REGION);
+    MatchCRMemRegionQ103H  = MatchVGAMemRegionQ103H ? 1'b0 : (address[MSB_REGION:LSB_REGION] == CR_MEM_REGION);
 end
 
 // Q103H to Q104H Flip Flops
@@ -66,10 +66,10 @@ end
 `RVC_MSFF(MatchVGAMemRegionQ104H , MatchVGAMemRegionQ103H  , Clock)
 
 // Mux between CR ,data and vga memory
-assign DMemRdDataQ104H = MatchCRMemRegionQ104H  ? PreCRMemRdDataQ104H  :
-                         MatchDMemRegionQ104H   ? PreDMemRdDataQ104H   :
-                         MatchVGAMemRegionQ104H ? PreVGAMemRdDataQ104H :
-                                                  32'b0                ;
+assign q = MatchCRMemRegionQ104H  ? PreCRMemRdDataQ104H  :
+           MatchDMemRegionQ104H   ? PreDMemRdDataQ104H   :
+           MatchVGAMemRegionQ104H ? PreVGAMemRdDataQ104H :
+                                    32'b0                ;
                                                  
 // Instantiating the rvc_asap_5pl_i_mem instruction memory
 `ifndef SIMULATION_ON // if NOT def
@@ -78,7 +78,7 @@ i_mem_4kb rvc_asap_5pl_i_mem (
 rvc_asap_5pl_i_mem rvc_asap_5pl_i_mem (
 `endif
     .clock          (Clock),
-    .address        (Pc),
+    .address        (Pc[31:2]),
     .q              (InstructionQ101H)
 );
 
@@ -87,13 +87,12 @@ rvc_asap_5pl_i_mem rvc_asap_5pl_i_mem (
 d_mem_4kb rvc_asap_5pl_d_mem (
 `else
 rvc_asap_5pl_d_mem rvc_asap_5pl_d_mem (
-`endif
     .clock          (Clock),
-    .data           (RegRdData2),
-    .address        (AluOut),
-    .byteena        (CtrlDMemByteEn),
-    .wren           (CtrlDMemWrEn && MatchDMemRegionQ103H),
-    .rden           (SelDMemWb && MatchDMemRegionQ103H),   
+    .data           (data),
+    .address        (address[31:2]),
+    .byteena        (byteena),
+    .wren           (wren && MatchDMemRegionQ103H),
+    .rden           (rden && MatchDMemRegionQ103H),
     .q              (PreDMemRdDataQ104H)
 );
 
@@ -101,11 +100,11 @@ rvc_asap_5pl_d_mem rvc_asap_5pl_d_mem (
 rvc_asap_5pl_cr_mem rvc_asap_5pl_cr_mem (
     .Clock            (Clock),
     .Rst              (Rst),
-    .RegRdData2       (RegRdData2),
-    .AluOut           (AluOut),
-    .CtrlCRMemWrEn    (CtrlDMemWrEn && MatchCRMemRegionQ103H),
-    .SelCRMemWb       (SelDMemWb && MatchCRMemRegionQ103H),
-    .CRMemRdDataQ104H (PreCRMemRdDataQ104H),
+    .data             (data),
+    .address          (address),
+    .wren             (wren && MatchCRMemRegionQ103H),
+    .rden             (rden && MatchCRMemRegionQ103H),
+    .q                (PreCRMemRdDataQ104H),
     .Button_0         (Button_0),
     .Button_1         (Button_1),
     .Switch           (Switch),
@@ -122,12 +121,12 @@ rvc_asap_5pl_cr_mem rvc_asap_5pl_cr_mem (
 rvc_asap_5pl_vga_ctrl rvc_asap_5pl_vga_ctrl (
     .CLK_50            (Clock),
     .Reset             (Rst),
-    .RegRdData2        (RegRdData2),
-    .AluOut            (AluOut),
-    .CtrlVGAMemByteEn  (CtrlDMemByteEn),
-    .CtrlVGAMemWrEn    (CtrlDMemWrEn && MatchVGAMemRegionQ103H),
-    .SelVGAMemWb       (SelDMemWb && MatchVGAMemRegionQ103H),
-    .VGAMemRdDataQ104H (PreVGAMemRdDataQ104H),
+    .data              (data),
+    .address           (address),
+    .byteena           (byteena),
+    .wren              (wren && MatchVGAMemRegionQ103H),
+    .rden              (rden && MatchVGAMemRegionQ103H),
+    .q                 (PreVGAMemRdDataQ104H),
     .RED               (RED),
     .GREEN             (GREEN),
     .BLUE              (BLUE),

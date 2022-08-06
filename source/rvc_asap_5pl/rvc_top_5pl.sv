@@ -41,12 +41,12 @@ import rvc_asap_pkg::*;
 //=========================================
 logic [31:0] Pc;                  // I_MEM
 logic [31:0] PreInstructionQ101H; // I_MEM
-logic [31:0] RegRdData2;          // D_MEM
-logic [31:0] AluOut;              // D_MEM
-logic [3:0]  CtrlDMemByteEn;      // D_MEM
-logic CtrlDMemWrEn;               // D_MEM
-logic SelDMemWb;                  // D_MEM
-logic [31:0] DMemRdDataQ104H;     // D_MEM
+logic [31:0] data;                // D_MEM
+logic [31:0] address;             // D_MEM
+logic [3:0]  byteena;             // D_MEM
+logic wren;                       // D_MEM
+logic rden;                       // D_MEM
+logic [31:0] q;                   // D_MEM
 
 // Instantiating the rvc_asap_5pl core
 rvc_asap_5pl rvc_asap_5pl (
@@ -54,12 +54,12 @@ rvc_asap_5pl rvc_asap_5pl (
     .Rst                         (Rst),
     .Pc_To_ImemQ100H             (Pc),                  // To I_MEM
     .PreInstructionQ101H         (PreInstructionQ101H), // From I_MEM
-    .RegRdData2_To_DmemQ103H     (RegRdData2),          // To D_MEM
-    .AluOut_To_DmemQ103H         (AluOut),              // To D_MEM
-    .CtrlDMemByteEn_To_DmemQ103H (CtrlDMemByteEn),      // To D_MEM
-    .CtrlDMemWrEn_To_DmemQ103H   (CtrlDMemWrEn),        // To D_MEM
-    .SelDMemWb_To_DmemQ103H      (SelDMemWb),           // To D_MEM
-    .DMemRdData_From_DmemQ104H   (DMemRdDataQ104H)      // From D_MEM
+    .data                        (data),                // To D_MEM
+    .address                     (address),             // To D_MEM
+    .byteena                     (byteena),             // To D_MEM
+    .wren                        (wren),                // To D_MEM
+    .rden                        (rden),                // To D_MEM
+    .q                           (q)                    // From D_MEM
 );
 
 // Instantiating the rvc_asap_5pl_mem_wrap memory
@@ -68,12 +68,12 @@ rvc_asap_5pl_mem_wrap rvc_asap_5pl_mem_wrap (
     .Rst              (Rst),
     .Pc               (Pc),                  // I_MEM
     .InstructionQ101H (PreInstructionQ101H), // I_MEM
-    .RegRdData2       (RegRdData2),          // D_MEM
-    .AluOut           (AluOut),              // D_MEM
-    .CtrlDMemByteEn   (CtrlDMemByteEn),      // D_MEM
-    .CtrlDMemWrEn     (CtrlDMemWrEn),        // D_MEM
-    .SelDMemWb        (SelDMemWb),           // D_MEM
-    .DMemRdDataQ104H  (DMemRdDataQ104H),     // D_MEM
+    .data             (data),                // D_MEM
+    .address          (address),             // D_MEM
+    .byteena          (byteena),             // D_MEM
+    .wren             (wren),                // D_MEM
+    .rden             (rden),                // D_MEM
+    .q                (q),                   // D_MEM
     .Button_0         (Button_0),            // CR_MEM
     .Button_1         (Button_1),            // CR_MEM
     .Switch           (Switch),              // CR_MEM
