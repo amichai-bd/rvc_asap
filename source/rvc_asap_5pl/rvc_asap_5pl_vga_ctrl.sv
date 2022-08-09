@@ -120,9 +120,6 @@ assign CurentPixelQ2 = RdDataQ2[{CountByteOffsetQ2,CountBitOffsetQ2}];
 //=========================
 `ifdef SIMULATION_ON
 rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
-`else
-rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
-`endif
     .clock_a             (CLK_50),
     .clock_b             (CLK_25),
     // Write

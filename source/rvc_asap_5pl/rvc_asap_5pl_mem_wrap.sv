@@ -87,6 +87,7 @@ rvc_asap_5pl_i_mem rvc_asap_5pl_i_mem (
 d_mem_4kb rvc_asap_5pl_d_mem (
 `else
 rvc_asap_5pl_d_mem rvc_asap_5pl_d_mem (
+`endif
     .clock          (Clock),
     .data           (data),
     .address        (address[31:2]),
