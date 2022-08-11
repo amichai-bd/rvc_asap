@@ -35,7 +35,7 @@ clear:
     addi x30, x0, 0  
     addi x31, x0, 0  
 main:
-  li    x31 , 0x3000   # VGA_MEM base address
+  li    x31 , 0x8000   # VGA_MEM base address
 
   # First Line
   li    x1 , 0b00111111001100110011001100000000

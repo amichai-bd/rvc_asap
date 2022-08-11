@@ -20,12 +20,12 @@
 #define VGA_PTR(PTR,OFF)   PTR    = (volatile int *) (VGA_MEM_BASE + OFF)
 
 /* Control registers addresses */
-#define CR_MEM_BASE 0x00002000
+#define CR_MEM_BASE 0x00007000
 #define CR_CURSOR_H (volatile int *) (CR_MEM_BASE + 0x2c)
 #define CR_CURSOR_V (volatile int *) (CR_MEM_BASE + 0x28)
 
 /* VGA defines */
-#define VGA_MEM_BASE       0x00003000
+#define VGA_MEM_BASE       0x00008000
 #define VGA_MEM_SIZE_BYTES 38400
 #define VGA_MEM_SIZE_WORDS 9600
 #define LINE               320

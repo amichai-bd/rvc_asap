@@ -1,5 +1,5 @@
 #define _ASMLANGUAGE
-#define MEM_SCRATCH_PAD  ((volatile float *) (0x00001f00))
+#define MEM_SCRATCH_PAD  ((volatile float *) (0x00004f00))
 
 float sub(float x, float y);
 

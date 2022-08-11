@@ -13,11 +13,11 @@ _start:
 
 # Resets
 reset_handler:
-  li  x31 , 0x2028 # CR_CURSOR_H Address
+  la  sp, _stack # Stack pointer
+  li  x31 , 0x7028     # CR_CURSOR_H Address
   mv  x1, x0
-  sw  x1  , 0x0(x31) # Reset CR_CURSOR_H
-  sw  x1  , 0x4(x31) # Reset CR_CURSOR_V
-  li  x2, 0x00001E00 # Stack pointer
+  sw  x1  , 0x0(x31)   # Reset CR_CURSOR_H
+  sw  x1  , 0x4(x31)   # Reset CR_CURSOR_V
   mv  x3, x1
   mv  x4, x1
   mv  x5, x1

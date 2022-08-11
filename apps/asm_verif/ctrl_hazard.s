@@ -35,7 +35,7 @@ clear:
     addi x30, x0, 0  
     addi x31, x0, 0  
 main:
-        li   x31, 0x1000 # memory offset
+        li   x31, 0x4000 # memory offset
         li   x1, 1
         li   x2, 1
         beq  x1, x2, LABEL_0     # need to jump

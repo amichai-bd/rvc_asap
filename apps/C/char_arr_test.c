@@ -2,7 +2,7 @@
 
 int main()
 {
-    volatile char *ptr = (char*) 0x00001000;
+    volatile char *ptr = (char*) 0x00004000;
 
     ptr[0] = 'a';
     ptr[1] = 'b';

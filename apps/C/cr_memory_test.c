@@ -1,10 +1,10 @@
 #define _ASMLANGUAGE
 #define WRITE_REG(REG,VAL) (*REG) = VAL
 #define READ_REG(VAL,REG)  VAL    = (*REG)
-#define MEM_SCRATCH_PAD    ((volatile int *) (0x00001000))
+#define MEM_SCRATCH_PAD    ((volatile int *) (0x00004000))
 
 /* Control registers addresses */
-#define CR_MEM_BASE 0x00002000
+#define CR_MEM_BASE 0x00007000
 #define CR_SEG7_0   (volatile int *) (CR_MEM_BASE + 0x0)
 #define CR_SEG7_1   (volatile int *) (CR_MEM_BASE + 0x4)
 #define CR_SEG7_2   (volatile int *) (CR_MEM_BASE + 0x8)

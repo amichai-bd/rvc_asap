@@ -42,7 +42,7 @@ main:
   li    x5,  0
   li    x6,  0
   li    x7,  0
-  li    x31 , 0x1000
+  li    x31 , 0x4000
   sw    x1  , 0x0(x31) # -> FAFAFAFAh
   sh    x1  , 0x4(x31) # -> 0000FAFAh
   sb    x1  , 0x9(x31) # -> 0000FA00h

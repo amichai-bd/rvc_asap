@@ -36,8 +36,8 @@ clear:
     addi x31, x0, 0  
 main:
   li    x1,  0xFFFFFFFF
-  li    x30 , 0x1000    # D_MEM memory region
-  li    x31 , 0x2000    # CR memory region
+  li    x30 , 0x4000    # D_MEM memory region
+  li    x31 , 0x7000    # CR memory region
   sw    x1  , 0x0(x31)  # -> FFFFFFFFh to CR_SEG7_0
   sw    x1  , 0x4(x31)  # -> FFFFFFFFh to CR_SEG7_1
   sw    x1  , 0x8(x31)  # -> FFFFFFFFh to CR_SEG7_2
@@ -64,16 +64,16 @@ load_from_memory:
   lw    x12  , 0x24(x31) # -> XXXXXXXXh to x12
 
 store_results_in_D_MEM:
-  sw    x3   , 0x0(x30)  # -> 000000FFh to 0x00001000
-  sw    x4   , 0x4(x30)  # -> 000000FFh to 0x00001004
-  sw    x5   , 0x8(x30)  # -> 000000FFh to 0x00001008
-  sw    x6   , 0xc(x30)  # -> 000000FFh to 0x0000100c
-  sw    x7   , 0x10(x30) # -> 000000FFh to 0x00001010
-  sw    x8   , 0x14(x30) # -> 000000FFh to 0x00001014
-  sw    x9   , 0x18(x30) # -> 000003FFh to 0x00001018
-  sw    x10  , 0x1c(x30) # -> XXXXXXXXh to 0x0000101C
-  sw    x11  , 0x20(x30) # -> XXXXXXXXh to 0x00001020
-  sw    x12  , 0x24(x30) # -> XXXXXXXXh to 0x00001024
+  sw    x3   , 0x0(x30)  # -> 000000FFh to 0x00004000
+  sw    x4   , 0x4(x30)  # -> 000000FFh to 0x00004004
+  sw    x5   , 0x8(x30)  # -> 000000FFh to 0x00004008
+  sw    x6   , 0xc(x30)  # -> 000000FFh to 0x0000400c
+  sw    x7   , 0x10(x30) # -> 000000FFh to 0x00004010
+  sw    x8   , 0x14(x30) # -> 000000FFh to 0x00004014
+  sw    x9   , 0x18(x30) # -> 000003FFh to 0x00004018
+  sw    x10  , 0x1c(x30) # -> XXXXXXXXh to 0x0000401C
+  sw    x11  , 0x20(x30) # -> XXXXXXXXh to 0x00004020
+  sw    x12  , 0x24(x30) # -> XXXXXXXXh to 0x00004024
 
 eot:
     nop

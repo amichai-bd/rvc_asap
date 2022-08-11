@@ -1,4 +1,4 @@
-#define MEM_SCRATCH_PAD    ((volatile int *) (0x00001000))
+#define MEM_SCRATCH_PAD    ((volatile int *) (0x00004000))
 
 /* Write functions */
 extern void cr_seg7_0_write(unsigned int val);

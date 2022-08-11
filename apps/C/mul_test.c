@@ -1,5 +1,5 @@
 #define _ASMLANGUAGE
-#define MEM_SCRATCH_PAD  ((volatile int *) (0x00001000))
+#define MEM_SCRATCH_PAD  ((volatile int *) (0x00004000))
 
 int  mul(int x, int y);
 
