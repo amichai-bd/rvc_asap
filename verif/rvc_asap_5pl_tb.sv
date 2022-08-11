@@ -64,7 +64,8 @@ initial begin: test_seq
     force rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem = DMem; //XMR - cross module reference
     # 10
     release rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem;
-    #1000000 $finish;
+    #1000000 
+    end_tb("====TEST TIME OUT====");
 end: test_seq
 
 //=========================================
