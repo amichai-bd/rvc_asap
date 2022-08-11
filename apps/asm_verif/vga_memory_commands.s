@@ -36,27 +36,27 @@ clear:
     addi x31, x0, 0  
 main:
   li    x1,  0xFFFFFFF0
-  li    x30 , 0x1000    # D_MEM memory region
-  li    x31 , 0x3000    # VGA_MEM memory region
-  sw    x1  , 0x0(x31)  # -> FFFFFFF0h to 0x3000
+  li    x30 , 0x4000    # D_MEM memory region
+  li    x31 , 0x8000    # VGA_MEM memory region
+  sw    x1  , 0x0(x31)  # -> FFFFFFF0h to 0x8000
   li    x1,  0xFFFFFFF1
-  sw    x1  , 0x4(x31)  # -> FFFFFFF1h to 0x3004
+  sw    x1  , 0x4(x31)  # -> FFFFFFF1h to 0x8004
   li    x1,  0xFFFFFFF2
-  sw    x1  , 0x8(x31)  # -> FFFFFFF2h to 0x3008
+  sw    x1  , 0x8(x31)  # -> FFFFFFF2h to 0x8008
   li    x1,  0xFFFFFFF3
-  sw    x1  , 0xc(x31)  # -> FFFFFFF3h to 0x300c
+  sw    x1  , 0xc(x31)  # -> FFFFFFF3h to 0x800c
   li    x1,  0xFFFFFFF4
-  sw    x1  , 0x10(x31) # -> FFFFFFF4h to 0x3010
+  sw    x1  , 0x10(x31) # -> FFFFFFF4h to 0x8010
   li    x1,  0xFFFFFFF5
-  sw    x1  , 0x14(x31) # -> FFFFFFF5h to 0x3014
+  sw    x1  , 0x14(x31) # -> FFFFFFF5h to 0x8014
   li    x1,  0xFFFFFFF6
-  sw    x1  , 0x18(x31) # -> FFFFFFF6h to 0x3018
+  sw    x1  , 0x18(x31) # -> FFFFFFF6h to 0x8018
   li    x1,  0xFFFFFFF7
-  sw    x1  , 0x1c(x31) # -> FFFFFFF7h to 0x301c
+  sw    x1  , 0x1c(x31) # -> FFFFFFF7h to 0x801c
   li    x1,  0xFFFFFFF8
-  sw    x1  , 0x20(x31) # -> FFFFFFF8h to 0x3020
+  sw    x1  , 0x20(x31) # -> FFFFFFF8h to 0x8020
   li    x1,  0xFFFFFFF9
-  sw    x1  , 0x24(x31) # -> FFFFFFF9h to 0x3024
+  sw    x1  , 0x24(x31) # -> FFFFFFF9h to 0x8024
 
 load_from_memory:
   lw    x3   , 0x0(x31)  # -> FFFFFFF0h to x3
@@ -71,16 +71,16 @@ load_from_memory:
   lw    x12  , 0x24(x31) # -> FFFFFFF9h to x12
 
 store_results_in_D_MEM:
-  sw    x3   , 0x0(x30)  # -> FFFFFFF0h to 0x00001000
-  sw    x4   , 0x4(x30)  # -> FFFFFFF1h to 0x00001004
-  sw    x5   , 0x8(x30)  # -> FFFFFFF2h to 0x00001008
-  sw    x6   , 0xc(x30)  # -> FFFFFFF3h to 0x0000100c
-  sw    x7   , 0x10(x30) # -> FFFFFFF4h to 0x00001010
-  sw    x8   , 0x14(x30) # -> FFFFFFF5h to 0x00001014
-  sw    x9   , 0x18(x30) # -> FFFFFFF6h to 0x00001018
-  sw    x10  , 0x1c(x30) # -> FFFFFFF7h to 0x0000101C
-  sw    x11  , 0x20(x30) # -> FFFFFFF8h to 0x00001020
-  sw    x12  , 0x24(x30) # -> FFFFFFF9h to 0x00001024
+  sw    x3   , 0x0(x30)  # -> FFFFFFF0h to 0x00004000
+  sw    x4   , 0x4(x30)  # -> FFFFFFF1h to 0x00004004
+  sw    x5   , 0x8(x30)  # -> FFFFFFF2h to 0x00004008
+  sw    x6   , 0xc(x30)  # -> FFFFFFF3h to 0x0000400c
+  sw    x7   , 0x10(x30) # -> FFFFFFF4h to 0x00004010
+  sw    x8   , 0x14(x30) # -> FFFFFFF5h to 0x00004014
+  sw    x9   , 0x18(x30) # -> FFFFFFF6h to 0x00004018
+  sw    x10  , 0x1c(x30) # -> FFFFFFF7h to 0x0000401C
+  sw    x11  , 0x20(x30) # -> FFFFFFF8h to 0x00004020
+  sw    x12  , 0x24(x30) # -> FFFFFFF9h to 0x00004024
 
 eot:
     nop

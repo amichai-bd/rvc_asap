@@ -120,12 +120,12 @@ rvc_top_5pl rvc_top_5pl (
 //================================================================================
 
 // define data memory sizes
-parameter D_MEM_OFFSET     = 'h1000;  
+parameter D_MEM_OFFSET     = D_MEM_REGION_FLOOR;  
 parameter MSB_D_MEM        = 11;
-parameter SIZE_D_MEM       = 2**(MSB_D_MEM + 1);
+parameter SIZE_D_MEM       = D_MEM_REGION_ROOF - D_MEM_REGION_FLOOR + 1; 
 
 // define VGA memory sizes
-parameter VGA_MEM_OFFSET     = 'h3000;  
+parameter VGA_MEM_OFFSET     = VGA_MEM_REGION_FLOOR;  
 parameter SIZE_VGA_MEM       = 38400;
 
 task end_tb;

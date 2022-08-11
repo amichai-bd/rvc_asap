@@ -35,7 +35,7 @@ clear:
     addi x30, x0, 0  
     addi x31, x0, 0  
 main:
-        li   x31 , 0x1000 # memory offset
+        li   x31 , 0x4000 # memory offset
         addi x1, x0, 5
         add  x2, x1, x1
         add  x3, x1, x1
