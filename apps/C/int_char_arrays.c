@@ -1,4 +1,5 @@
 #define _ASMLANGUAGE
+#include "../defines/rvc_defines.h"
 #include <string.h>
 
 #define SIZE 40
@@ -77,7 +78,7 @@ char *rvc_strcat(char *s1, const char *s2)
 
 int main()
 {
-  volatile int *ptr = (int*) 0x00004000;
+  volatile int *ptr = (int*) D_MEM_BASE;
 
   int a = 0x73;
   char c = (char) a;

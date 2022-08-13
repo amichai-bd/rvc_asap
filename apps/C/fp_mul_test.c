@@ -1,5 +1,6 @@
 #define _ASMLANGUAGE
-#define MEM_SCRATCH_PAD  ((volatile float *) (0x00004f00))
+#include "../defines/rvc_defines.h"
+#define MEM_SCRATCH_PAD  ((volatile float *) (FP_RESULTS))
 
 float mul(float x, float y);
 

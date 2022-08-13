@@ -38,6 +38,12 @@ parameter CR_MEM_REGION_ROOF   = CR_MEM_MSB             ;
 parameter VGA_MEM_REGION_FLOOR = CR_MEM_REGION_ROOF + 1 ;
 parameter VGA_MEM_REGION_ROOF  = VGA_MEM_MSB            ;
 
+// define data memory sizes
+parameter SIZE_D_MEM       = D_MEM_REGION_ROOF - D_MEM_REGION_FLOOR + 1; 
+
+// define VGA memory sizes
+parameter SIZE_VGA_MEM       = 38400;
+
 typedef enum logic [2:0] {
     U_TYPE = 3'b000 , 
     I_TYPE = 3'b001 ,  
