@@ -26,6 +26,7 @@ main(){
 	export TARGET="./target"
 	export GOLDEN_IMAGE="./verif/golden_image"
     export APPS_LIB_ELF="./apps/library/out/bin"
+    export FPGA_MEMHEX="./FPGA/mem_hex"
 
 	#==== Check build flags ====#
     sc=0
@@ -188,18 +189,19 @@ main(){
 		do	
 			if [ "$test" == "$clean_file_name" ] || [ "$test" == "all" ] || [ "$test" == "ALL" ] || [ $# -eq 1 ]; then	
     			rv_objcopy --srec-len 1 --output-target=verilog $APPS_ELF/$file_name $APPS_SV/$clean_file_name-inst_mem_rv32i.sv
-    			rv_objcopy --srec-len 1 --output-target=ihex $APPS_ELF/$file_name $APPS_SV/$clean_file_name-ihex.hex
+                python3 $APPS/hex2mif.py $APPS_SV/$clean_file_name-inst_mem_rv32i.sv $FPGA_MEMHEX/instruction_mem.mif 0
     			rv_objdump -gd -M numeric $APPS_ELF/$file_name > $APPS_ELF_TXT/$file_name.txt  
 				#==== 3.2 Split the .sv file to instruction memory and data memory ====# 
-                if grep -q @00001000 "$APPS_SV/$clean_file_name-inst_mem_rv32i.sv"; then
+                if grep -q @00004000 "$APPS_SV/$clean_file_name-inst_mem_rv32i.sv"; then
                    c=`cat $APPS_SV/$clean_file_name-inst_mem_rv32i.sv | wc -l`
-                   y=`cat $APPS_SV/$clean_file_name-inst_mem_rv32i.sv | grep -n @00001000 | cut -d ':' -f 1 |tail -n 1`
+                   y=`cat $APPS_SV/$clean_file_name-inst_mem_rv32i.sv | grep -n @00004000 | cut -d ':' -f 1 |tail -n 1`
                    (( y-- ))
                    cat $APPS_SV/$clean_file_name-inst_mem_rv32i.sv | tail -n $(( c-y )) > $APPS_SV/$clean_file_name-data_mem_rv32i.sv
                    cat $APPS_SV/$clean_file_name-inst_mem_rv32i.sv | head -n $(( y )) > $APPS_SV/$clean_file_name-inst_mem_rv32i.sv
                 else
-                   echo "@00001000" > $APPS_SV/$clean_file_name-data_mem_rv32i.sv
+                   echo "@00004000" > $APPS_SV/$clean_file_name-data_mem_rv32i.sv
                 fi
+                python3 $APPS/hex2mif.py $APPS_SV/$clean_file_name-data_mem_rv32i.sv $FPGA_MEMHEX/data_mem.mif 4000
                 if [[ ! -d "./target/$clean_file_name" ]]; then
                     mkdir ./target/$clean_file_name
                 fi  

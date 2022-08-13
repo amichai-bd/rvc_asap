@@ -21,33 +21,31 @@ module top(
 logic [3:0] NextRed;
 logic [3:0] NextGreen;
 logic [3:0] NextBlue;
-	 logic Rst;
-	 assign Rst = ~BUTTON[0];
+logic Rst;
+logic Button_0;
+logic Button_1;
+assign Rst = ~BUTTON[0];
+assign Button_0 = ~BUTTON[0];
+assign Button_1 = ~BUTTON[1];
 // Instantiating the rvc_top_5pl module
 rvc_top_5pl rvc_top_5pl (
     .Clock    (CLK_50),
     .Rst      (Rst),
-    .Button_0 (BUTTON[0]), // CR_MEM
-    .Button_1 (BUTTON[1]), // CR_MEM
-    .Switch   (SW),   // CR_MEM
-    .SEG7_0   (HEX0),   // CR_MEM
-    .SEG7_1   (HEX1),   // CR_MEM
-    .SEG7_2   (HEX2),   // CR_MEM
-    .SEG7_3   (HEX3),   // CR_MEM
-    .SEG7_4   (HEX4),   // CR_MEM
-    .SEG7_5   (HEX5),   // CR_MEM
-    .LED      (LED),      // CR_MEM
-    .RED      (NextRed),//RED),
-    .GREEN    (NextGreen),//GREEN),
-    .BLUE     (NextBlue),//BLUE),
+    .Button_0 (Button_0), // CR_MEM
+    .Button_1 (Button_1), // CR_MEM
+    .Switch   (SW),        // CR_MEM
+    .SEG7_0   (HEX0),      // CR_MEM
+    .SEG7_1   (HEX1),      // CR_MEM
+    .SEG7_2   (HEX2),      // CR_MEM
+    .SEG7_3   (HEX3),      // CR_MEM
+    .SEG7_4   (HEX4),      // CR_MEM
+    .SEG7_5   (HEX5),      // CR_MEM
+    .LED      (LED),       // CR_MEM
+    .RED      (RED),
+    .GREEN    (GREEN),
+    .BLUE     (BLUE),
     .h_sync   (h_sync),
     .v_sync   (v_sync)
 );
-
-
-assign RED   = NextRed;     //& SW[3:0];   just to play with the display color
-assign GREEN = NextGreen;   //& SW[6:3];
-assign BLUE  = NextBlue;    //& SW[9:6];
-
 
 endmodule

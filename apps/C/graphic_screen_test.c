@@ -1,14 +1,13 @@
+#include "../defines/rvc_defines.h"
 #define WRITE_REG(REG,VAL) (*REG) = VAL
 #define READ_REG(VAL,REG)  VAL    = (*REG)
 #define VGA_PTR(PTR,OFF)   PTR    = (volatile int *) (VGA_MEM_BASE + OFF)
 
 /* Control registers addresses */
-#define CR_MEM_BASE 0x00002000
 #define CR_CURSOR_H (volatile int *) (CR_MEM_BASE + 0x2c)
 #define CR_CURSOR_V (volatile int *) (CR_MEM_BASE + 0x28)
 
 /* VGA defines */
-#define VGA_MEM_BASE       0x00003000
 #define VGA_MEM_SIZE_BYTES 38400
 #define VGA_MEM_SIZE_WORDS 9600
 #define LINE               320
@@ -214,23 +213,22 @@ void clear_screen()
 
 int main()
 {
-    int i = 0;
+    // int i = 0;
+    // for(i = 0 ; i < 1 ; i++)
+    // {
+    //     rvc_printf("WE ARE THE PEOPLE THAT RULE THE WORLD.\n");
+    //     rvc_printf("A FORCE RUNNING IN EVERY BOY AND GIRL.\n");
+    //     rvc_printf("ALL REJOICING IN THE WORLD, TAKE ME NOW WE CAN TRY.\n");
+    //     rvc_printf("0123456789\n");
+    // }
 
-    for(i = 0 ; i < 1 ; i++)
-    {
-        rvc_printf("WE ARE THE PEOPLE THAT RULE THE WORLD.\n");
-        rvc_printf("A FORCE RUNNING IN EVERY BOY AND GIRL.\n");
-        rvc_printf("ALL REJOICING IN THE WORLD, TAKE ME NOW WE CAN TRY.\n");
-        rvc_printf("0123456789\n");
-    }
-
-    draw_symbol(0, 10, 15);
-    draw_symbol(1, 10, 16);
-    draw_symbol(2, 10, 17);
-    draw_symbol(3, 10, 18);
-    draw_symbol(4, 10, 19);
-
-    while(1){};
+    while(1){
+        draw_symbol(0, 10, 15);
+        draw_symbol(1, 10, 16);
+        draw_symbol(2, 10, 17);
+        draw_symbol(3, 10, 18);
+        draw_symbol(4, 10, 19);
+    };
 
     return 0;
 }

@@ -54,7 +54,7 @@ main:
   sltiu x17, x3, 2  # x3<2          -> 0
   slti  x18, x4, 5  # x4<5          -> 1
 store_to_memory:
-    li   x31 , 0x1000
+    li   x31 , 0x4000
     sw   x1  , 0x0(x31)
     sw   x2  , 0x4(x31)
     sw   x3  , 0x8(x31)

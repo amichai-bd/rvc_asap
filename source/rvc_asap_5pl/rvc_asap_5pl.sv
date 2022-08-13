@@ -67,14 +67,16 @@ logic [6:0]         Funct7Q101H;
 logic [4:0]         PreRegSrc1Q101H, RegSrc1Q101H, RegSrc1Q102H; 
 logic [4:0]         PreRegSrc2Q101H, RegSrc2Q101H, RegSrc2Q102H;
 logic [4:0]         RegDstQ101H, RegDstQ102H, RegDstQ103H, RegDstQ104H;
-logic [3:0]         CtrlDMemByteEnQ101H, CtrlDMemByteEnQ102H, CtrlDMemByteEnQ103H, CtrlDMemByteEnQ104H;
+logic [3:0]         CtrlDMemByteEnQ101H, CtrlDMemByteEnQ102H, CtrlDMemByteEnQ103H;
 logic               CtrlDMemWrEnQ101H, CtrlDMemWrEnQ102H, CtrlDMemWrEnQ103H;
 logic               CtrlSignExtQ101H, CtrlSignExtQ102H, CtrlSignExtQ103H, CtrlSignExtQ104H;
 logic               CtrlLuiQ101H, CtrlLuiQ102H;
 logic               CtrlRegWrEnQ101H, CtrlRegWrEnQ102H, CtrlRegWrEnQ103H, CtrlRegWrEnQ104H;
 logic               SelAluPcQ101H, SelAluPcQ102H;
 logic               SelAluImmQ101H, SelAluImmQ102H;
-
+logic [1:0]         ByteOffset;
+logic [31:0]        RdDataAfterShiftQ104H;
+logic [3:0]         byteenaQ104H, byteena_restore;
 // Hazard unit detection ctrl
 logic               PcEnQ101H;
 logic [31:0]        PreviousInstructionQ101H;
@@ -387,7 +389,7 @@ assign rden    = SelDMemWbQ103H;
 `RVC_MSFF(RegDstQ104H         , RegDstQ103H         , Clock)
 `RVC_MSFF(CtrlRegWrEnQ104H    , CtrlRegWrEnQ103H    , Clock)
 `RVC_MSFF(CtrlSignExtQ104H    , CtrlSignExtQ103H    , Clock)
-`RVC_MSFF(CtrlDMemByteEnQ104H , CtrlDMemByteEnQ103H , Clock)
+`RVC_MSFF(byteenaQ104H        , byteena             , Clock)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //    ____  __     __   _____   _        ______          ____    __    ___    _  _     _    _ 
@@ -403,9 +405,15 @@ assign rden    = SelDMemWbQ103H;
 // 1. Select which data should be written back to the register file AluOut or DMemRdData.
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-logic [1:0]  ByteOffset;
-logic [31:0] RdDataAfterShiftQ104H;
 assign ByteOffset = AluOutQ104H[1:0]; 
+
+always_comb begin
+byteena_restore       = (ByteOffset == 2'b01 ) ? { 1'b0,byteenaQ104H[3:1] } : // we have done 1 shift - so 1 shift right
+                        (ByteOffset == 2'b10 ) ? { 2'b0,byteenaQ104H[3:2] } : // we have done 2 shift - so 2 shift right
+                        (ByteOffset == 2'b11 ) ? { 3'b0,byteenaQ104H[3]   } : // we have done 3 shift - so 3 shift right
+                                                        byteenaQ104H;         // we don't shifted
+end
+
 assign RdDataAfterShiftQ104H = (ByteOffset == 2'b00) ?        q         :
                                (ByteOffset == 2'b01) ? { 8'b0,q[31:8]}  :
                                (ByteOffset == 2'b10) ? {16'b0,q[31:16]} :
@@ -413,13 +421,13 @@ assign RdDataAfterShiftQ104H = (ByteOffset == 2'b00) ?        q         :
                                                               q         ;
 
 // Sign extend taking care of
-assign PostDMemRdData_From_DmemQ104H[7:0]   =  CtrlDMemByteEnQ104H[0] ? RdDataAfterShiftQ104H[7:0]     : 8'b0;
-assign PostDMemRdData_From_DmemQ104H[15:8]  =  CtrlDMemByteEnQ104H[1] ? RdDataAfterShiftQ104H[15:8]    :
-                                                     CtrlSignExtQ104H ? {8{RdDataAfterShiftQ104H[7]}}  : 8'b0;
-assign PostDMemRdData_From_DmemQ104H[23:16] =  CtrlDMemByteEnQ104H[2] ? RdDataAfterShiftQ104H[23:16]   :
-                                                     CtrlSignExtQ104H ? {8{RdDataAfterShiftQ104H[15]}} : 8'b0;
-assign PostDMemRdData_From_DmemQ104H[31:24] =  CtrlDMemByteEnQ104H[3] ? RdDataAfterShiftQ104H[31:24]   :
-                                                     CtrlSignExtQ104H ? {8{RdDataAfterShiftQ104H[23]}} : 8'b0;
+assign PostDMemRdData_From_DmemQ104H[7:0]   =  byteena_restore[0] ? RdDataAfterShiftQ104H[7:0]     : 8'b0;
+assign PostDMemRdData_From_DmemQ104H[15:8]  =  byteena_restore[1] ? RdDataAfterShiftQ104H[15:8]    :
+                                                    CtrlSignExtQ104H ? {8{PostDMemRdData_From_DmemQ104H[7]}}  : 8'b0;
+assign PostDMemRdData_From_DmemQ104H[23:16] =  byteena_restore[2] ? RdDataAfterShiftQ104H[23:16]   :
+                                                    CtrlSignExtQ104H ? {8{PostDMemRdData_From_DmemQ104H[15]}} : 8'b0;
+assign PostDMemRdData_From_DmemQ104H[31:24] =  byteena_restore[3] ? RdDataAfterShiftQ104H[31:24]   :
+                                                    CtrlSignExtQ104H ? {8{PostDMemRdData_From_DmemQ104H[23]}} : 8'b0;
 
 // ---- Select what write to the register file ----
 assign WrBackDataQ104H = SelDMemWbQ104H ? PostDMemRdData_From_DmemQ104H : AluOutQ104H;

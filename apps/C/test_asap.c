@@ -1,5 +1,6 @@
 #define _ASMLANGUAGE
-#define MEM_SCRATCH_PAD  ((volatile int *) (0x00001000))
+#include "../defines/rvc_defines.h"
+#define MEM_SCRATCH_PAD  ((volatile int *) (D_MEM_BASE))
 
 int  gcd(int a, int b);
 static int  fibonacci(unsigned n);

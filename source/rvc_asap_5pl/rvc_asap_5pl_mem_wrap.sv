@@ -55,9 +55,9 @@ logic [31:0] PreCRMemRdDataQ104H;
 logic [31:0] PreVGAMemRdDataQ104H;
 
 always_comb begin
-    MatchVGAMemRegionQ103H = ((address[VGA_MSB_REGION:VGA_LSB_REGION] >= VGA_MEM_REGION_FLOOR) && (address[VGA_MSB_REGION:VGA_LSB_REGION] <= VGA_MEM_REGION_ROOF));
-    MatchDMemRegionQ103H   = MatchVGAMemRegionQ103H ? 1'b0 : (address[MSB_REGION:LSB_REGION] == D_MEM_REGION);
-    MatchCRMemRegionQ103H  = MatchVGAMemRegionQ103H ? 1'b0 : (address[MSB_REGION:LSB_REGION] == CR_MEM_REGION);
+    MatchVGAMemRegionQ103H = ((address[VGA_MSB_REGION:LSB_REGION] >= VGA_MEM_REGION_FLOOR) && (address[VGA_MSB_REGION:LSB_REGION] <= VGA_MEM_REGION_ROOF));
+    MatchDMemRegionQ103H   = MatchVGAMemRegionQ103H ? 1'b0 : ((address[MSB_REGION:LSB_REGION] >= D_MEM_REGION_FLOOR) && (address[MSB_REGION:LSB_REGION] <= D_MEM_REGION_ROOF));
+    MatchCRMemRegionQ103H  = MatchVGAMemRegionQ103H ? 1'b0 : ((address[MSB_REGION:LSB_REGION] >= CR_MEM_REGION_FLOOR) && (address[MSB_REGION:LSB_REGION] <= CR_MEM_REGION_ROOF));
 end
 
 // Q103H to Q104H Flip Flops

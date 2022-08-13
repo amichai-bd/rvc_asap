@@ -84,6 +84,7 @@ end
 
 // This is the load
 always_comb begin
+    pre_q = 32'b0;
     if(rden) begin
         unique casez (address) // address holds the offset
             // ---- RW memory ----
