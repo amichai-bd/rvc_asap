@@ -1,8 +1,9 @@
 #define _ASMLANGUAGE
+#include "../defines/rvc_defines.h"
 
 int main()
 {
-    volatile char *ptr = (char*) 0x00004000;
+    volatile char *ptr = (char*) D_MEM_BASE;
 
     ptr[0] = 'a';
     ptr[1] = 'b';

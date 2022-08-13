@@ -120,9 +120,6 @@ assign CurentPixelQ2 = RdDataQ2[{CountByteOffsetQ2,CountBitOffsetQ2}];
 //=========================
 `ifdef SIMULATION_ON
 rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
-`else
-rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
-`endif
     .clock_a             (CLK_50),
     .clock_b             (CLK_25),
     // Write
@@ -139,27 +136,22 @@ rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
 );
 `else
 vga_mem rvc_asap_5pl_vga_mem(
-	//CORE interface
-    .clock_a        (CLK_50),
-    .wren_a         (CtrlVGAMemWrEn),	
-    .byteena_a      (CtrlVGAMemByteEn),
-    .address_a      (AluOut),
-    .data_a         (RegRdData2),
-    .rden_a         (SelVGAMemWb),	
-    .q_a            (VGAMemRdDataQ104H),
-    //VGA interface
-    .clock_b        (CLK_25),
-    .wren_b         (1'b0),
-    .address_b      (WordOffsetQ1),
-    .data_b         ('0),
-    .rden_b         (1'b1),
-    .q_b            (RdDataQ2)
-    );
+    .clock_a             (CLK_50),
+    .clock_b             (CLK_25),
+    // Write
+    .data_a              (data),
+    .address_a           (address[31:2]),
+    .byteena_a           (byteena),
+    .wren_a              (wren),
+    // Read from core
+    .rden_a              (rden),
+    .q_a                 (q),
+    // Read from vga controller
+    .address_b           (WordOffsetQ1), // Word offset (not Byte)
+    .q_b                 (RdDataQ2)
+);
 `endif
 
-//assign NextRED   = (inDisplayArea) ? 4'b1111 : '0;//{4{CurentPixelQ2}} : '0;
-//assign NextGREEN = (inDisplayArea) ? 4'b1111 : '0;//{4{CurentPixelQ2}} : '0;
-//assign NextBLUE  = (inDisplayArea) ? 4'b1111 : '0;//{4{CurentPixelQ2}} : '0;
 assign NextRED   = (inDisplayArea) ? {4{CurentPixelQ2}} : '0;
 assign NextGREEN = (inDisplayArea) ? {4{CurentPixelQ2}} : '0;
 assign NextBLUE  = (inDisplayArea) ? {4{CurentPixelQ2}} : '0;

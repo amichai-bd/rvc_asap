@@ -67,7 +67,7 @@ logic [6:0]         Funct7Q101H;
 logic [4:0]         PreRegSrc1Q101H, RegSrc1Q101H, RegSrc1Q102H; 
 logic [4:0]         PreRegSrc2Q101H, RegSrc2Q101H, RegSrc2Q102H;
 logic [4:0]         RegDstQ101H, RegDstQ102H, RegDstQ103H, RegDstQ104H;
-logic [3:0]         CtrlDMemByteEnQ101H, CtrlDMemByteEnQ102H, CtrlDMemByteEnQ103H, CtrlDMemByteEnQ104H;
+logic [3:0]         CtrlDMemByteEnQ101H, CtrlDMemByteEnQ102H, CtrlDMemByteEnQ103H;
 logic               CtrlDMemWrEnQ101H, CtrlDMemWrEnQ102H, CtrlDMemWrEnQ103H;
 logic               CtrlSignExtQ101H, CtrlSignExtQ102H, CtrlSignExtQ103H, CtrlSignExtQ104H;
 logic               CtrlLuiQ101H, CtrlLuiQ102H;
@@ -389,7 +389,6 @@ assign rden    = SelDMemWbQ103H;
 `RVC_MSFF(RegDstQ104H         , RegDstQ103H         , Clock)
 `RVC_MSFF(CtrlRegWrEnQ104H    , CtrlRegWrEnQ103H    , Clock)
 `RVC_MSFF(CtrlSignExtQ104H    , CtrlSignExtQ103H    , Clock)
-`RVC_MSFF(CtrlDMemByteEnQ104H , CtrlDMemByteEnQ103H , Clock)
 `RVC_MSFF(byteenaQ104H        , byteena             , Clock)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

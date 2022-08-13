@@ -120,15 +120,6 @@ rvc_top_5pl rvc_top_5pl (
 //===============================  End-Of-Test  ==================================
 //================================================================================
 
-// define data memory sizes
-parameter D_MEM_OFFSET     = D_MEM_REGION_FLOOR;  
-parameter MSB_D_MEM        = 11;
-parameter SIZE_D_MEM       = D_MEM_REGION_ROOF - D_MEM_REGION_FLOOR + 1; 
-
-// define VGA memory sizes
-parameter VGA_MEM_OFFSET     = VGA_MEM_REGION_FLOOR;  
-parameter SIZE_VGA_MEM       = 38400;
-
 task end_tb;
     input string msg;
     integer fd, fd1;
@@ -138,10 +129,10 @@ task end_tb;
     if (fd) $display("File was open succesfully : %0d", fd);
     else $display("File was not open succesfully : %0d", fd);
     for (i = 0 ; i < SIZE_D_MEM; i = i+4) begin  
-        $fwrite(fd,"Offset %08x : %02x%02x%02x%02x\n",i+D_MEM_OFFSET, rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem[i+D_MEM_OFFSET+3],
-                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem[i+D_MEM_OFFSET+2],
-                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem[i+D_MEM_OFFSET+1],
-                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem[i+D_MEM_OFFSET]);
+        $fwrite(fd,"Offset %08x : %02x%02x%02x%02x\n",i+D_MEM_REGION_FLOOR, rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem[i+D_MEM_REGION_FLOOR+3],
+                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem[i+D_MEM_REGION_FLOOR+2],
+                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem[i+D_MEM_REGION_FLOOR+1],
+                                                                      rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_d_mem.DMem[i+D_MEM_REGION_FLOOR]);
     end
     $fclose(fd);
 
@@ -153,7 +144,7 @@ task end_tb;
         for (j = 0 ; j < 4; j = j+1) begin // Bytes
             for (k = 0 ; k < 320; k = k+4) begin // Words
                 for (l = 0 ; l < 8; l = l+1) begin // Bits
-                    if (rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_vga_ctrl.rvc_asap_5pl_vga_mem.VGAMem[VGA_MEM_OFFSET+k+j+i][l]) $fwrite(fd1,"X");
+                    if (rvc_asap_5pl_tb.rvc_top_5pl.rvc_asap_5pl_mem_wrap.rvc_asap_5pl_vga_ctrl.rvc_asap_5pl_vga_mem.VGAMem[VGA_MEM_REGION_FLOOR+k+j+i][l]) $fwrite(fd1,"X");
                     else $fwrite(fd1," ");
                 end        
             end 
