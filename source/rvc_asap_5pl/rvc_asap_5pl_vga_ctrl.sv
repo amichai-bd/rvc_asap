@@ -51,7 +51,7 @@ logic [8:0]  LineQ0, LineQ1;
 logic [31:0] RdDataQ2;
 logic [4:0]  SampleReset;
 logic [6:0]  HEX; 
-logic [12:0] WordOffsetQ1;
+logic [13:0] WordOffsetQ1;
 logic [2:0]  CountBitOffsetQ1, CountBitOffsetQ2 ;
 logic [1:0]  CountByteOffsetQ1, CountByteOffsetQ2;
 logic [7:0]  CountWordOffsetQ1;
@@ -124,7 +124,7 @@ rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
     .clock_b             (CLK_25),
     // Write
     .data_a              (data),
-    .address_a           (address[31:2]),
+    .address_a           (address[13:2]),
     .byteena_a           (byteena),
     .wren_a              (wren),
     // Read from core
@@ -140,7 +140,7 @@ vga_mem rvc_asap_5pl_vga_mem(
     .clock_b             (CLK_25),
     // Write
     .data_a              (data),
-    .address_a           (address[31:2]),
+    .address_a           (address[13:2]),
     .byteena_a           (byteena),
     .wren_a              (wren),
     // Read from core

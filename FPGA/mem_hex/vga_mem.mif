@@ -1,0 +1,11 @@
+-- http://srecord.sourceforge.net/
+-- SUPPOSE! be similar to->
+-- Generated automatically by srec_cat -o --mif
+--
+DEPTH=10;
+WIDTH=32;
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+CONTENT BEGIN
+0000: FFFFFFFF;
+END;
