@@ -1,6 +1,5 @@
 #define _ASMLANGUAGE
 #include "../defines/rvc_defines.h"
-#define MEM_SCRATCH_PAD  ((volatile float *) (FP_RESULTS))
 
 float div(float x, float y);
 
@@ -12,10 +11,10 @@ int main()
     float d = -28.49954;
 
     // div
-    MEM_SCRATCH_PAD[0]  = div(a,b); // + +
-    MEM_SCRATCH_PAD[1]  = div(c,b); // - +
-    MEM_SCRATCH_PAD[2]  = div(a,d); // + -
-    MEM_SCRATCH_PAD[3]  = div(c,d); // - -
+    MEM_SCRATCH_PAD_FP[0]  = div(a,b); // + +
+    MEM_SCRATCH_PAD_FP[1]  = div(c,b); // - +
+    MEM_SCRATCH_PAD_FP[2]  = div(a,d); // + -
+    MEM_SCRATCH_PAD_FP[3]  = div(c,d); // - -
 
     return 0;
 }

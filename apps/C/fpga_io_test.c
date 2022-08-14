@@ -1,14 +1,11 @@
-#define CR_MEM_BASE 0x00007000
-#define CR_SEG7_0   (volatile int *) (CR_MEM_BASE + 0x0)
-#define CR_SEG7_1   (volatile int *) (CR_MEM_BASE + 0x4)
-#define CR_SEG7_2   (volatile int *) (CR_MEM_BASE + 0x8)
-#define CR_SEG7_3   (volatile int *) (CR_MEM_BASE + 0xc)
-#define CR_SEG7_4   (volatile int *) (CR_MEM_BASE + 0x10)
-#define CR_SEG7_5   (volatile int *) (CR_MEM_BASE + 0x14)
-#define CR_LED      (volatile int *) (CR_MEM_BASE + 0x18)
-#define CR_Button_0 (volatile int *) (CR_MEM_BASE + 0x1c)
-#define CR_Button_1 (volatile int *) (CR_MEM_BASE + 0x20)
-#define CR_Switch   (volatile int *) (CR_MEM_BASE + 0x24)
+/*
+* This test Sequentially lights the LEDs in the FPGA back and forth. 
+* The number of the turning lit LED is displayed in all 7SEG. 
+* KEY0 determines the rate of program operation. 
+* When Switch 0-9 turns on it is displayed in 7SEG.
+*/
+
+#include "../defines/rvc_defines.h"
 
 int power(int base, int exponent) {
     int result = 1;
@@ -18,7 +15,7 @@ int power(int base, int exponent) {
     return result;
 }
 
-void delay(int num){
+void delay(int num) {
     int counter = 0;
     int i = 0;
     for (int i = 0; i < num; i++){counter++;}
@@ -33,7 +30,6 @@ void main(){
     int up            = 1;
     int tempo         = 1000000;
     int ctrl_tempo    = 0;
-    int real_del      = 0;
     int switch_status = 0;
     while (1){
         switch_status = *CR_Switch;

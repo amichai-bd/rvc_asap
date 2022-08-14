@@ -1,5 +1,6 @@
 #define _ASMLANGUAGE
 #include "../defines/rvc_defines.h"
+#include "../defines/graphic_screen.h"
 
 /* This function print a char note on the screen in (raw,col) position */
 //void draw_char(char note, int raw, int col) ->FIXME use char

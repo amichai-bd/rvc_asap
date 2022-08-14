@@ -73,7 +73,7 @@ assign q = MatchCRMemRegionQ104H  ? PreCRMemRdDataQ104H  :
                                                  
 // Instantiating the rvc_asap_5pl_i_mem instruction memory
 `ifndef SIMULATION_ON // if NOT def
-i_mem_4kb rvc_asap_5pl_i_mem (
+i_mem_16kb rvc_asap_5pl_i_mem (
 `else
 rvc_asap_5pl_i_mem rvc_asap_5pl_i_mem (
 `endif
@@ -84,7 +84,7 @@ rvc_asap_5pl_i_mem rvc_asap_5pl_i_mem (
 
 // Instantiating the rvc_asap_5pl_d_mem data memory
 `ifndef SIMULATION_ON // if NOT def
-d_mem_4kb rvc_asap_5pl_d_mem (
+d_mem_16kb rvc_asap_5pl_d_mem (
 `else
 rvc_asap_5pl_d_mem rvc_asap_5pl_d_mem (
 `endif

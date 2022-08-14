@@ -78,23 +78,21 @@ char *rvc_strcat(char *s1, const char *s2)
 
 int main()
 {
-  volatile int *ptr = (int*) D_MEM_BASE;
-
   int a = 0x73;
   char c = (char) a;
-  ptr[0] = c;
+  MEM_SCRATCH_PAD[0] = c;
 
   char dest[SIZE] = "gil";
   char src[] = "yaakov";
 
 	int result = strcmp(dest, src); // Work, amazing!
-  ptr[1] = result;
+  MEM_SCRATCH_PAD[1] = result;
 
   rvc_strcat(dest, src);
 
   int size = ((sizeof(dest) + sizeof(src)) - 1);
   for(int i = 0 ; i < size ; i++){
-      ptr[i+2] = dest[i];
+      MEM_SCRATCH_PAD[i+2] = dest[i];
   }
 
   // Declare a character array and initialize it with the input string.
@@ -105,7 +103,7 @@ int main()
   
   char * returnS = rvc_strtok(string, delimiter); // don't work for right now
   for(int i = 0 ; i < 7 ; i++){
-      ptr[i+12] = returnS[i];
+      MEM_SCRATCH_PAD[i+12] = returnS[i];
   }
 
   return 0;

@@ -25,7 +25,7 @@ endif
 
 CFLAGS := $(BASE_CFLAGS)
 
-all: librvc out/bin/cr_api_test.elf out/bin/graphic_screen_api_test.elf out/bin/fpga_io_test.elf
+all: librvc out/bin/cr_api_test.elf out/bin/graphic_screen_api_test.elf
 
 librvc: out/lib/librvc.a obj/crt0.o
 
@@ -49,19 +49,11 @@ obj/cr_api_test.o: examples/cr_api_test.c
 	@mkdir -p `dirname $@`
 	$(CC) $(CFLAGS) -c -o $@ $^
 
-obj/fpga_io_test.o: examples/fpga_io_test.c
-	@mkdir -p `dirname $@`
-	$(CC) $(CFLAGS) -c -o $@ $^
-
 obj/graphic_screen_api_test.o: examples/graphic_screen_api_test.c
 	@mkdir -p `dirname $@`
 	$(CC) $(CFLAGS) -c -o $@ $^
 
 out/bin/cr_api_test.elf: obj/crt0.o obj/cr_api_test.o
-	@mkdir -p `dirname $@`
-	$(LD) -T ../link.common.ld -m elf32lriscv $^ -lrvc -Lout/lib -o $@
-
-out/bin/fpga_io_test.elf: obj/crt0.o obj/fpga_io_test.o
 	@mkdir -p `dirname $@`
 	$(LD) -T ../link.common.ld -m elf32lriscv $^ -lrvc -Lout/lib -o $@
 
