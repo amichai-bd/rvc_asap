@@ -4,7 +4,7 @@
 // MODULE: altsyncram 
 
 // ============================================================
-// File Name: d_mem_4kb.v
+// File Name: d_mem_16kb.v
 // Megafunction Name(s):
 // 			altsyncram
 //
@@ -37,7 +37,7 @@
 // synopsys translate_off
 `timescale 1 ps / 1 ps
 // synopsys translate_on
-module d_mem_4kb (
+module d_mem_16kb (
 	address,
 	byteena,
 	clock,
@@ -178,10 +178,10 @@ endmodule
 // Retrieval info: CONNECT: @rden_a 0 0 0 0 rden 0 0 0 0
 // Retrieval info: CONNECT: @wren_a 0 0 0 0 wren 0 0 0 0
 // Retrieval info: CONNECT: q 0 0 32 0 @q_a 0 0 32 0
-// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_4kb.v TRUE
-// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_4kb.inc FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_4kb.cmp FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_4kb.bsf FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_4kb_inst.v FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_4kb_bb.v FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_16kb.v TRUE
+// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_16kb.inc FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_16kb.cmp FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_16kb.bsf FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_16kb_inst.v FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL d_mem_16kb_bb.v FALSE
 // Retrieval info: LIB_FILE: altera_mf

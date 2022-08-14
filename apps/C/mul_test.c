@@ -1,6 +1,5 @@
 #define _ASMLANGUAGE
 #include "../defines/rvc_defines.h"
-#define MEM_SCRATCH_PAD  ((volatile int *) (D_MEM_BASE))
 
 int  mul(int x, int y);
 
