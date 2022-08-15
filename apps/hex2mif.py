@@ -19,9 +19,9 @@ comment_msg='''-- http://srecord.sourceforge.net/
 '''
 
 #gather bytes into Little Endian format
-def gather_to_LE(bytes_list):
+def gather_to_LE(line_bytes):
     i=0
-    word = bytes_list[i+3] + bytes_list[i+2] + bytes_list[i+1] + bytes_list[i]
+    word = line_bytes[i+3] + line_bytes[i+2] + line_bytes[i+1] + line_bytes[i]
     
     return word
 
@@ -29,14 +29,14 @@ def convert(f_in, f_out,data_offset):
 
     str_log = ""            # will save all output data
     
-    bytes_list = list()
+    line_bytes = list()     # TODO comment
 
     #sizes
     depth_counter = 0       # The number of all words in file
     width_word = 32         # hard-coded for our architecture
     
-    prefix_words = 0        # The init of each line 0xxx:  --> that tells the start of the i'th word in this line
-    word_in_line = 0        # to know skip after reach limit of 8 word in line
+    prefix_line = 0         # The init of each line 0xxx:  --> that tells the start of the i'th word in this line
+    word_in_line = 0        # to know skip after reach limit of 8 word in line (or less)
     
     # address
     count_addr = 0
@@ -51,48 +51,54 @@ def convert(f_in, f_out,data_offset):
     for line in lines:
         
         if word_in_line == 8 :
-            str_log+=(f'{prefix_words:X}: '.zfill(6))
+            str_log+=(f'{prefix_line:X}: '.zfill(6))
             word_in_line = 0
 
         # care for line address kind ("@0000xxxx")
         if line.startswith('@'):
-            count_addr += 1                                 # to recognize 2nd appear of @0xxx is the start addr
-            prefix_words = ((int(line[1:-1],16)-data_offset)//4)
-            line_res = (f'{prefix_words:X}: '.zfill(6)) # print in hex but without leading 0x
+            count_addr += 1                                     # to recognize 2nd appear of @0xxx is the start addr
+            
+            # take the address in hex, and divide in 4 to get number of words, (each word = 4 bytes)
+            prefix_line = ((int(line[1:-1],16)-data_offset)//4) 
+            line_res = (f'{prefix_line:X}: '.zfill(6))          # print in hex but without leading 0x
             # start a new line when see new addr
-            str_log += "\n" +  str(line_res) 
+            str_log=str_log[:-1]                # cut of the last space char (" ") and replace in (";")
+            str_log += ";\n" +  str(line_res) 
             word_in_line = 0
             
-            if count_addr == 2:
+            if count_addr == 2: # TODO- FIXME for case of data_mem if work the same
                 start_addr = (f'{int(line[1:-1],16):X}'.zfill(6))
                    
         
         # care for regular line: 1) take  all bytes.  2) gather to WORD (with Little-E) 
         #                                             3) then rest them 8 words at most in each line if 
         else:
-            bytes_list = (line.split()) # 1. take  all bytes
+            line_bytes = (line.split()) # 1. take  all bytes
+            
+            # add leading zeros to line if it is not in lenght of moultiple of word (4 bytes) 
+            while not (len(line_bytes)/4).is_integer():
+                line_bytes.append('00')
             
             # 2. gather to WORD. from separate byte -to  a 32 bit (4 byte) word - in LITTLE ENDIAN
-            # word_in_all_line = len(bytes_list)//4
-            
-            for i, byte in enumerate(bytes_list):
+            for i, byte in enumerate(line_bytes):
                 if (i%4 != 0):
                     continue
                 else:
-                    word  = gather_to_LE(bytes_list[i:i+4])
+                    # gather each 4 byte in the row to word (32 bit) little -endian format
+                    word  = gather_to_LE(line_bytes[i:i+4])
                     str_log += str(word)
                     depth_counter += 1
                     word_in_line  += 1 # to jump new line when reach 8
                     
-                    if word_in_line != 8: # if not tha last byte in line
+                    if word_in_line != 8: # if it is not the last byte in line - add space (" ")
                         str_log += " "
                     else:               # word_in_line == 8:
                         str_log+=";\n"
-                        # update prefix_words
-                        prefix_words += word_in_line
+                        # update prefix_line
+                        prefix_line += word_in_line
                         
     str_begin = comment_msg + 'DEPTH={:d};\nWIDTH={:d};\nADDRESS_RADIX=HEX;\nDATA_RADIX=HEX;\nCONTENT BEGIN'.format(depth_counter, width_word)
-    str_log = str(str_log)[:-1] 
+    str_log = str(str_log)[:-1] # cut of the last space char (" ") and replace in (";")
     str_log+=";\n"
     str_log+="-- start address = " + start_addr +"\nEND;\n"
     
@@ -106,8 +112,8 @@ def convert(f_in, f_out,data_offset):
 
 def main():
     if len(sys.argv) < 4:
-        print ('Usage: hex2mif input.txt output.mif [data_offset_address]\n')
-        print ('     * [data_offset_address] is optional, send hex number without 0x prefix')
+        print ('Usage: hex2mif  input.sv  output.mif  data_offset_address\n')
+        print ('     * data_offset_address - send hex number without 0x prefix')
     else:
         in_ = sys.argv[1]
         out_ = sys.argv[2]
