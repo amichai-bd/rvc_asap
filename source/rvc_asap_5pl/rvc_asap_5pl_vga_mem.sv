@@ -30,8 +30,8 @@ module rvc_asap_5pl_vga_mem (
 );
 import rvc_asap_pkg::*;
 // Memory array (behavrial - not for FPGA/ASIC)
-logic [7:0]  VGAMem [VGA_MEM_MSB:CR_MEM_MSB+1];
-logic [7:0]  NextVGAMem [VGA_MEM_MSB:CR_MEM_MSB+1];
+logic [7:0]  VGAMem     [SIZE_VGA_MEM-1:0];
+logic [7:0]  NextVGAMem [SIZE_VGA_MEM-1:0];
 
 // Data-Path signals core
 logic [31:0] pre_q_core;
