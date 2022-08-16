@@ -118,13 +118,16 @@ assign CurentPixelQ2 = RdDataQ2[{CountByteOffsetQ2,CountBitOffsetQ2}];
 //=========================
 // VGA memory
 //=========================
+logic [31:0] address_fix_offset;
+assign address_fix_offset = address - (32'h8000);
+
 `ifdef SIMULATION_ON
 rvc_asap_5pl_vga_mem rvc_asap_5pl_vga_mem (
     .clock_a             (CLK_50),
     .clock_b             (CLK_25),
     // Write
     .data_a              (data),
-    .address_a           (address[13:2]),
+    .address_a           (address_fix_offset[15:2]),
     .byteena_a           (byteena),
     .wren_a              (wren),
     // Read from core
@@ -140,7 +143,7 @@ vga_mem rvc_asap_5pl_vga_mem(
     .clock_b             (CLK_25),
     // Write
     .data_a              (data),
-    .address_a           (address[13:2]),
+    .address_a           (address_fix_offset[15:2]),
     .byteena_a           (byteena),
     .wren_a              (wren),
     // Read from core

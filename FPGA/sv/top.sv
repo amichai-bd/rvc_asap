@@ -24,7 +24,7 @@ logic [3:0] NextBlue;
 logic Rst;
 logic Button_0;
 logic Button_1;
-assign Rst = ~BUTTON[0];
+assign Rst = (~BUTTON[0] && SW[9]);
 assign Button_0 = ~BUTTON[0];
 assign Button_1 = ~BUTTON[1];
 // Instantiating the rvc_top_5pl module

@@ -18,7 +18,7 @@ module rvc_asap_5pl_vga_mem (
     input  logic        clock_b,
     // Write core
     input  logic [31:0] data_a,
-    input  logic [13:2] address_a,
+    input  logic [15:2] address_a,
     input  logic [3:0]  byteena_a,
     input  logic        wren_a,
     // Read core

@@ -102,7 +102,13 @@
 #define WALK_MAN_TOP_3    0x7c381030             
 #define WALK_MAN_BOTTOM_3 0x281038ba             
 #define WALK_MAN_TOP_4    0x38381030             
-#define WALK_MAN_BOTTOM_4 0x4848387c             
+#define WALK_MAN_BOTTOM_4 0x4848387c
+
+/* Shapes */
+#define SQUARE_TOP_5          0xFFFFFFFF
+#define SQUARE_BOTTOM_5       0xFFFFFFFF
+#define BLACK_SQUARE_TOP_6    0x00000000
+#define BLACK_SQUARE_BOTTOM_6 0x00000000              
 
 /* ASCII tabels */
 unsigned int ASCII_TOP[97] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,SPACE_TOP,
@@ -119,6 +125,7 @@ unsigned int ASCII_BOTTOM[97] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
                                  U_BOTTOM,V_BOTTOM,W_BOTTOM,X_BOTTOM,Y_BOTTOM,Z_BOTTOM};
 
 /* ANIME tabels */
-unsigned int ANIME_TOP[5] = {WALK_MAN_TOP_0,WALK_MAN_TOP_1,WALK_MAN_TOP_2,WALK_MAN_TOP_3,WALK_MAN_TOP_4};
-unsigned int ANIME_BOTTOM[5] = {WALK_MAN_BOTTOM_0,WALK_MAN_BOTTOM_1,WALK_MAN_BOTTOM_2,WALK_MAN_BOTTOM_3,
-                                WALK_MAN_BOTTOM_4};
+unsigned int ANIME_TOP[7] = {WALK_MAN_TOP_0,WALK_MAN_TOP_1,WALK_MAN_TOP_2,WALK_MAN_TOP_3,WALK_MAN_TOP_4,
+                             SQUARE_TOP_5,BLACK_SQUARE_TOP_6};
+unsigned int ANIME_BOTTOM[7] = {WALK_MAN_BOTTOM_0,WALK_MAN_BOTTOM_1,WALK_MAN_BOTTOM_2,WALK_MAN_BOTTOM_3,
+                                WALK_MAN_BOTTOM_4, SQUARE_BOTTOM_5,BLACK_SQUARE_BOTTOM_6};
