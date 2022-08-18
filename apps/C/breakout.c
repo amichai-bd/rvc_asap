@@ -127,6 +127,181 @@ struct game_tool {
     int end;
 };
 
+typedef enum {TL,TR,BR,BL} State;
+
+struct Ball {
+    struct point center;
+    State s;
+};
+
+void init_ball(struct Ball *b, int pos_x, int pos_y) 
+{
+    b->center.pos_x = pos_x;
+    b->center.pos_y = pos_y;
+    b->s = TL;
+}
+
+#define UP_WALL     0
+#define LEFT_WALL   0
+#define RIGHT_WALL  60
+#define BOTTOM_WALL 59
+
+
+void delay(int num) {
+    int counter = 0;
+    int i = 0;
+    for (int i = 0; i < num; i++){counter++;}
+    return;
+}
+
+void set_position(struct Ball *b) 
+{
+    switch (b->s)
+    {
+    case TL:
+        b->center.pos_x -= 1;
+        b->center.pos_y -= 1;
+        break;
+    case TR:
+        b->center.pos_x += 1;
+        b->center.pos_y -= 1;
+        break;
+    case BL:
+        b->center.pos_x -= 1;
+        b->center.pos_y += 1;
+        break;
+    case BR:
+        b->center.pos_x += 1;
+        b->center.pos_y += 1;
+        break;
+    
+    default:
+        break;
+    }
+
+    return;
+}
+
+int set_next_state(struct Ball *b, struct game_tool *gt) 
+{
+    int pos_x    = b->center.pos_x;
+    int pos_y    = b->center.pos_y;
+    int gt_start = gt->start;
+    int gt_end   = gt->end;
+    int gt_y     = gt->center.pos_y;
+
+    switch(b->s)
+    { 
+        case TL: 
+                /* Corner */
+                if (((pos_x - 1) == LEFT_WALL) && ((pos_y - 1) == UP_WALL))
+                {
+                    b->s = BR;
+                    break;                
+                }
+                /* Wall from left */
+                if (((pos_x - 1) == LEFT_WALL))
+                {
+                    b->s = TR;
+                    break;                
+                }
+                /* Wall from up */
+                if (((pos_y - 1) == UP_WALL))
+                {
+                    b->s = BL;
+                    break;                
+                }
+                /* No obstcale */
+                b->s = TL;
+            break;
+        case TR:
+                /* Corner */
+                if (((pos_x + 1) == RIGHT_WALL) && ((pos_y - 1) == UP_WALL))
+                {
+                    b->s = BL;
+                    break;                
+                }
+                /* Wall from right */
+                if (((pos_x + 1) == RIGHT_WALL))
+                {
+                    b->s = TL;
+                    break;                
+                }
+                /* Wall from up */
+                if (((pos_y - 1) == UP_WALL))
+                {
+                    b->s = BR;
+                    break;                
+                }
+                /* No obstcale */
+                b->s = TR;
+            break;
+        case BR:
+                /* Corner */
+                if (((pos_x + 1) == RIGHT_WALL) && ((pos_y + 1) == gt_y) && ((gt_end + 1) == RIGHT_WALL))
+                {
+                    b->s = TL;
+                    break;                
+                }
+                /* Wall from right */
+                if (((pos_x + 1) == RIGHT_WALL))
+                {
+                    b->s = BL;
+                    break;                
+                }
+                /* Wall from down gt exists*/
+                if (((pos_y + 1) == gt_y) && (pos_x <= gt_end) && (gt_start <= pos_x + 1))
+                {
+                    b->s = TR;
+                    break;                
+                }
+                /* Wall from down gt not exists*/
+                if (((pos_y + 1) == gt_y) && (!((pos_x <= gt_end) && (pos_x + 1 >= gt_start))))
+                {
+                    return 1;
+                    break;                
+                }
+                /* No obstcale */
+                b->s = BR;
+            break;
+        case BL:
+                /* Corner */
+                if (((pos_x - 1) == LEFT_WALL) && ((pos_y + 1) == gt_y) && ((gt_start - 1) == LEFT_WALL))
+                {
+                    b->s = TR;
+                    break;                
+                }
+                /* Wall from left */
+                if (((pos_x - 1) == LEFT_WALL))
+                {
+                    b->s = BR;
+                    break;                
+                }
+                /* Wall from down gt exists*/
+                if (((pos_y + 1) == gt_y) && (pos_x <= gt_end) && (pos_x - 1 >= gt_start))
+                {
+                    b->s = TL;
+                    break;                
+                }
+                /* Wall from down gt not exists*/
+                if (((pos_y + 1) == gt_y) && (!((pos_x <= gt_end) && (pos_x - 1 >= gt_start))))
+                {
+                    return 1;
+                    break;
+                }
+                /* No obstcale */
+                b->s = BL;
+            break;
+        default:
+            break;
+    }
+
+    draw_symbol(6, b->center.pos_y, b->center.pos_x);
+    set_position(b);
+    draw_symbol(7, b->center.pos_y, b->center.pos_x);
+    return 0;
+}
+
 void set_gt(struct game_tool *gt, int pos_x, int pos_y) 
 {
     gt->center.pos_x = pos_x;
@@ -165,17 +340,8 @@ void move_right(struct game_tool *gt)
     }
 }
 
-void delay(int num) {
-    int counter = 0;
-    int i = 0;
-    for (int i = 0; i < num; i++){counter++;}
-    return;
-}
-
-int main() {
-
-    clear_screen();
-
+void create_board_game()
+{
     /* Create the board game */
     draw_horizontal_line(0, 79, 0);
     draw_horizontal_line(0, 79, 59);
@@ -192,31 +358,95 @@ int main() {
     set_cursor(65, 63);
     rvc_printf("HIGHEST SCORE");
 
-    /* Initialize game tool and keys */
-    struct game_tool gt;
-    set_gt(&gt, 30, 57);
-    int left = 0;
-    int right = 0;
-   while(1){
-    left     = *CR_Button_1;
-    right    = *CR_Button_0;
+    return;
+}
 
-    clear(gt);
+void game_end()
+{
+    set_cursor(75, 63);
+    rvc_printf("GAME OVER");
+    delay(2000000);
+    set_cursor(85, 63);
+    rvc_printf("9");
+    delay(2000000);
+    set_cursor(85, 63);
+    rvc_printf("8");
+    delay(2000000);
+    set_cursor(85, 63);
+    rvc_printf("7");
+    delay(2000000);
+    set_cursor(85, 63);
+    rvc_printf("6");
+    delay(2000000);
+    set_cursor(85, 63);
+    rvc_printf("5");
+    delay(2000000);
+    set_cursor(85, 63);
+    rvc_printf("4");
+    delay(2000000);
+    set_cursor(85, 63);
+    rvc_printf("3");
+    delay(2000000);
+    set_cursor(85, 63);
+    rvc_printf("2");
+    delay(2000000);
+    set_cursor(85, 63);
+    rvc_printf("1");
+    delay(2000000);
+    set_cursor(85, 63);
+    rvc_printf("0");
+    delay(2000000);
+    return;
+}
 
-    if(left){
-        move_left(&gt);
-        right = 0;
-    }
+int main() {
 
-    if(right){
-        move_right(&gt);
-        left = 0;
-    }
+    while(1){
 
-    display(gt);
-    delay(200000);
+        clear_screen();
+        create_board_game();
 
+        /* Initialize game tool and keys */
+        struct game_tool gt;
+        struct Ball      b;
+        set_gt(&gt, 30, 57);
+        init_ball(&b, 25, 25);
+        int left = 0;
+        int right = 0;
+        int result = 0;
+
+        /* Game start */
+        while(1){
+            left     = *CR_Button_1;
+            right    = *CR_Button_0;
+            clear(gt);
+            if(left){
+                move_left(&gt);
+                right = 0;
+            }
+
+            if(right){
+                move_right(&gt);
+                left = 0;
+            }
+
+            display(gt);
+            result = set_next_state(&b,&gt);
+            if (result)
+            {
+               game_end();
+               break;
+            }
+            delay(100000);
+            result = set_next_state(&b,&gt);
+            if (result)
+            {
+                game_end();
+                break;
+            }
+            delay(100000);
+        }
    }
 
-    return 0;
+   return 0;
 }
