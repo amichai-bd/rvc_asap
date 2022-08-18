@@ -99,8 +99,9 @@ def convert(f_in, f_out,data_offset):
                         
     str_begin = comment_msg + 'DEPTH={:d};\nWIDTH={:d};\nADDRESS_RADIX=HEX;\nDATA_RADIX=HEX;\nCONTENT BEGIN'.format(depth_counter, width_word)
     str_log = str(str_log)[:-1] # cut of the last space char (" ") and replace in (";")
-    str_log+=";\n"
-    str_log+="-- start address = " + start_addr +"\nEND;\n"
+    if str_log[-1] != ";":
+        str_log+=";"
+    str_log+="\n-- start address = " + start_addr +"\nEND;\n"
     
     str_final = str_begin + str_log
     print(str_final)
