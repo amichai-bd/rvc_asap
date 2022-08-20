@@ -1,21 +1,22 @@
-# rvc_asap
-## riscv-core-as-simple-as-passible
-A riscv CPU compatible with RV32I unprivileged spec.  
+# rvc_asap | riscv-core-as-simple-as-passible
+RISCV CPU compatible with RV32I unprivileged spec.  
 https://riscv.org/technical/specifications/
 
-# To builed the design  
+# Builed the model - SW, RTL, simulation, FPGA  
 Read the "HOW_TO" and make sure you have all tools installed:
 - modelsim - system verilog compiler & simulator (lite free version)  
 - gcc - RISCV compiler & tools chains for SW
 
-### building the model:
-> ./buildl.sh all
+## building the model:
+./buildl.sh all
+1. Compile with GCC the source code C/Asembly, link it together, genreate <mem>.sv for simulation, <mem>.mif for FPGA.  
+2. Compile the RTL & run simulation for the level0 tests
+3. Automated scripts will report the simulation results
+4. Use the quartus GUI to load the model to the DE10-lite FPGA 
 
-In this project we will create a riscv core capabile running programs compatible with the RV32I Spec.
+## RISCV core capabile running programs compatible with the RV32I Spec.  
 Demonstration running on DE10-lite FPGA:  
 <img src="https://user-images.githubusercontent.com/81047407/185759832-5198ac3b-9fec-4154-9fb7-5eecbec85885.png" width="300">  
-
-
 
 
 # Steps we completed for this 
