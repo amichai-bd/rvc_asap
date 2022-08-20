@@ -13,7 +13,7 @@ Read the "HOW_TO" and make sure you have all tools installed:
 
 In this project we will create a riscv core capabile running programs compatible with the RV32I Spec.
 Demonstration running on DE10-lite FPGA:  
-![image](https://user-images.githubusercontent.com/81047407/185759832-5198ac3b-9fec-4154-9fb7-5eecbec85885.png)
+<img src="https://user-images.githubusercontent.com/81047407/185759832-5198ac3b-9fec-4154-9fb7-5eecbec85885.png" width="300">  
 
 
 
@@ -28,10 +28,10 @@ Demonstration running on DE10-lite FPGA:
 7. Add MMIO & other FPGA capabilities such as VGA, SWITCH, 7SEG display, LED
 
 # Single Cycle:
-![image](https://user-images.githubusercontent.com/72501420/159980340-d1d02fd5-02dc-41cb-a5d2-8bade3177f75.jpeg)
+<img src="https://user-images.githubusercontent.com/72501420/159980340-d1d02fd5-02dc-41cb-a5d2-8bade3177f75.jpeg" width="500">  
 
 # 5 Stage Pipe Line
-![image](https://user-images.githubusercontent.com/81047407/185759572-805c47b6-daee-4eb9-84eb-b5e7c08a8abb.png)
+<img src="https://user-images.githubusercontent.com/81047407/185759572-805c47b6-daee-4eb9-84eb-b5e7c08a8abb.png" width="700">  
 
 
 
