@@ -13,10 +13,12 @@
 #define RAWS               60 /* RAWS between 0 - 59 (80x60) */
 
 /* ASCII Values */
-#define SPACE_TOP    0x0                         
-#define SPACE_BOTTOM 0x0                         
-#define COMMA_TOP    0x00000000                  
-#define COMMA_BOTTOM 0x061E1818                  
+#define SPACE_TOP    0x0
+#define SPACE_BOTTOM 0x0
+#define EXCL_TOP     0x18181818
+#define EXCL_BOTTOM  0x00181800
+#define COMMA_TOP    0x00000000
+#define COMMA_BOTTOM 0x061E1818
 #define POINT_TOP    0x00000000                  
 #define POINT_BOTTOM 0x00181800                  
 #define ZERO_TOP     0x52623C00                  
@@ -39,6 +41,8 @@
 #define EIGHT_BOTTOM 0x003C423C                  
 #define NINE_TOP     0x42423C00                  
 #define NINE_BOTTOM  0x003E407C                  
+#define COLON_TOP    0x18180000
+#define COLON_BOTTOM 0x00181800
 #define A_TOP        0x663C1800                  
 #define A_BOTTOM     0x00667E66                  
 #define B_TOP        0x3E221E00                  
@@ -105,29 +109,32 @@
 #define WALK_MAN_BOTTOM_4 0x4848387c
 
 /* Shapes */
-#define SQUARE_TOP_5          0xFFFFFFFF
-#define SQUARE_BOTTOM_5       0xFFFFFFFF
-#define BLACK_SQUARE_TOP_6    0x00000000
-#define BLACK_SQUARE_BOTTOM_6 0x00000000              
-#define CIRCLE_TOP_7          0xffff7e3c
-#define CIRCLE_BOTTOM_7       0x3c7effff
+#define SQUARE_TOP_5            0xFFFFFFFF
+#define SQUARE_BOTTOM_5         0xFFFFFFFF
+#define BLACK_SQUARE_TOP_6      0x00000000
+#define BLACK_SQUARE_BOTTOM_6   0x00000000              
+#define CIRCLE_TOP_7            0xffff7e3c
+#define CIRCLE_BOTTOM_7         0x3c7effff
+#define SPECIAL_SQUARE_TOP_8    0xBDBD81FF
+#define SPECIAL_SQUARE_BOTTOM_8 0xFF81BDBD
 
 /* ASCII tabels */
-unsigned int ASCII_TOP[97] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,SPACE_TOP,
-                              0,0,0,0,0,0,0,0,0,0,COMMA_TOP,0,POINT_TOP,0,ZERO_TOP,ONE_TOP,TWO_TOP,
-                              THREE_TOP,FOUR_TOP,FIVE_TOP,SIX_TOP,SEVEN_TOP,EIGHT_TOP,NINE_TOP,0,0,0,0,0,0,0,A_TOP,
+unsigned int ASCII_TOP[97] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,SPACE_TOP,EXCL_TOP,0,
+                              0,0,0,0,0,0,0,0,0,COMMA_TOP,0,POINT_TOP,0,ZERO_TOP,ONE_TOP,TWO_TOP,
+                              THREE_TOP,FOUR_TOP,FIVE_TOP,SIX_TOP,SEVEN_TOP,EIGHT_TOP,NINE_TOP,COLON_TOP,0,0,0,0,0,0,A_TOP,
                               B_TOP,C_TOP,D_TOP,E_TOP,F_TOP,G_TOP,H_TOP,I_TOP,J_TOP,K_TOP,L_TOP,M_TOP,
                               N_TOP,O_TOP,P_TOP,Q_TOP,R_TOP,S_TOP,T_TOP,U_TOP,V_TOP,W_TOP,X_TOP,Y_TOP,Z_TOP};
-unsigned int ASCII_BOTTOM[97] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                                 SPACE_BOTTOM,0,0,0,0,0,0,0,0,0,0,COMMA_BOTTOM,0,POINT_BOTTOM,0,ZERO_BOTTOM,
+unsigned int ASCII_BOTTOM[97] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,SPACE_BOTTOM,
+                                 EXCL_BOTTOM,0,0,0,0,0,0,0,0,0,0,COMMA_BOTTOM,0,POINT_BOTTOM,0,ZERO_BOTTOM,
                                  ONE_BOTTOM,TWO_BOTTOM,THREE_BOTTOM,FOUR_BOTTOM,FIVE_BOTTOM,SIX_BOTTOM,
-                                 SEVEN_BOTTOM,EIGHT_BOTTOM,NINE_BOTTOM,0,0,0,0,0,0,0,A_BOTTOM,B_BOTTOM,C_BOTTOM,D_BOTTOM,
-                                 E_BOTTOM,F_BOTTOM,G_BOTTOM,H_BOTTOM,I_BOTTOM,J_BOTTOM,K_BOTTOM,L_BOTTOM,
+                                 SEVEN_BOTTOM,EIGHT_BOTTOM,NINE_BOTTOM,COLON_BOTTOM,0,0,0,0,0,0,A_BOTTOM,B_BOTTOM,
+                                 C_BOTTOM,D_BOTTOM,E_BOTTOM,F_BOTTOM,G_BOTTOM,H_BOTTOM,I_BOTTOM,J_BOTTOM,K_BOTTOM,L_BOTTOM,
                                  M_BOTTOM,N_BOTTOM,O_BOTTOM,P_BOTTOM,Q_BOTTOM,R_BOTTOM,S_BOTTOM,T_BOTTOM,
                                  U_BOTTOM,V_BOTTOM,W_BOTTOM,X_BOTTOM,Y_BOTTOM,Z_BOTTOM};
 
 /* ANIME tabels */
-unsigned int ANIME_TOP[8] = {WALK_MAN_TOP_0,WALK_MAN_TOP_1,WALK_MAN_TOP_2,WALK_MAN_TOP_3,WALK_MAN_TOP_4,
-                             SQUARE_TOP_5,BLACK_SQUARE_TOP_6,CIRCLE_TOP_7};
-unsigned int ANIME_BOTTOM[8] = {WALK_MAN_BOTTOM_0,WALK_MAN_BOTTOM_1,WALK_MAN_BOTTOM_2,WALK_MAN_BOTTOM_3,
-                                WALK_MAN_BOTTOM_4, SQUARE_BOTTOM_5,BLACK_SQUARE_BOTTOM_6,CIRCLE_BOTTOM_7};
+unsigned int ANIME_TOP[9] = {WALK_MAN_TOP_0,WALK_MAN_TOP_1,WALK_MAN_TOP_2,WALK_MAN_TOP_3,WALK_MAN_TOP_4,
+                             SQUARE_TOP_5,BLACK_SQUARE_TOP_6,CIRCLE_TOP_7,SPECIAL_SQUARE_TOP_8};
+unsigned int ANIME_BOTTOM[9] = {WALK_MAN_BOTTOM_0,WALK_MAN_BOTTOM_1,WALK_MAN_BOTTOM_2,WALK_MAN_BOTTOM_3,
+                                WALK_MAN_BOTTOM_4, SQUARE_BOTTOM_5,BLACK_SQUARE_BOTTOM_6,CIRCLE_BOTTOM_7,
+                                SPECIAL_SQUARE_BOTTOM_8};
