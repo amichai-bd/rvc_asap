@@ -19,7 +19,7 @@ Demonstration running on DE10-lite FPGA:
 <img src="https://user-images.githubusercontent.com/81047407/185759832-5198ac3b-9fec-4154-9fb7-5eecbec85885.png" width="300">  
 
 
-# Steps we completed for this 
+# Steps for designing your own RISCV core 
 1. Follow the "HOW_TO" under documentation
 2. Study the RISCV spec.
 3. Design RISCV block diagram.
