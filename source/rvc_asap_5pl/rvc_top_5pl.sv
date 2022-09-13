@@ -13,8 +13,8 @@
 `include "rvc_asap_macros.sv"
 
 module rvc_top_5pl (
-    input logic Clock,
-    input logic Rst,
+    input logic        Clock,
+    input logic        Rst,
     // FPGA interface inputs              
     input  logic       Button_0, // CR_MEM
     input  logic       Button_1, // CR_MEM
@@ -39,41 +39,45 @@ import rvc_asap_pkg::*;
 //=========================================
 //     Core - Memory interface
 //=========================================
-logic [31:0] Pc;                  // I_MEM
-logic [31:0] PreInstructionQ101H; // I_MEM
-logic [31:0] data;                // D_MEM
-logic [31:0] address;             // D_MEM
-logic [3:0]  byteena;             // D_MEM
-logic wren;                       // D_MEM
-logic rden;                       // D_MEM
-logic [31:0] q;                   // D_MEM
+logic [31:0] PcQ100H;             // I_MEM
+logic [31:0] InstructionQ101H;    // I_MEM
+logic [31:0] DMemWrDataQ103H;     // D_MEM
+logic [31:0] DMemAddressQ103H;    // D_MEM
+logic [3:0]  DMemByteEnQ103H;     // D_MEM
+logic        DMemWrEnQ103H;       // D_MEM
+logic        DMemRdEnQ103H;       // D_MEM
+logic [31:0] DMemRdRspQ104H;      // D_MEM
 
+//=========================================
 // Instantiating the rvc_asap_5pl core
+//=========================================
 rvc_asap_5pl rvc_asap_5pl (
-    .Clock                       (Clock),
-    .Rst                         (Rst),
-    .Pc_To_ImemQ100H             (Pc),                  // To I_MEM
-    .PreInstructionQ101H         (PreInstructionQ101H), // From I_MEM
-    .data                        (data),                // To D_MEM
-    .address                     (address),             // To D_MEM
-    .byteena                     (byteena),             // To D_MEM
-    .wren                        (wren),                // To D_MEM
-    .rden                        (rden),                // To D_MEM
-    .q                           (q)                    // From D_MEM
-);
+    .Clock               (Clock),
+    .Rst                 (Rst),
+    .PcQ100H             (PcQ100H),          // To I_MEM
+    .PreInstructionQ101H (InstructionQ101H), // From I_MEM
+    .DMemWrDataQ103H     (DMemWrDataQ103H),  // To D_MEM
+    .DMemAddressQ103H    (DMemAddressQ103H), // To D_MEM
+    .DMemByteEnQ103H     (DMemByteEnQ103H),  // To D_MEM
+    .DMemWrEnQ103H       (DMemWrEnQ103H),    // To D_MEM
+    .DMemRdEnQ103H       (DMemRdEnQ103H),    // To D_MEM
+    .DMemRdRspQ104H      (DMemRdRspQ104H)    // From D_MEM
+);                                                            
 
+//=========================================
 // Instantiating the rvc_asap_5pl_mem_wrap memory
+//=========================================
 rvc_asap_5pl_mem_wrap rvc_asap_5pl_mem_wrap (
-    .Clock            (Clock),
+    .Clock            (Clock),     
     .Rst              (Rst),
-    .Pc               (Pc),                  // I_MEM
-    .InstructionQ101H (PreInstructionQ101H), // I_MEM
-    .data             (data),                // D_MEM
-    .address          (address),             // D_MEM
-    .byteena          (byteena),             // D_MEM
-    .wren             (wren),                // D_MEM
-    .rden             (rden),                // D_MEM
-    .q                (q),                   // D_MEM
+    .PcQ100H          (PcQ100H),             // I_MEM
+    .InstructionQ101H (InstructionQ101H),    // I_MEM
+    .DMemWrDataQ103H  (DMemWrDataQ103H),     // D_MEM
+    .DMemAddressQ103H (DMemAddressQ103H),    // D_MEM
+    .DMemByteEnQ103H  (DMemByteEnQ103H),     // D_MEM
+    .DMemWrEnQ103H    (DMemWrEnQ103H),       // D_MEM
+    .DMemRdEnQ103H    (DMemRdEnQ103H),       // D_MEM
+    .DMemRdRspQ104H   (DMemRdRspQ104H),      // D_MEM
     .Button_0         (Button_0),            // CR_MEM
     .Button_1         (Button_1),            // CR_MEM
     .Switch           (Switch),              // CR_MEM
