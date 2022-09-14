@@ -15,16 +15,16 @@
 `include "rvc_asap_macros.sv"
 
 module rvc_asap_5pl_mem_wrap (
-    input  logic Clock,
-    input  logic Rst,
-    input  logic [31:0] Pc,               // I_MEM
+    input  logic        Clock,
+    input  logic        Rst,
+    input  logic [31:0] PcQ100H,          // I_MEM
     output logic [31:0] InstructionQ101H, // I_MEM
-    input  logic [31:0] data,             // D_MEM
-    input  logic [31:0] address,          // D_MEM
-    input  logic [3:0]  byteena,          // D_MEM
-    input  logic wren,                    // D_MEM
-    input  logic rden,                    // D_MEM
-    output logic [31:0] q,                // D_MEM
+    input  logic [31:0] DMemWrDataQ103H,  // D_MEM
+    input  logic [31:0] DMemAddressQ103H, // D_MEM
+    input  logic [3:0]  DMemByteEnQ103H,  // D_MEM
+    input  logic        DMemWrEnQ103H,    // D_MEM
+    input  logic        DMemRdEnQ103H,    // D_MEM
+    output logic [31:0] DMemRdRspQ104H,   // D_MEM
     // FPGA interface inputs              
     input  logic       Button_0,          // CR_MEM
     input  logic       Button_1,          // CR_MEM
@@ -47,17 +47,17 @@ module rvc_asap_5pl_mem_wrap (
 import rvc_asap_pkg::*;
 
 // Control signals
-logic MatchDMemRegionQ103H, MatchDMemRegionQ104H;
-logic MatchCRMemRegionQ103H, MatchCRMemRegionQ104H;
+logic MatchDMemRegionQ103H,   MatchDMemRegionQ104H;
+logic MatchCRMemRegionQ103H,  MatchCRMemRegionQ104H;
 logic MatchVGAMemRegionQ103H, MatchVGAMemRegionQ104H;
 logic [31:0] PreDMemRdDataQ104H;
 logic [31:0] PreCRMemRdDataQ104H;
 logic [31:0] PreVGAMemRdDataQ104H;
 
 always_comb begin
-    MatchVGAMemRegionQ103H = ((address[VGA_MSB_REGION:LSB_REGION] >= VGA_MEM_REGION_FLOOR) && (address[VGA_MSB_REGION:LSB_REGION] <= VGA_MEM_REGION_ROOF));
-    MatchDMemRegionQ103H   = MatchVGAMemRegionQ103H ? 1'b0 : ((address[MSB_REGION:LSB_REGION] >= D_MEM_REGION_FLOOR) && (address[MSB_REGION:LSB_REGION] <= D_MEM_REGION_ROOF));
-    MatchCRMemRegionQ103H  = MatchVGAMemRegionQ103H ? 1'b0 : ((address[MSB_REGION:LSB_REGION] >= CR_MEM_REGION_FLOOR) && (address[MSB_REGION:LSB_REGION] <= CR_MEM_REGION_ROOF));
+    MatchVGAMemRegionQ103H = ((DMemAddressQ103H[VGA_MSB_REGION:LSB_REGION] >= VGA_MEM_REGION_FLOOR) && (DMemAddressQ103H[VGA_MSB_REGION:LSB_REGION] <= VGA_MEM_REGION_ROOF));
+    MatchDMemRegionQ103H   = MatchVGAMemRegionQ103H ? 1'b0 : ((DMemAddressQ103H[MSB_REGION:LSB_REGION] >= D_MEM_REGION_FLOOR) && (DMemAddressQ103H[MSB_REGION:LSB_REGION] <= D_MEM_REGION_ROOF));
+    MatchCRMemRegionQ103H  = MatchVGAMemRegionQ103H ? 1'b0 : ((DMemAddressQ103H[MSB_REGION:LSB_REGION] >= CR_MEM_REGION_FLOOR) && (DMemAddressQ103H[MSB_REGION:LSB_REGION] <= CR_MEM_REGION_ROOF));
 end
 
 // Q103H to Q104H Flip Flops
@@ -66,10 +66,10 @@ end
 `RVC_MSFF(MatchVGAMemRegionQ104H , MatchVGAMemRegionQ103H  , Clock)
 
 // Mux between CR ,data and vga memory
-assign q = MatchCRMemRegionQ104H  ? PreCRMemRdDataQ104H  :
-           MatchDMemRegionQ104H   ? PreDMemRdDataQ104H   :
-           MatchVGAMemRegionQ104H ? PreVGAMemRdDataQ104H :
-                                    32'b0                ;
+assign DMemRdRspQ104H= MatchCRMemRegionQ104H  ? PreCRMemRdDataQ104H  :
+                       MatchDMemRegionQ104H   ? PreDMemRdDataQ104H   :
+                       MatchVGAMemRegionQ104H ? PreVGAMemRdDataQ104H :
+                                                32'b0                ;
                                                  
 // Instantiating the rvc_asap_5pl_i_mem instruction memory
 `ifndef SIMULATION_ON // if NOT def
@@ -78,7 +78,7 @@ i_mem_16kb rvc_asap_5pl_i_mem (
 rvc_asap_5pl_i_mem rvc_asap_5pl_i_mem (
 `endif
     .clock          (Clock),
-    .address        (Pc[31:2]),
+    .address        (PcQ100H[31:2]),
     .q              (InstructionQ101H)
 );
 
@@ -89,11 +89,11 @@ d_mem_16kb rvc_asap_5pl_d_mem (
 rvc_asap_5pl_d_mem rvc_asap_5pl_d_mem (
 `endif
     .clock          (Clock),
-    .data           (data),
-    .address        (address[31:2]),
-    .byteena        (byteena),
-    .wren           (wren && MatchDMemRegionQ103H),
-    .rden           (rden && MatchDMemRegionQ103H),
+    .data           (DMemWrDataQ103H),
+    .address        (DMemAddressQ103H[31:2]),
+    .byteena        (DMemByteEnQ103H),
+    .wren           (DMemWrEnQ103H && MatchDMemRegionQ103H),
+    .rden           (DMemRdEnQ103H && MatchDMemRegionQ103H),
     .q              (PreDMemRdDataQ104H)
 );
 
@@ -101,10 +101,10 @@ rvc_asap_5pl_d_mem rvc_asap_5pl_d_mem (
 rvc_asap_5pl_cr_mem rvc_asap_5pl_cr_mem (
     .Clock            (Clock),
     .Rst              (Rst),
-    .data             (data),
-    .address          (address),
-    .wren             (wren && MatchCRMemRegionQ103H),
-    .rden             (rden && MatchCRMemRegionQ103H),
+    .data             (DMemWrDataQ103H),
+    .address          (DMemAddressQ103H),
+    .wren             (DMemWrEnQ103H && MatchCRMemRegionQ103H),
+    .rden             (DMemRdEnQ103H && MatchCRMemRegionQ103H),
     .q                (PreCRMemRdDataQ104H),
     .Button_0         (Button_0),
     .Button_1         (Button_1),
@@ -122,11 +122,11 @@ rvc_asap_5pl_cr_mem rvc_asap_5pl_cr_mem (
 rvc_asap_5pl_vga_ctrl rvc_asap_5pl_vga_ctrl (
     .CLK_50            (Clock),
     .Reset             (Rst),
-    .data              (data),
-    .address           (address),
-    .byteena           (byteena),
-    .wren              (wren && MatchVGAMemRegionQ103H),
-    .rden              (rden && MatchVGAMemRegionQ103H),
+    .data              (DMemWrDataQ103H),
+    .address           (DMemAddressQ103H),
+    .byteena           (DMemByteEnQ103H),
+    .wren              (DMemWrEnQ103H && MatchVGAMemRegionQ103H),
+    .rden              (DMemRdEnQ103H && MatchVGAMemRegionQ103H),
     .q                 (PreVGAMemRdDataQ104H),
     .RED               (RED),
     .GREEN             (GREEN),
