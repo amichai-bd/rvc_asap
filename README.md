@@ -8,7 +8,7 @@ Read the "HOW_TO" and make sure you have all tools installed:
 - gcc - RISCV compiler & tools chains for SW
 
 ## building the model:
-./buildl.sh all
+./buildl.sh all | tee last_build.log
 1. Compile with GCC the source code C/Asembly, link it together, genreate <mem>.sv for simulation, <mem>.mif for FPGA.  
 2. Compile the RTL & run simulation for the level0 tests
 3. Automated scripts will report the simulation results

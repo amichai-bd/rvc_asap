@@ -71,12 +71,12 @@ main(){
         echo "  just asm                        [-asm_verif]       "
         echo "  library examples                [-lib]             "
         echo "  don't clean compilation files   [-debug]           "
-    	echo "  example_1 : ./build.sh all                         "
-        echo "  example_2 : ./build.sh ALL                         "
-        echo "  example_3 : ./build.sh basic_commands1 basic_commands2 ... basic_commandsn"
-		echo "  example_4 : ./build.sh -sc -gui basic_commands1 basic_commands2 ... basic_commandsn"
-		echo "  example_5 : ./build.sh -5pl -gui basic_commands1 basic_commands2 ... basic_commandsn"
-		echo "  example_5 : ./build.sh -5pl basic_commands1 basic_commands2 ... basic_commandsn"
+    	echo "  example_1 : ./buildl.sh all                         "
+        echo "  example_2 : ./buildl.sh ALL                         "
+        echo "  example_3 : ./buildl.sh basic_commands1 basic_commands2 ... basic_commandsn"
+		echo "  example_4 : ./buildl.sh -sc -gui basic_commands1 basic_commands2 ... basic_commandsn"
+		echo "  example_5 : ./buildl.sh -5pl -gui basic_commands1 basic_commands2 ... basic_commandsn"
+		echo "  example_5 : ./buildl.sh -5pl basic_commands1 basic_commands2 ... basic_commandsn"
     	exit 1
     fi
     done
@@ -93,12 +93,12 @@ main(){
         echo "  just asm                        [-asm_verif]       "
         echo "  library examples                [-lib]             "
         echo "  don't clean compilation files   [-debug]           "
-    	echo "  example_1 : ./build.sh all                         "
-        echo "  example_2 : ./build.sh ALL                         "
-        echo "  example_3 : ./build.sh basic_commands1 basic_commands2 ... basic_commandsn"
-		echo "  example_4 : ./build.sh -sc -gui basic_commands1 basic_commands2 ... basic_commandsn"
-		echo "  example_5 : ./build.sh -5pl -gui basic_commands1 basic_commands2 ... basic_commandsn"
-		echo "  example_5 : ./build.sh -5pl basic_commands1 basic_commands2 ... basic_commandsn"
+    	echo "  example_1 : ./buildl.sh all                         "
+        echo "  example_2 : ./buildl.sh ALL                         "
+        echo "  example_3 : ./buildl.sh basic_commands1 basic_commands2 ... basic_commandsn"
+		echo "  example_4 : ./buildl.sh -sc -gui basic_commands1 basic_commands2 ... basic_commandsn"
+		echo "  example_5 : ./buildl.sh -5pl -gui basic_commands1 basic_commands2 ... basic_commandsn"
+		echo "  example_5 : ./buildl.sh -5pl basic_commands1 basic_commands2 ... basic_commandsn"
     	exit 1
 	fi
 

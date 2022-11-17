@@ -10,6 +10,7 @@ modelsim/work/*
 modelsim_run/*
 target/*
 transcript
+last_build.log
 !modelsim_run/README.md
 !modelsim_run/rvc_asap_5pl_list.f
 !modelsim_run/rvc_asap_sc_list.f
