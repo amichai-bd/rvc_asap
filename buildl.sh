@@ -12,7 +12,6 @@
 #========== Author    : Gil Ya'akov & Matan Eshel ==========================#
 #===========================================================================#
 #========== Date      : 04DEC21 ============================================#
-
 main(){
 	export APPS="./apps"
 	export APPS_C="./apps/C"
@@ -134,7 +133,6 @@ main(){
     #==== Clean target directory and compilation directories ====#
     rm -rf $TARGET/*
     rm -rf $APPS_ELF/* $APPS_ELF_TXT/* $APPS_SV/*
-
     if [ $lib == 0 ]; then # Because if lib == 1 we will make all this steps from the make file of apps/library
         if [ $asmverif == 0 ]; then
             #===== 1. Compile the C files in apps/C to apps/asm =====#
@@ -142,7 +140,7 @@ main(){
                 file_name="$(basename -- $f)"
                 clean_file_name="${file_name%.*}"
                 #==== 1.1 Compile Only the tests that were specified by the user ====#
-                for test in "$@"; do	
+                for test in "$@"; do
                     if [ "$test" = "$clean_file_name" ] || [ "$test" = "all" ] || [ "$test" = "ALL" ] || [ $# -eq 1 ]; then
                         rv_gcc -S -ffreestanding -march=rv32i $APPS_C/$file_name  -o $APPS_ASM/$clean_file_name.s
                     fi
@@ -282,10 +280,10 @@ main(){
         exit        
     fi
 
-    total_tests=0
-    tests_pass=0
-    tests_unknown=0
-    tests_fail=0
+    declare -a total_tests
+    declare -a tests_pass
+    declare -a tests_unknown
+    declare -a tests_fail
 	#===== 6. Check the results  =====#
 	for f in "$TARGET"/*; do
 	file_name="$(basename -- $f)"
@@ -294,7 +292,7 @@ main(){
 		for test in "$@"
 		do	
 			if [ "$test" == "$clean_file_name" ] || [ "$test" == "all" ] || [ "$test" == "ALL" ] || [ $# -eq 1 ]; then	
-                total_tests=$((total_tests+1))
+                total_tests+=($clean_file_name)
                 MSG="Check: $clean_file_name" BG="103m" FG="30m"
 				echo "========================================================="
 				echo -en "              \033[$FG\033[$BG$MSG\033[0m\n"
@@ -315,15 +313,15 @@ main(){
                       x=$(( $x + 1 ))
                    done 3<$input1 4<$input2
                    if [ $error == 0 ]; then
-                       tests_pass=$((tests_pass+1))
+                       tests_pass+=($clean_file_name)
                        MSG2="The test ended successfully!" BG="42m" FG="30m"
                        echo -en "              \033[$FG\033[$BG$MSG2\033[0m\n"
                        echo -n $'                        \U1F600\n'
                    else
-                       tests_fail=$((tests_fail+1))
+                       tests_fail+=($clean_file_name)
                    fi
                 else
-                   tests_unknown=$((tests_unknown+1))
+                   tests_unknown+=($clean_file_name)
                    echo "           This test have no memory snapshot             "
                 fi
                 echo "========================================================="
@@ -334,10 +332,18 @@ main(){
         done
     done
     echo -en "======================== Summary ========================\n"
-    echo -en "Total tests  : $total_tests\n"
-    echo -en "Tests Pass   : $tests_pass\n"
-    echo -en "Tests Fail   : $tests_fail\n"
-    echo -en "Tests unknown: $tests_unknown\n"
+    echo -en "Total tests  : ${#total_tests[@]}\n"
+    echo -en "List of Total tests  : "
+    ( IFS=$','; echo "[${total_tests[*]}]" )
+    echo -en "\nTests Pass   : ${#tests_pass[@]}\n"
+    echo -en "List of Total tests  : "
+    ( IFS=$','; echo "[${tests_pass[*]}]" )
+    echo -en "\nTests Fail   : ${#tests_fail[@]}\n"
+    echo -en "List of Total tests  : "
+    ( IFS=$','; echo "[${tests_fail[*]}]" )
+    echo -en "\nTests unknown: ${#tests_unknown[@]}\n"
+    echo -en "List of Total tests  : "
+    ( IFS=$','; echo "[${tests_unknown[*]}]" )
     echo -en "=========================================================\n"
 
 }
