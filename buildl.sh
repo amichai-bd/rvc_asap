@@ -227,11 +227,11 @@ main(){
 				echo "========================================================="
 				cd modelsim_run
                 if [ $pl == 1 ]; then
-                    vlog.exe +define+HPATH=$clean_file_name -f rvc_asap_5pl_list.f
+                    vlog.exe +define+HPATH=$clean_file_name -f rvc_asap_5pl_list.f -lint
                 elif [ $sc == 1 ]; then
-                    vlog.exe +define+HPATH=$clean_file_name -f rvc_asap_sc_list.f
+                    vlog.exe +define+HPATH=$clean_file_name -f rvc_asap_sc_list.f -lint
                 else
-                    vlog.exe +define+HPATH=$clean_file_name -f rvc_asap_5pl_list.f # Default is 5pl
+                    vlog.exe +define+HPATH=$clean_file_name -f rvc_asap_5pl_list.f -lint # Default is 5pl
 				fi
 
                 if [ $pl == 1 ]; then
